@@ -5,11 +5,13 @@ function Room(){
 }
 
 Room.allRooms = [];
+
 /*
   Create a room with random ID
   the id must be not duplicated
   @returns Room
 */
+
 Room.createRandomRoom = function(){
 
 }

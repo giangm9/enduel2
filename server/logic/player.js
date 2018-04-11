@@ -21,7 +21,7 @@ Player.prototype.leaveRoom = function(){
 
 
 Player.currentFree = 0;
-Player.playing     = [];
+Player.all         = [];
 
 Player.createRandomPlayer = function( name ){
   var player = new Player ( Player.currentFree, name );
