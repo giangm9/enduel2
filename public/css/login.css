@@ -50,6 +50,13 @@ button {
 
 #inp-name {
   text-align: center;
-  width: 57vmin;
+  width: 50vmin;
+}
+
+#img-dice {
+  vertical-align: middle;
+  display: inline-block;
+  width: 9vmin;
+  height: 9vmin;
 }
 
