@@ -10,6 +10,10 @@
   <link rel="stylesheet" type="text/css" href="css/login.css">
   <script src="vendors/jquery-3.3.1.min.js"> </script>
   <script src="js/login.js"> </script>
+  <!--  <script src="js/dice.js"> </script> -->
+  <script src="js/sDice.js"> </script> 
+
+
 </head>
 
 <body>
@@ -19,7 +23,7 @@
   </div>
   <div class='center limit-width'>
     <input type="text" placeholder="Enter your name" id="inp-name">
-    <img id="img-dice" alt="Random name">
+    <canvas id="cdice"> </canvas>
   </div>
   <button class='black shadow center' id='btn-start'> CREATE ROOM </button>
   <p class='center' style="font-size: 4vmin"> or </p>
