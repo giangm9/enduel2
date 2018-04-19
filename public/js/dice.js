@@ -1,62 +1,73 @@
 Dice = {
-  fps: 30.0,
-  nFrame: 80,
-  timeStop: 1.5,
-  state: "idle",
-  spinTime: 0,
-  last: null,
-  nextStop: 0,
-  highlight: false
-
+  fps     : 30.0,
+  nFrame  : 80.0,
+  stop    : 1.5,
+  time    : 0.0,
+  next    : 1.5,
+  high    : false,
+  state   : "idle",
+  urlNorm : "img/norm.jpg",
+  urlHigh : "img/high.jpg",
+  last    : null
 };
 
-Dice.init = function(img) {
+Dice.init = function(jqcanvas) {
 
-  Dice.img = img;
+  this.canvas      = jqcanvas[0];
+  this.context     = this.canvas.getContext('2d');
+  this.imgNorm     = new Image();
+  this.imgHigh     = new Image();
+  this.imgNorm.src = this.urlNorm;
+  this.imgHigh.src = this.urlHigh;
 
-  img.hover(
-    function() {
-      Dice.highlight = true;
-    },
-    function() {
-      Dice.highlight = false;
-    }
-  ).click(function() {
-    if (Dice.state != "spin") {
-      Dice.state = "spin";
-    }
-  });
-  requestAnimationFrame(Dice.step);
+  jqcanvas.hover(
+    function() { Dice.high = true; },
+    function() { Dice.high = false;}
+  ).click(
+    function() { Dice.state = "spin"; }
+  );
+  Dice.step();
 }
 
-Dice.step = function(timestamp) {
+Dice.step = function( timestamp ) {
   requestAnimationFrame(Dice.step);
 
   if (!Dice.last) Dice.last = timestamp;
 
   if (Dice.state == "spin") {
-    Dice.spinTime += (timestamp - Dice.last) * 0.001;
-    if (Dice.spinTime > Dice.nextStop) {
+    Dice.time += (timestamp - Dice.last) * 0.001;
+
+    if (Dice.time > Dice.next) {
       Dice.state = "idle";
-      Dice.nextStop += Dice.timeStop;
+      Dice.next += Dice.stop;
     }
   }
 
-  var index = Math.floor(Dice.spinTime * Dice.fps) % Dice.nFrame;
-  var filename = index.pad(4);
-  if (Dice.highlight) {
-    Dice.img.attr("src", "img/dice/highlight/" + filename + ".jpg");
-  } else {
-    Dice.img.attr("src", "img/dice/normal/" + filename + ".jpg");
-  }
-
+  var index = Math.floor(Dice.time * Dice.fps) % Dice.nFrame;
+  Dice.render(index);
   Dice.last = timestamp;
+
 }
 
-Number.prototype.pad = function(size) {
-  var s = String(this);
-  while (s.length < (size || 2)) {
-    s = "0" + s;
-  }
-  return s;
+Dice.render = function(index) {
+
+  var width  = 100;
+  var height = 100;
+  var nRow   = 8;
+  var nCol   = 10;
+  var row    = Math.floor(index / nCol);
+  var col    = index % nCol;
+  var startX = col * width;
+  var startY = row * height;
+
+  Dice.context.drawImage(
+    Dice.high ? Dice.imgHigh : Dice.imgNorm,
+    startX, startY,
+    width, height,
+    0, 0,
+    Dice.canvas.width,
+    Dice.canvas.height
+  )
+
 }
+
