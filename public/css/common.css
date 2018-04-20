@@ -1,2 +1,33 @@
-h1 {
+h1, input, button, p {
+  font-family: 'Jura', sans-serif;
+  padding: 2vmin;
+  margin-top: 2vmin;
+
 }
+
+.black {
+  background-color : black;
+  color:  white;
+  border: 1px solid black;
+}
+
+.shadow {
+  box-shadow: 3px 3px lightgray;
+}
+
+.shadow:active {
+  box-shadow: none;
+  transform: translate(2px, 2px)
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.limit-width {
+  width: 68vmin;
+}
+

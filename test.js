@@ -7,7 +7,9 @@ function test_client() {
   const app = express()
 
   app.use(express.static('public'))
-  app.get('/', (req, res) => res.sendFile(  __dirname + '/public/login.html' ))
+  //app.get('/', (req, res) => res.sendFile(  __dirname + '/public/login.html' ))
+  app.get('/', (req, res) => res.sendFile(  __dirname + '/public/room.html' ))
+
 
   app.listen(3000, () => console.log('port: 3000'))
 }
