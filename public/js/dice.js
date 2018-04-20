@@ -1,9 +1,9 @@
 Dice = {
   fps: 30.0,
   nFrame: 80.0,
-  stop: 1.5,
+  stop: 0.9,
   time: 0.0,
-  next: 1.5,
+  next: 0.9,
   high: false,
   state: "idle",
   urlNorm: "img/norm.jpg",
