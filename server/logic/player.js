@@ -19,6 +19,10 @@ Player.prototype.leaveRoom = function(){
   }
 }
 
+Player.prototype.__genUniqueID = function(){
+  this.id = Player.currentFree;
+}
+
 
 Player.currentFree = 0;
 Player.all         = [];

@@ -2,7 +2,9 @@ h1, input, button, p {
   font-family: 'Jura', sans-serif;
   padding: 2vmin;
   margin-top: 2vmin;
+
 }
+
 
 h1 {
   font-size: 14vmin;
@@ -16,6 +18,14 @@ input {
 
 button {
   font-size: 4vmin;
+}
+.or-text {
+  margin: 1vmin;
+  padding: 0px;
+}
+
+.name-wrapper {
+  margin-bottom: 12vmin;
 }
 
 .black {
@@ -71,4 +81,5 @@ button {
 #btn-join {
   width: 8em;
 }
+
 
