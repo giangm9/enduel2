@@ -12,5 +12,5 @@ function test_client() {
   app.listen(3000, () => console.log('port: 3000'))
 }
 
-//test_client();
-test_logic();
+test_client();
+//test_logic();
