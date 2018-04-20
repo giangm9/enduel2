@@ -1,3 +1,7 @@
+var Room = function() {
+
+}
+
 function init(){
 
 }
@@ -5,3 +9,5 @@ function init(){
 function handle() {
 
 }
+
+

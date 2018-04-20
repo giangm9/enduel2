@@ -1,27 +1,26 @@
 Dice = {
-  fps: 30.0,
-  nFrame: 80.0,
-  stop: 0.9,
-  time: 0.0,
-  next: 0.9,
-  high: false,
-  state: "idle",
-  urlNorm: "img/norm.jpg",
-  urlHigh: "img/high.jpg",
-  last: null
+  fps     : 30.0,
+  nFrame  : 80.0,
+  stop    : 0.9,
+  time    : 0.0,
+  next    : 0.9,
+  high    : false,
+  state   : "idle",
+  urlNorm : "img/norm.jpg",
+  urlHigh : "img/high.jpg",
+  last    : null
 };
 
 Dice.init = function(jqcanvas, click, finish) {
 
-  this.canvas = jqcanvas[0];
-  this.context = this.canvas.getContext('2d');
-  this.imgNorm = new Image();
-  this.imgHigh = new Image();
+  this.canvas      = jqcanvas[0];
+  this.context     = this.canvas.getContext('2d');
+  this.imgNorm     = new Image();
+  this.imgHigh     = new Image();
   this.imgNorm.src = this.urlNorm;
   this.imgHigh.src = this.urlHigh;
-  this.click = click;
-  this.finish = finish;
-
+  this.click       = click;
+  this.finish      = finish;
 
   jqcanvas.hover(
     function() {
@@ -64,12 +63,12 @@ Dice.step = function(timestamp) {
 
 Dice.render = function(index) {
 
-  var width = 100;
+  var width  = 100;
   var height = 100;
-  var nRow = 8;
-  var nCol = 10;
-  var row = Math.floor(index / nCol);
-  var col = index % nCol;
+  var nRow   = 8;
+  var nCol   = 10;
+  var row    = Math.floor(index / nCol);
+  var col    = index % nCol;
   var startX = col * width;
   var startY = row * height;
 

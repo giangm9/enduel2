@@ -4,14 +4,10 @@ function Room(){
   this.player = '';
 }
 
-Room.allRooms = [];
+Room.all = [];
 
 /*
   Create a room with random ID
   the id must be not duplicated
   @returns Room
 */
-
-Room.createRandomRoom = function(){
-
-}

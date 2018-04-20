@@ -4,39 +4,24 @@
  */
 
 
-function Player(id, name){
-  this.id    = id;
+const common = require("./common");
+const genID  = common.genUniqueID;
+const rm     = common.removeFromArray;
+
+
+Player.all = [];
+
+function Player(name){
+  this.id    = genID(Player.all);
   this.name  = name;
-  this.state = 'room'; // room | ingame 
+  this.state = 'room'; // room | ingame
+  Player.all.push(this);
 }
 
-Player.prototype.leaveRoom = function(){
-  for (var i = 0; i < Player.playing.length; i++){
-    if ( Player.playing[i].id == this.id ){
-      Player.playing.splice(i, 1);
-      return;
-    }
-  }
-}
-
-Player.prototype.__genUniqueID = function(){
-  this.id = Player.currentFree;
-}
-
-
-Player.currentFree = 0;
-Player.all         = [];
-
-Player.createRandomPlayer = function( name ){
-  var player = new Player ( Player.currentFree, name );
-  Player.playing.push( Player.currentFree ); 
-
-  while ( Player.playing.includes( Player.currentFree ) &&
-    Player.currentFree < 0xffffff){
-    Player.currentFree++;
-  }
-
-  return player;
+Player.prototype.quit = function() {
+  rm(Player.all, function( player ) {
+    return player.id = this.id;
+  }.bind( this ));
 }
 
 module.exports = Player;
