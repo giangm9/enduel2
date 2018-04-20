@@ -2,8 +2,10 @@ $(function() {
   const inpRoomID = $("#inp-roomid");
   const btnJoin = $("#btn-join");
 
-  Dice.init($("#cdice"), getRandName, setName);
-//  getRandName(setName);
+  Dice.init($("#cdice"),
+    RandomName.genName,
+    RandomName.setName
+  );
 
   inpRoomID.on("input", function() {
     if (inpRoomID.val() == "") {
@@ -15,25 +17,20 @@ $(function() {
 
 })
 
-var name = null;
-
-function getRandName() {
-  $.ajax({
-    url: "https://randomuser.me/api/?nat=us&inc=name&noinfo",
-    dataType: 'json',
-    success: function(data) {
-      var first = data.results[0].name.first;
-      var last = data.results[0].name.last;
-      name = first + " " + last;
-//    if (callback) {
-//      callback();
-//    }
-    }
-  })
-}
-
-function setName() {
-  const inpName = $("#inp-name");
-  inpName.val(name);
-
-}
+RandomName = {
+  name: "",
+  genName: function() {
+    $.ajax({
+      url: "https://randomuser.me/api/?nat=us&inc=name&noinfo",
+      dataType: 'json',
+      success: function(data) {
+        var first = data.results[0].name.first;
+        var last = data.results[0].name.last;
+        RandomName.name = first + " " + last;
+      }
+    })
+  },
+  setName: function() {
+    $("#inp-name").val(RandomName.name);
+  }
+};
