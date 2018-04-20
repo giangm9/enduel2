@@ -1,14 +1,15 @@
 Player = require('./player');
 
-console.log(Player);
-
-var a = Player.createRandomPlayer('admin');
-
+a = new Player();
 console.log(a);
 
-var b = Player.createRandomPlayer('admin');
+b = new Player();
+
 console.log(b);
 
-a.leaveRoom();
+for (var i = 0 ; i < 10; i++){
+  var x = new Player();
+  console.log(x);
+}
 
 console.log(Player);

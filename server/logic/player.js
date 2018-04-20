@@ -8,7 +8,6 @@ const common = require("./common");
 const genID  = common.genUniqueID;
 const rm     = common.removeFromArray;
 
-
 Player.all = [];
 
 function Player(name){

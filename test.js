@@ -1,5 +1,5 @@
 function test_logic() {
-  require('./server/player_test.js');
+  require('./server/logic/player_test.js');
 }
 
 function test_client() {
@@ -12,4 +12,5 @@ function test_client() {
   app.listen(3000, () => console.log('port: 3000'))
 }
 
-test_client();
+//test_client();
+test_logic();
