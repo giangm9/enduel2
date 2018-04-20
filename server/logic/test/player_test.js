@@ -1,4 +1,4 @@
-Player = require('./player');
+Player = require('../player');
 
 a = new Player();
 console.log(a);

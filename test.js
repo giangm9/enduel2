@@ -1,5 +1,5 @@
 function test_logic() {
-  require('./server/logic/player_test.js');
+  require('./server/logic/test/player_test.js');
 }
 
 function test_client() {
