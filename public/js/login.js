@@ -15,6 +15,7 @@ $(function() {
     }
   });
 
+  console.log(document.cookie);
 })
 
 RandomName = {

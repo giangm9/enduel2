@@ -6,12 +6,16 @@
   <link rel="shortcut icon" href="img/book.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/common.css">
+  <link rel="stylesheet" type="text/css" href="css/room.css">
+
   <script src="vendors/jquery-3.3.1.min.js"> </script>
+  <script src="vendors/socket.io.slim.js"> </script>
 </head>
 <body>
-  <div class="room-info center">
+  <div class="room-info center limit-width">
     <p id='p-room-id'> ROOM ID :  </p>
   </div>
-  <div class="player"></div>
+  <div id="player-list" class="limit-width center">
+  </div>
 </body>
 </html>

@@ -23,7 +23,7 @@ Room.prototype.add = function(player, host = false) {
 }
 
 Room.prototype.dismiss = function() {
-  rm.(Room.all, function(room) {
+  rm(Room.all, function(room) {
     return Room.id = this.id;
   }.bind(this));
 }
