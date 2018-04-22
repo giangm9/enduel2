@@ -7,19 +7,37 @@ var RoomHandler = {
 }
 
 RoomHandler.onIndex = function( req, res ){
-  return req.cookies["state"] == "inroom";
+  return true;
+//  return req.cookies["state"] == "inroom";
 }
 
 RoomHandler.handleIndex = function( req, res ){
+  res.cookie("id", 1);
+  res.cookie("name", "admin");
   res.sendFile(common.dir + "/public/room.html");
 }
 
 RoomHandler.init = function( app, io){
-
+  app.get("/room/status", status);
+  app.get("/room/start", start);
+  app.get("/room/toggle-lock", list);
 }
 
-RoomHandler.handle = function( app, io) {
-
+function status(req, res){
+  var host = new Player("admin");
+  host.isHost = true;
+  return {
+    id: 1,
+    lock: true,
+    player : [
+      host,
+      new Player("cat"),
+      new Player("dog"),
+      new Player("jin"),
+      new Player("moon"),
+      new Player("fan")
+    ]
+  }
 }
 
 module.exports = RoomHandler;

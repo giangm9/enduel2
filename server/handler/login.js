@@ -14,6 +14,7 @@ var LoginHandler = {};
 
 LoginHandler.init = function( app , io) {
   RName.init(common.dir + "/data/names.txt");
+
   app.get("/login/retrieve-id", retrieveID);
   app.get("/login/create-room", createRoom);
   app.get("/login/quit", quit);
@@ -22,7 +23,7 @@ LoginHandler.init = function( app , io) {
 }
 
 LoginHandler.onIndex = function(req, res) {
-  return true;
+  return false;
 }
 
 LoginHandler.handleIndex = function( req, res ) {
