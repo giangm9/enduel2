@@ -22,7 +22,9 @@ $(function() {
 RandomName = {
   name: "",
   genName: function() {
-    RandomName.name = r
+    $.get("login/gen-name", function( name ){
+      RandomName.name = name;
+    });
   },
   setName: function() {
     $("#inp-name").val(RandomName.name);

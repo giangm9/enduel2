@@ -6,14 +6,18 @@ const Player = require("../logic/player.js");
 const Room   = require("../logic/room.js");
 const common = require("./common");
 const utils  = require("../utils");
+const RName  = require("../libs/RandomName.js");
+
 const LOG    = utils.LOG;
 
 var LoginHandler = {};
 
 LoginHandler.init = function( app , io) {
+  RName.init(common.dir + "/data/names.txt");
   app.get("/login/retrieve-id", retrieveID);
   app.get("/login/create-room", createRoom);
   app.get("/login/quit", quit);
+  app.get("/login/gen-name", genName);
   io.on("connection", connectionHanlder);
 }
 
@@ -23,6 +27,10 @@ LoginHandler.onIndex = function(req, res) {
 
 LoginHandler.handleIndex = function( req, res ) {
   res.sendFile(common.dir + '/public/login.html');
+}
+
+function genName(req, res){
+  res.send(RName.gen());
 }
 
 function retrieveID(req, res) {
