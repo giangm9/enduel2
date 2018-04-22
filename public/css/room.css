@@ -1,8 +1,22 @@
+.border-box {
+  box-sizing: border-box;
+}
 .room-info {
   background: white;
   margin-top: 1vmin;
   margin-bottom: 0px;
   padding: 1vmin;
+}
+
+.player{
+  display: block;
+  height: 10vmin;
+  width: 100%;
+  background: #FFF
+}
+.player:nth-child(odd) {
+  background: #CCC
+
 }
 
 #p-room-id {
@@ -16,5 +30,10 @@
 }
 
 #player-list {
-  height: 60vh;
+  height: fit-content;
+  overflow: hidden;
+}
+
+#btn-start {
+  font-size: 5vmin;
 }

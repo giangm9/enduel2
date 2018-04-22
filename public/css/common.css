@@ -19,7 +19,7 @@ h1, input, button, p {
   box-shadow: 3px 3px lightgray;
 }
 
-.shadow:active {
+button.shadow:active {
   box-shadow: none;
   transform: translate(2px, 2px)
 }

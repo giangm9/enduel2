@@ -20,7 +20,7 @@ RoomHandler.handleIndex = function( req, res ){
 RoomHandler.init = function( app, io){
   app.get("/room/status", status);
   app.get("/room/start", start);
-  app.get("/room/toggle-lock", list);
+  app.get("/room/toggle-lock", toogle);
 }
 
 function status(req, res){
@@ -38,6 +38,12 @@ function status(req, res){
       new Player("fan")
     ]
   }
+}
+
+function start(req, res ){
+}
+
+function toogle(req, res){
 }
 
 module.exports = RoomHandler;
