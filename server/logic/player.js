@@ -7,6 +7,8 @@
 const common = require("./common");
 const genID  = common.genUniqueID;
 const rm     = common.removeFromArray;
+const utils  = require("../utils");
+
 
 Player.all = [];
 
@@ -17,10 +19,23 @@ function Player(name){
   Player.all.push(this);
 }
 
+
 Player.prototype.quit = function() {
   rm(Player.all, function( player ) {
-    return player.id = this.id;
+    return player.id == this.id;
   }.bind( this ));
 }
+
+Player.getByID = function(id){
+  var all = Player.all;
+  for (var i = 0 ; i < all.length; ++i){
+    if (all[i].id == id ) {
+      return all[i];
+    }
+  }
+}
+
+
+
 
 module.exports = Player;

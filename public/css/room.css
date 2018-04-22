@@ -1,5 +1,5 @@
 .room-info {
-  background: lightgray;
+  background: white;
   margin-top: 1vmin;
   margin-bottom: 0px;
   padding: 1vmin;
@@ -9,8 +9,10 @@
   font-size: 5vmin;
   font-weight: bold;
   text-align: left;
+  margin-top: 0px;
   margin-left: 1em;
   margin-bottom: 0px;
+  color : black ;
 }
 
 #player-list {

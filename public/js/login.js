@@ -15,23 +15,25 @@ $(function() {
     }
   });
 
-  console.log(document.cookie);
+  retrieveID();
+
 })
 
 RandomName = {
   name: "",
   genName: function() {
-    $.ajax({
-      url: "https://randomuser.me/api/?nat=us&inc=name&noinfo",
-      dataType: 'json',
-      success: function(data) {
-        var first = data.results[0].name.first;
-        var last = data.results[0].name.last;
-        RandomName.name = first + " " + last;
-      }
-    })
+    RandomName.name = r
   },
   setName: function() {
     $("#inp-name").val(RandomName.name);
   }
 };
+
+function retrieveID() {
+  $.get(
+    "login/retrieve-id",
+    function() {
+    console.log(document.cookie);
+  });
+}
+

@@ -1,5 +1,5 @@
 function genUniqueID ( array , limit = 0xffffff ) {
-  for (var id = 0; id < limit; ++id) {
+  for (var id = 1; id < limit; ++id) {
     var found = false;
     for (var i = 0; i < array.length; ++i) {
       if (array[i].id == id) {

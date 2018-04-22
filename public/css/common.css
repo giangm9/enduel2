@@ -11,6 +11,10 @@ h1, input, button, p {
   border: 1px solid black;
 }
 
+.black-border {
+  border: 1px solid black;
+}
+
 .shadow {
   box-shadow: 3px 3px lightgray;
 }
