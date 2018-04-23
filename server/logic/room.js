@@ -19,7 +19,7 @@ function Room() {
  * @param {Player} player
  */
 Room.prototype.add = function(player, host = false) {
-  Room.players.push(player);
+  this.players.push(player);
 }
 
 Room.prototype.dismiss = function() {

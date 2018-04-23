@@ -29,7 +29,9 @@ LoginHandler.onIndex = function(req, res) {
 LoginHandler.handleIndex = function( req, res ) {
   res.sendFile(common.dir + '/public/login.html');
 }
-
+/**
+ * HANDLERS
+ */
 function genName(req, res){
   res.send(RName.gen().trim());
 }
@@ -53,10 +55,16 @@ function retrieveID(req, res) {
 
 function createRoom(req, res) {
   var room = new Room();
-  var id   = req.cookies.id;
-  LOG(id + "create a room" + room.id);
-  LOGCOUNT();
-  room.add(Player.getByID(id), true);
+  var id = req.cookies.id; 
+  var player = Player.getByID(req.cookies.id);
+  
+  player.name = req.query.name;
+
+  room.add(player, true);
+  LOG(player.name+ " ( id=" + id + " ) create room " + room.id);
+  res.cookie("room", room.id);
+  res.cookie("state", "room");
+  res.sendStatus(200);
 }
 
 function quit(req, res ) {

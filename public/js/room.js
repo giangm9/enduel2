@@ -1,15 +1,27 @@
+const get = $.get;
 var RoomStatus = null;
-var imgLock, pRoomID, playerList;
+var imgLock, pRoomID, playerList, btnEsc;
+
 
 $(function() {
   playerList    = $("#player-list");
   imgLock       = $("#img-lock");
   pRoomID       = $("#p-room-id");
+  btnEsc        = $("#esc");
 
   updateRoomStatus();
   initBan();
   initLock();
+  initEsc();
 })
+
+function initEsc(){
+  btnEsc.click (function(){
+    get("/room/esc", function(data){
+      console.log(data);
+    });
+  });
+}
 
 function updateRoomStatus() {
   $.get("/room/status", function(data){
@@ -61,7 +73,7 @@ function render(){
     }
     template.push("<p class='p-name'>" + player.name + "</p>");
     template.push("<button class='btn-ban' style=" 
-      + (index % 2 == 1 ? "'background: white'" : "'background : lightgray'")
+      + (index % 2 == 1 ? "'background: white'" : "'background : #DDD'")
       + "value='" + player.id + "'> kick </button>",
       "</div>",
     "</div>"

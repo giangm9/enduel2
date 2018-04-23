@@ -67,12 +67,18 @@ img {
   transform: translate(1px, 1px);
 }
 
+.btn-ban:hover{
+  opacity: 1;
+  font-weight: bold;
+}
+
+
 #p-room-id {
   padding: 0px;
   font-size: 5vmin;
   font-weight: bold;
   text-align: left;
-  margin: 2vmin 0px 2vmin 8vmin;
+  margin: 2vmin 0px 2vmin 0vmin;
   color : black ;
   width: 49.5vmin;
   display: inline-block;
@@ -87,3 +93,30 @@ img {
   font-size: 5vmin;
 }
 
+#esc {
+  background: url("../img/esc_normal.png");
+  width: 6vmin;
+  height: 6vmin;
+  display: inline-block;
+  margin: 0px;
+  vertical-align: middle;
+  background-size: 6vmin 6vmin;
+  border:none;
+  transform: translate(0, -0.8vmin);
+  outline: none;
+}
+
+#esc:active {
+  background: url("../img/esc_active.png");
+  background-size: 6vmin 6vmin;
+  transform: translate(0, -0.0vmin);
+}
+
+#img-lock {
+  margin-right: 2vmin;
+  margin-left: 1vmin;
+}
+
+#tooltiptext {
+  z-index: 1;
+}

@@ -20,6 +20,12 @@ RoomHandler.init = function( app, io){
   app.get("/room/status", status);
   app.get("/room/start", start);
   app.get("/room/toggle-lock", toogle);
+  app.get("/room/esc", esc);
+
+}
+
+function esc(req, res){
+  res.send("esc");
 }
 
 function status(req, res){

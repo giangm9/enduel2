@@ -34,10 +34,16 @@ function initStartButton(){
   btnStart.click(function(){
     if (inpName.val() == ''){
       warning.text("Name must be filled");
+    } else {
+      $.get(
+        "/login/create-room", 
+        { name: name },
+        function(data){
+          location.reload();
+        }
+      );
     }
-//    $.get("/login/create-room", function(data){
- //   });
-  });
+   });
 }
 
 function genName() {
