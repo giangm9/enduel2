@@ -26,10 +26,10 @@ RoomHandler.init = function( app, io){
 function status(req, res){
   var host = new Player("admin");
   host.isHost = true;
-  return {
+  res.send({
     id: 1,
     lock: true,
-    player : [
+    players : [
       host,
       new Player("cat"),
       new Player("dog"),
@@ -37,13 +37,14 @@ function status(req, res){
       new Player("moon"),
       new Player("fan")
     ]
-  }
+  });
 }
 
 function start(req, res ){
 }
 
 function toogle(req, res){
+  res.send(false);
 }
 
 module.exports = RoomHandler;
