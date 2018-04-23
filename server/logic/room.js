@@ -42,3 +42,5 @@ Room.getByID = function(id) {
   }
   return null;
 }
+
+module.exports = Room;

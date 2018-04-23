@@ -7,8 +7,7 @@ var RoomHandler = {
 }
 
 RoomHandler.onIndex = function( req, res ){
-  return true;
-//  return req.cookies["state"] == "inroom";
+  return (req.cookies && req.cookies.state == "room");
 }
 
 RoomHandler.handleIndex = function( req, res ){

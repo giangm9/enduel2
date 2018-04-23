@@ -1,12 +1,21 @@
+var inpRoomID, btnJoin,
+  btnStart, inpName, warning;
+var name;
 $(function() {
-  const inpRoomID = $("#inp-roomid");
-  const btnJoin = $("#btn-join");
+  inpRoomID = $("#inp-roomid");
+  btnJoin   = $("#btn-join");
+  btnStart  = $("#btn-start");
+  inpName   = $("#inp-name");
+  warning   = $("#warning");
 
-  Dice.init($("#cdice"),
-    RandomName.genName,
-    RandomName.setName
-  );
+  Dice.init($("#cdice"), genName, setName );
 
+  retrieveID();
+  initStartButton();
+  initInput();
+})
+
+function initInput(){
   inpRoomID.on("input", function() {
     if (inpRoomID.val() == "") {
       btnJoin.text("JOIN RANDOM");
@@ -14,22 +23,33 @@ $(function() {
       btnJoin.text("JOIN");
     }
   });
+  
+  inpName.on("input", function(){
+    warning.html("&nbsp");
+  });
 
-  retrieveID();
+}
 
-})
+function initStartButton(){
+  btnStart.click(function(){
+    if (inpName.val() == ''){
+      warning.text("Name must be filled");
+    }
+//    $.get("/login/create-room", function(data){
+ //   });
+  });
+}
 
-RandomName = {
-  name: "",
-  genName: function() {
-    $.get("login/gen-name", function( name ){
-      RandomName.name = name;
-    });
-  },
-  setName: function() {
-    $("#inp-name").val(RandomName.name);
-  }
-};
+function genName() {
+  warning.html("&nbsp");
+  $.get("login/gen-name", function( data ){
+      name = data;
+  });
+}
+
+function setName() {
+  inpName.val(name);
+}
 
 function retrieveID() {
   $.get(
@@ -38,4 +58,6 @@ function retrieveID() {
     console.log(document.cookie);
   });
 }
+
+
 

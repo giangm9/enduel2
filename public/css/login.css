@@ -47,4 +47,9 @@ button {
   width: 8em;
 }
 
-
+#warning {
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+  color: red;
+}

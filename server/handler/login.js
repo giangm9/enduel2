@@ -23,7 +23,7 @@ LoginHandler.init = function( app , io) {
 }
 
 LoginHandler.onIndex = function(req, res) {
-  return false;
+  return ( !req.cookies.state || req.cookies.state == "main");
 }
 
 LoginHandler.handleIndex = function( req, res ) {
@@ -31,7 +31,7 @@ LoginHandler.handleIndex = function( req, res ) {
 }
 
 function genName(req, res){
-  res.send(RName.gen());
+  res.send(RName.gen().trim());
 }
 
 function retrieveID(req, res) {
