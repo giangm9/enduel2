@@ -8,10 +8,11 @@ const genID = common.genUniqueID;
 const rm = common.removeFromArray;
 
 function Room() {
-  this.id = genID(Room.all);
-  this.locked = true;
+  this.id      = genID(Room.all);
+  this.lock    = true;
   this.players = [];
-  this.host = null;
+  this.host    = null;
+  Room.all.push(this);
 }
 
 /**
@@ -32,14 +33,14 @@ Room.prototype.status = function(){
   var players = [];
   this.players.forEach( function(player) {
     players.push({
-      "name" : player.name, 
-      "id"   : player.id,
+      "name"   : player.name,
+      "id"     : player.id,
       "isHost" : player.isHost
     })
   });
   return {
     id      : this.id,
-    lock    : this.locked,
+    lock    : this.lock,
     players : players
   }
 }

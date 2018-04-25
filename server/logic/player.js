@@ -14,7 +14,7 @@ Player.all = [];
 
 function Player(name){
   this.id    = genID(Player.all);
-  this.name  = name;
+  this.name  = name ? name : "--unset--";
   this.state = 'room'; // room | ingame
   Player.all.push(this);
 }

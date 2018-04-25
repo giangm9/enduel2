@@ -1,7 +1,7 @@
 const get = $.get;
 var RoomStatus = null;
 var imgLock, pRoomID, playerList, btnEsc;
-
+var socket;
 
 $(function() {
   playerList    = $("#player-list");
@@ -13,7 +13,12 @@ $(function() {
   initBan();
   initLock();
   initQuit();
+  initSocket();
 })
+
+function initSocket(){
+//  socket = io();
+}
 
 function initQuit(){
   btnQuit.click (function(){
@@ -28,12 +33,12 @@ function initQuit(){
 function updateRoomStatus() {
   $.get("/room/status", function(data){
     RoomStatus = data;
+    console.log(data);
     render();
   });
 }
 
 function initBan(){
-
   $(".btn-ban").hover(
       function() {
         console.log('hover in');
@@ -44,7 +49,6 @@ function initBan(){
         $(this).css("opacity", "0.5");
       }
     );
-
 }
 
 function initLock(){
@@ -81,7 +85,6 @@ function render(){
         + "value='" + player.id + "'> kick </button>")
     }
     template.push("</div>", "</div>");
-
     playerList.append(template.join("\n"));
   });
 }

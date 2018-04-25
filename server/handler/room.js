@@ -5,9 +5,7 @@ const utils  = require("../utils");
 const LOG    = utils.LOG;
 
 
-var RoomHandler = {
-
-}
+var RoomHandler = {}
 
 RoomHandler.onIndex = function( req, res ){
   return (req.cookies && req.cookies.state == "room");
@@ -22,32 +20,49 @@ RoomHandler.init = function( app, io){
   app.get("/room/start", start);
   app.get("/room/toggle-lock", toogle);
   app.get("/room/quit", quit);
-
 }
 
 function quit(req, res){
   var player = Player.getByID(req.cookies.id);
-  if (player){
-    LOG(player.name 
-      + " (id=" + player.id + ") leave room " 
-      + req.cookies.room);
-  }
   res.cookie("state", "main");
+
+  if (player){
+    var room = player.room;
+    if (room) {
+      LOG(player.name 
+        + " (id=" + player.id + ") leave room " 
+        + req.cookies.room);
+      
+      if (room.players.length == 0) {
+        room.dissmiss();
+        LOG(room.id + " dissmissed");
+      }
+    }
+  }
   res.sendStatus(200);
 }
 
 function status(req, res){
   var player = Player.getByID(req.cookies.id);
-  var room = player.room;
-  res.cookie("room", room.id);
-  res.send(room.status());
+  if (player) {
+    var room = player.room;
+    res.cookie("room", room.id);
+    res.send(room.status());
+  } else {
+    res.sendStatus(200);
+  }
 }
 
 function start(req, res ){
+
 }
 
 function toogle(req, res){
-  res.send(false);
+  var room = Room.getByID(req.cookies.room);
+  console.log(room.lock);
+  room.lock = !room.lock;
+  res.send(room.lock);
+  LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
 }
 
 module.exports = RoomHandler;

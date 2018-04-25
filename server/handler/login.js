@@ -2,19 +2,17 @@
  * Login handler 
  */
 
-const Player = require("../logic/player.js");
-const Room   = require("../logic/room.js");
-const common = require("./common");
-const utils  = require("../utils");
-const RName  = require("../libs/RandomName.js");
-
-const LOG    = utils.LOG;
+const Player  = require("../logic/player.js");
+const Room    = require("../logic/room.js");
+const common  = require("./common");
+const utils   = require("../utils");
+const GenName = require("../libs/RandomName.js");
+const LOG     = utils.LOG;
 
 var LoginHandler = {};
 
 LoginHandler.init = function( app , io) {
-  RName.init(common.dir + "/data/names.txt");
-
+  GenName.init(common.dir + "/data/names.txt");
   app.get("/login/retrieve-id", retrieveID);
   app.get("/login/create-room", createRoom);
   app.get("/login/quit", quit);
@@ -33,7 +31,7 @@ LoginHandler.handleIndex = function( req, res ) {
  * HANDLERS
  */
 function genName(req, res){
-  res.send(RName.gen().trim());
+  res.send(GenName.gen().trim());
 }
 
 function retrieveID(req, res) {
@@ -90,7 +88,8 @@ function connectionHanlder ( socket ){
 function LOGCOUNT() {
   LOG("Current playing : " + Player.all.length);
   Player.all.forEach( function( player ){
-    LOG("  " + player.name + "   " + player.id);
+    LOG(" | " + player.name + " (id:" + player.id + ")");
+
   });
 }
 

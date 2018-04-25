@@ -80,7 +80,7 @@ img {
   text-align: left;
   margin: 2vmin 0px 2vmin 0vmin;
   color : black ;
-  width: 49.5vmin;
+  width: 44.5vmin;
   display: inline-block;
 }
 
@@ -93,37 +93,9 @@ img {
   font-size: 5vmin;
 }
 
-#esc {
-  /*
-  background: url("../img/esc_normal.png");
-  width: 6vmin;
-  height: 6vmin;
-  display: inline-block;
-  margin: 0px;
-  vertical-align: middle;
-  background-size: 6vmin 6vmin;
-  border:none;
-  transform: translate(0, -0.8vmin);
-  outline: none;
-  */
-  width: 4em;
-  height: 6vmin;
-  display: inline-block;
-  margin: 0px;
-
-}
-
-#esc:active {
-  /*
-  background: url("../img/esc_active.png");
-  background-size: 6vmin 6vmin;
-  transform: translate(0, -0.0vmin);
-  */
-}
-
 #img-lock {
   margin-right: 2vmin;
-  margin-left: 1vmin;
+  margin-left: 1.4vmin;
   position: relative;
   display: inline-block;
 }
@@ -155,4 +127,5 @@ img {
 #quit {
   padding: 0.3em;
   font-weight: bold;
+  font-size: 3vmin;
 }

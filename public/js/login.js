@@ -16,11 +16,8 @@ $(function() {
 })
 
 function initInput(){
-  console.log(document.cookies);
   name = Cookies.get("name");
-
-  console.log("Name : " + name);
-  inpName.val((name != undefined) ? name : '');
+  inpName.val(name ? name : '');
   inpRoomID.on("input", function() {
     if (inpRoomID.val() == "") {
       btnJoin.text("JOIN RANDOM");
@@ -64,12 +61,5 @@ function setName() {
 }
 
 function retrieveID() {
-  $.get(
-    "login/retrieve-id",
-    function() {
-    console.log(document.cookie);
-  });
+  $.get("login/retrieve-id");
 }
-
-
-
