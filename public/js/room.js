@@ -73,7 +73,8 @@ function render(){
     }
     template.push("<p class='p-name'>" + player.name + "</p>");
     template.push("<button class='btn-ban' style=" 
-      + (index % 2 == 1 ? "'background: white'" : "'background : #DDD'")
+      + (index % 2 == 1 ? "'background: white;" : "'background : #DDD;")
+      + "font-size: 2.5vmin'"
       + "value='" + player.id + "'> kick </button>",
       "</div>",
     "</div>"

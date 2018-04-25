@@ -94,6 +94,7 @@ img {
 }
 
 #esc {
+  /*
   background: url("../img/esc_normal.png");
   width: 6vmin;
   height: 6vmin;
@@ -104,19 +105,54 @@ img {
   border:none;
   transform: translate(0, -0.8vmin);
   outline: none;
+  */
+  width: 4em;
+  height: 6vmin;
+  display: inline-block;
+  margin: 0px;
+
 }
 
 #esc:active {
+  /*
   background: url("../img/esc_active.png");
   background-size: 6vmin 6vmin;
   transform: translate(0, -0.0vmin);
+  */
 }
 
 #img-lock {
   margin-right: 2vmin;
   margin-left: 1vmin;
+  position: relative;
+  display: inline-block;
+}
+#img-lock + .tooltiptext {
+  font-size: 3vmin;
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 3px;
+  position: absolute;
+  transform:translate(-65%, -111%)
+}
+#img-lock:hover + .tooltiptext {
+    visibility: visible;
+}
+#img-lock + .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
 }
 
-#tooltiptext {
-  z-index: 1;
+
+#quit {
+  padding: 0.3em;
+  font-weight: bold;
 }

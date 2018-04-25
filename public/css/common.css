@@ -1,8 +1,8 @@
-h1, input, button, p {
+h1, input, button, p , span{
   font-family: 'Jura', sans-serif;
   padding: 2vmin;
   margin-top: 2vmin;
-
+  outline: none;
 }
 
 .black {
