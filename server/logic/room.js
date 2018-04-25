@@ -18,7 +18,7 @@ function Room() {
  * Add a player 
  * @param {Player} player
  */
-Room.prototype.add = function(player, host = false) {
+Room.prototype.add = function(player) {
   this.players.push(player);
 }
 
@@ -26,6 +26,22 @@ Room.prototype.dismiss = function() {
   rm(Room.all, function(room) {
     return Room.id = this.id;
   }.bind(this));
+}
+
+Room.prototype.status = function(){
+  var players = [];
+  this.players.forEach( function(player) {
+    players.push({
+      "name" : player.name, 
+      "id"   : player.id,
+      "isHost" : player.isHost
+    })
+  });
+  return {
+    id      : this.id,
+    lock    : this.locked,
+    players : players
+  }
 }
 
 Room.all = [];

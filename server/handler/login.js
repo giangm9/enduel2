@@ -57,11 +57,14 @@ function createRoom(req, res) {
   var room = new Room();
   var id = req.cookies.id; 
   var player = Player.getByID(req.cookies.id);
-  
-  player.name = req.query.name;
 
-  room.add(player, true);
-  LOG(player.name+ " ( id=" + id + " ) create room " + room.id);
+  player.name   = req.query.name;
+  player.room   = room;
+  player.isHost = true;
+  room.host     = player;
+
+  room.add(player);
+  LOG(player.name+ " (id=" + id + ") create room " + room.id);
   res.cookie("room", room.id);
   res.cookie("state", "room");
   res.sendStatus(200);
@@ -85,7 +88,10 @@ function connectionHanlder ( socket ){
 }
 
 function LOGCOUNT() {
-  LOG("current playing :" + Player.all.length);
+  LOG("Current playing : " + Player.all.length);
+  Player.all.forEach( function( player ){
+    LOG("  " + player.name + "   " + player.id);
+  });
 }
 
 

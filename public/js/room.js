@@ -7,18 +7,20 @@ $(function() {
   playerList    = $("#player-list");
   imgLock       = $("#img-lock");
   pRoomID       = $("#p-room-id");
-  btnEsc        = $("#esc");
+  btnQuit       = $("#quit");
 
   updateRoomStatus();
   initBan();
   initLock();
-  initEsc();
+  initQuit();
 })
 
-function initEsc(){
-  btnEsc.click (function(){
-    get("/room/esc", function(data){
+function initQuit(){
+  btnQuit.click (function(){
+    btnQuit.attr("disabled", "disabled");
+    get("/room/quit", function(data){
       console.log(data);
+      location.reload();
     });
   });
 }
@@ -72,13 +74,13 @@ function render(){
       template.push("<img class='img-crown' style='opacity: 0' src='img/crown.png'/>");
     }
     template.push("<p class='p-name'>" + player.name + "</p>");
-    template.push("<button class='btn-ban' style=" 
-      + (index % 2 == 1 ? "'background: white;" : "'background : #DDD;")
-      + "font-size: 2.5vmin'"
-      + "value='" + player.id + "'> kick </button>",
-      "</div>",
-    "</div>"
-    )
+    if (!player.isHost){
+      template.push("<button class='btn-ban' style=" 
+        + (index % 2 == 1 ? "'background: white;" : "'background : #DDD;")
+        + "font-size: 2.5vmin'"
+        + "value='" + player.id + "'> kick </button>")
+    }
+    template.push("</div>", "</div>");
 
     playerList.append(template.join("\n"));
   });

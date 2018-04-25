@@ -16,6 +16,11 @@ $(function() {
 })
 
 function initInput(){
+  console.log(document.cookies);
+  name = Cookies.get("name");
+
+  console.log("Name : " + name);
+  inpName.val((name != undefined) ? name : '');
   inpRoomID.on("input", function() {
     if (inpRoomID.val() == "") {
       btnJoin.text("JOIN RANDOM");
@@ -50,6 +55,7 @@ function genName() {
   warning.html("&nbsp");
   $.get("login/gen-name", function( data ){
       name = data;
+      Cookies.set("name", name);
   });
 }
 
