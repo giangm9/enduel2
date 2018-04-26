@@ -2,8 +2,6 @@
  * @class Player
  * Represent a player
  */
-
-
 const common = require("./common");
 const genID  = common.genUniqueID;
 const rm     = common.removeFromArray;
@@ -14,7 +12,7 @@ Player.all = [];
 
 function Player(name){
   this.id    = genID(Player.all);
-  this.name  = name ? name : "--unset--";
+  this.name  = name ? name : "__UNSET__";
   this.state = 'room'; // room | ingame
   Player.all.push(this);
 }
@@ -32,6 +30,16 @@ Player.prototype.leave = function() {
   }.bind(this));
 }
 
+Player.prototype.nameid =  function() {
+  var str = this.name;
+  for (var i = 0; i < 10 - this.name.length; i++){
+    str += ' ';
+  }
+  str += " (id=" + this.id + ")";
+
+  return str;
+}
+
 Player.getByID = function(id){
   var all = Player.all;
   for (var i = 0 ; i < all.length; ++i){
@@ -40,8 +48,6 @@ Player.getByID = function(id){
     }
   }
 }
-
-
 
 
 module.exports = Player;

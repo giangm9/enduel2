@@ -1,3 +1,4 @@
+const get = $.get;
 var inpRoomID, btnJoin,
   btnStart, inpName, warning;
 var name;
@@ -13,11 +14,33 @@ $(function() {
   retrieveID();
   initStartButton();
   initInput();
+  initJoinButton();
 })
+
+function initJoinButton(){
+  btnJoin.click(function() {
+    if (inpName.val() == '') {
+      warning.text("Name must be filled");
+    } else if (inpRoomID.val() == '') {
+      warning.text("Room ID must be filled");
+    } else {
+      get("/login/join", {
+        room: inpRoomID.val()
+      }, function(data){
+        if (data ==  "not-found"){
+          warning.text("Can't find room ID");
+        } else {
+          console.log("found room");
+          location.reload();
+        }
+      });
+    }
+  });
+}
 
 function initInput(){
   name = Cookies.get("name");
-  inpName.val(name ? name : '');
+  inpName.val(name === undefined ? name : '');
   inpRoomID.on("input", function() {
     if (inpRoomID.val() == "") {
       btnJoin.text("JOIN RANDOM");

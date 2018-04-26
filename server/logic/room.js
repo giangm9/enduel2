@@ -21,6 +21,7 @@ function Room() {
  */
 Room.prototype.add = function(player) {
   this.players.push(player);
+  player.room = this;
 }
 
 Room.prototype.dismiss = function() {

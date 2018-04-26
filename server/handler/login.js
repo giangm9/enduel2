@@ -17,6 +17,8 @@ LoginHandler.init = function( app , io) {
   app.get("/login/create-room", createRoom);
   app.get("/login/quit", quit);
   app.get("/login/gen-name", genName);
+  app.get("/login/join", join);
+
   io.on("connection", connectionHanlder);
 }
 
@@ -30,6 +32,23 @@ LoginHandler.handleIndex = function( req, res ) {
 /**
  * HANDLERS
  */
+
+function join(req, res){
+  var player = Player.getByID(req.cookies.id);
+  player.name = req.cookies.name;
+  var room = Room.getByID(req.query.room);
+
+  if (!room){
+    res.send("not-found");
+  } else {
+    room.add(player);
+    res.cookie("state", "room");
+    res.cookie("room", room.id);
+    LOG(player.nameid() + " join room " + room.id);
+    LOG_ROOM(room);
+    res.sendStatus(200);
+  }
+}
 function genName(req, res){
   res.send(GenName.gen().trim());
 }
@@ -62,7 +81,7 @@ function createRoom(req, res) {
   room.host     = player;
 
   room.add(player);
-  LOG(player.name+ " (id=" + id + ") create room " + room.id);
+  LOG(player.roomid() + " create room " + room.id);
   res.cookie("room", room.id);
   res.cookie("state", "room");
   res.sendStatus(200);
@@ -76,7 +95,7 @@ function quit(req, res ) {
   if (player){
     req.cookies.id = undefined;
     player.quit();
-    LOG("player " + player.id + " quit");
+    LOG(player.roomid() + " quit");
     LOGCOUNT();
   }
 }
@@ -88,8 +107,19 @@ function connectionHanlder ( socket ){
 function LOGCOUNT() {
   LOG("Current playing : " + Player.all.length);
   Player.all.forEach( function( player ){
-    LOG(" | " + player.name + " (id:" + player.id + ")");
+    LOG(" | " + player.nameid());
 
+  });
+}
+
+function LOG_ROOM(room) {
+  LOG("Room " + room.id);
+  room.players.forEach(function(player){
+    var str = " | " + player.nameid();
+    if (player.isHost) {
+      str += '  <- host';
+    }
+    LOG(str);
   });
 }
 
