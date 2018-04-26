@@ -23,7 +23,13 @@ function Player(name){
 Player.prototype.quit = function() {
   rm(Player.all, function( player ) {
     return player.id == this.id;
-  }.bind( this ));
+  }.bind(this));
+}
+
+Player.prototype.leave = function() {
+  rm(this.room.players, function( player) {
+    return this.id = player.id;
+  }.bind(this));
 }
 
 Player.getByID = function(id){

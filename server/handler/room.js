@@ -19,10 +19,10 @@ RoomHandler.init = function( app, io){
   app.get("/room/status", status);
   app.get("/room/start", start);
   app.get("/room/toggle-lock", toogle);
-  app.get("/room/quit", quit);
+  app.get("/room/leave", leave);
 }
 
-function quit(req, res){
+function leave(req, res){
   var player = Player.getByID(req.cookies.id);
   res.cookie("state", "main");
 
@@ -33,9 +33,10 @@ function quit(req, res){
         + " (id=" + player.id + ") leave room " 
         + req.cookies.room);
       
+      player.leave();
       if (room.players.length == 0) {
-        room.dissmiss();
-        LOG(room.id + " dissmissed");
+        room.dismiss();
+        LOG("Room " + room.id + " dismissed");
       }
     }
   }

@@ -82,7 +82,7 @@ function quit(req, res ) {
 }
 
 function connectionHanlder ( socket ){
-  console.log(socket);
+//  console.log(socket);
 }
 
 function LOGCOUNT() {

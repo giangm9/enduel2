@@ -10,20 +10,20 @@ $(function() {
   btnQuit       = $("#quit");
 
   updateRoomStatus();
-  initBan();
+//  initBan();
   initLock();
   initQuit();
   initSocket();
 })
 
 function initSocket(){
-//  socket = io();
+  socket = io();
 }
 
 function initQuit(){
   btnQuit.click (function(){
     btnQuit.attr("disabled", "disabled");
-    get("/room/quit", function(data){
+    get("/room/leave", function(data){
       console.log(data);
       location.reload();
     });
@@ -38,18 +38,18 @@ function updateRoomStatus() {
   });
 }
 
-function initBan(){
-  $(".btn-ban").hover(
-      function() {
-        console.log('hover in');
-        $(this).css("opacity", "1.0");
-      }, 
-      function(){
-        console.log('hover out');
-        $(this).css("opacity", "0.5");
-      }
-    );
-}
+//  function initBan(){
+//    $(".btn-ban").hover(
+//        function() {
+//          console.log('hover in');
+//          $(this).css("opacity", "1.0");
+//        }, 
+//        function(){
+//          console.log('hover out');
+//          $(this).css("opacity", "0.5");
+//        }
+//      );
+//  }
 
 function initLock(){
   imgLock.click(function() {
