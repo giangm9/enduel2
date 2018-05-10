@@ -1,10 +1,10 @@
 const fs = require("fs");
-var RandomName = {
+var GenName = {
   names : []
 };
 
 
-RandomName.init = function(path){
+GenName.init = function(path){
   fs.readFile(path, 'utf8', function (err,data) {
     if (err) {
       return console.log(err);
@@ -13,9 +13,9 @@ RandomName.init = function(path){
   }); 
 }
 
-RandomName.gen = function(){
+GenName.gen = function(){
   var names = RandomName.names;
   return names[Math.floor(Math.random()*names.length)];
 }
 
-module.exports = RandomName;
+module.exports = GenName;
