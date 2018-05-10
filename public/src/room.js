@@ -1,13 +1,16 @@
-const get = $.get;
-var RoomStatus = null;
-var imgLock, pRoomID, playerList, btnEsc;
-var socket;
+const Get = $.get;
+var status = null,
+    $Lock, 
+    $RoomID, 
+    $PlayerList,
+    $Quit,
+    socket;
 
 $(function() {
-  playerList    = $("#player-list");
-  imgLock       = $("#img-lock");
-  pRoomID       = $("#p-room-id");
-  btnQuit       = $("#quit");
+  $PlayerList    = $("#player-list");
+  $Lock       = $("#img-lock");
+  $RoomID       = $("#p-room-id");
+  $Quit       = $("#quit");
 
   updateRoomStatus();
 //  initBan();
@@ -21,9 +24,9 @@ function initSocket(){
 }
 
 function initQuit(){
-  btnQuit.click (function(){
-    btnQuit.attr("disabled", "disabled");
-    get("/room/leave", function(data){
+  $Quit.click (function(){
+    $Quit.attr("disabled", "disabled");
+    Get("/room/leave", function(data){
       console.log(data);
       location.reload();
     });
@@ -31,9 +34,8 @@ function initQuit(){
 }
 
 function updateRoomStatus() {
-  $.get("/room/status", function(data){
-    RoomStatus = data;
-    console.log(data);
+  Get("/room/status", function(data){
+    status = data;
     render();
   });
 }
@@ -52,11 +54,11 @@ function updateRoomStatus() {
 //  }
 
 function initLock(){
-  imgLock.click(function() {
-    imgLock.css("opacity", 0.2);
-    $.get("/room/toggle-lock", function(lock){
-        imgLock.css("opacity", 1);
-        RoomStatus.lock = lock;
+  $Lock.click(function() {
+    $Lock.css("opacity", 0.2);
+    Get("/room/toggle-lock", function(lock){
+        $Lock.css("opacity", 1);
+        status.lock = lock;
         render();
       });
   });
@@ -65,11 +67,12 @@ function initLock(){
 
 function render(){
 
-  imgLock.attr("src", RoomStatus.lock ? "img/lock.png" : "img/unlock.png");
-  pRoomID.text("ROOM ID : " + RoomStatus.id);  
-  playerList.html('');
-  RoomStatus.players.forEach(function(player){
-    var index = RoomStatus.players.indexOf(player);
+  $Lock.attr("src", status.lock ? "img/lock.png" : "img/unlock.png");
+  $RoomID.text("ROOM ID : " + status.id);  
+  $PlayerList.html('');
+  if (!status) return;
+  status.players.forEach(function(player){
+    var index = status.players.indexOf(player);
     var template = ["<div class='player'>",
         "<div class='player-wrapper limit-width'>"]
     if (player.isHost){
@@ -85,6 +88,6 @@ function render(){
         + "value='" + player.id + "'> kick </button>")
     }
     template.push("</div>", "</div>");
-    playerList.append(template.join("\n"));
+    $PlayerList.append(template.join("\n"));
   });
 }

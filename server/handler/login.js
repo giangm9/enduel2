@@ -52,20 +52,24 @@ function JoinRoomHandler(req, res) {
 }
 
 function CreateRoomHandler(req, res) {
-  var room = new Room();
-  var id = req.cookies.id;
-  var player = Player.getByID(req.cookies.id);
+  var name    = req.query.name;
+  var room    = new Room();
+  var player  = new Player(name);
+  LOG(player)
+  
 
-  player.name = req.query.name;
-  player.room = room;
+  player.room  = room;
+  player.state = 'room'
   player.isHost = true;
+  
   room.host = player;
+  room.add(player)
 
   room.add(player);
   res.cookie("room", room.id);
   res.cookie("state", "room");
   res.sendStatus(200);
-  LOG(player.roomid() + " created room " + room.id);
+  LOG(player.nameid() + " created room " + room.id);
 }
 
 function QuitGameHandler(req, res) {

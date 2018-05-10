@@ -5,24 +5,22 @@ const utils  = require("../utils");
 const LOG    = utils.LOG;
 
 
-var RoomHandler = {}
-
-RoomHandler.onIndex = function( req, res ){
+IsOnIndex = function( req, res ){
   return (req.cookies && req.cookies.state == "room");
 }
 
-RoomHandler.handleIndex = function( req, res ){
+HandleIndex = function( req, res ){
   res.sendFile(common.dir + "/public/room.html");
 }
 
-RoomHandler.init = function( app, io){
-  app.get("/room/status", status);
-  app.get("/room/start", start);
-  app.get("/room/toggle-lock", toogle);
-  app.get("/room/leave", leave);
+Init = function( app, io){
+  app.get("/room/status"      , StatusHandler);
+  app.get("/room/start"       , StartHandler);
+  app.get("/room/toggle-lock" , ToogleHanlder);
+  app.get("/room/leave"       , LeaveHandler);
 }
 
-function leave(req, res){
+function LeaveHandler(req, res){
   var player = Player.getByID(req.cookies.id);
   res.cookie("state", "main");
 
@@ -43,22 +41,26 @@ function leave(req, res){
   res.sendStatus(200);
 }
 
-function status(req, res){
+function StatusHandler(req, res){
   var player = Player.getByID(req.cookies.id);
   if (player) {
     var room = player.room;
     res.cookie("room", room.id);
     res.send(room.status());
   } else {
-    res.sendStatus(200);
+    res.send({
+      id: -1,
+      players: []
+    });
+
   }
 }
 
-function start(req, res ){
+function StartHandler(req, res ){
 
 }
 
-function toogle(req, res){
+function ToogleHanlder(req, res){
   var room = Room.getByID(req.cookies.room);
   console.log(room.lock);
   room.lock = !room.lock;
@@ -66,4 +68,8 @@ function toogle(req, res){
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
 }
 
-module.exports = RoomHandler;
+module.exports = {
+  IsOnIndex: IsOnIndex,
+  Init: Init,
+  HandleIndex: HandleIndex
+}

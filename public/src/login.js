@@ -2,9 +2,12 @@ import { InitDice } from "./dice"
 
 const Get = $.get;
 const LOG = console.log;
-var $RoomID, $Join,
-    $Start, $Name, $Warning;
-var name;
+var $RoomID, 
+    $Join,
+    $Start, 
+    $Name, 
+    $Warning;
+    name;
 
 $(function() {
   $RoomID  = $("#inp-roomid");
@@ -30,6 +33,7 @@ function InitJoinButton(){
       $Warning.text("Room ID must be filled");
       return;
     } 
+
     get("/login/join", 
       {
         room: inpRoomID.val()
