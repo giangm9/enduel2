@@ -1,21 +1,27 @@
-const fs = require("fs");
-var GenName = {
-  names : []
-};
+const utils = require("../utils");
+const LOG   = utils.LOG;
+const fs    = require("fs");
+const floor = Math.floor;
+const rand  = Math.random;
 
 
-GenName.init = function(path){
-  fs.readFile(path, 'utf8', function (err,data) {
+var names = [];
+
+function Init(path) {
+  fs.readFile(path, 'utf8', function(err, data) {
     if (err) {
       return console.log(err);
     }
-    RandomName.names = data.split("\n");
-  }); 
+    names = data.split("\n");
+  });
 }
 
-GenName.gen = function(){
-  var names = RandomName.names;
-  return names[Math.floor(Math.random()*names.length)];
+function Gen() {
+  return names[floor(rand() * names.length)].trim();
 }
 
-module.exports = GenName;
+module.exports = {
+  Init: Init,
+  Gen: Gen
+}
+

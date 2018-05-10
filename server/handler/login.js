@@ -1,29 +1,40 @@
-const Player = require("../logic/player.js");
-const Room = require("../logic/room.js");
-const common = require("./common");
-const utils = require("../utils");
+const Player  = require("../logic/player.js");
+const Room    = require("../logic/room.js");
+const common  = require("./common");
+const utils   = require("../utils");
 const GenName = require("../libs/GenName.js");
-const LOG = utils.LOG;
+const LOG     = utils.LOG;
 
-function init(app, io) {
-  GenName.init(common.dir + "/data/names.txt");
 
-  app.get("/login/create-room", createRoom);
-  app.get("/login/quit", quit);
-  app.get("/login/gen-name", genName);
-  app.get("/login/join", join);
-  io.on("connection", connectionHanlder);
+
+function Init(app, io) {
+  GenName.Init(common.dir + "/data/names.txt");
+
+  app.get("/login/create-room" , CreateRoomHandler);
+  app.get("/login/quit"        , QuitGameHandler);
+  app.get("/login/gen-name"    , (_, res) => {res.send(GenName.Gen());});
+  app.get("/login/join"        , JoinRoomHandler);
+//  io.on("connection"           , );
 }
 
-function isOnIndex(req, res) {
-  return (!req.cookies.state || req.cookies.state == "main");
+function IsOnIndex(req, res) {
+  // First time on page 
+  if (!req.cookies.state) {
+    return true;
+  }
+
+  // Back to login
+  if (req.cookies.state == "main"){
+    return true;
+  }
+  return false;
 }
 
-function handleIndex(req, res) {
+function HandleIndex(req, res) {
   res.sendFile(common.dir + '/public/login.html');
 }
 
-function join(req, res) {
+function JoinRoomHandler(req, res) {
   var player = Player.getByID(req.cookies.id);
   player.name = req.cookies.name;
   var room = Room.getByID(req.query.room);
@@ -40,12 +51,7 @@ function join(req, res) {
   }
 }
 
-function genName(req, res) {
-  res.send(GenName.gen().trim());
-}
-
-
-function createRoom(req, res) {
+function CreateRoomHandler(req, res) {
   var room = new Room();
   var id = req.cookies.id;
   var player = Player.getByID(req.cookies.id);
@@ -62,7 +68,7 @@ function createRoom(req, res) {
   LOG(player.roomid() + " created room " + room.id);
 }
 
-function quit(req, res) {
+function QuitGameHandler(req, res) {
   var id = req.cookies.id;
   var player = Player.getByID(id);
 
@@ -75,7 +81,7 @@ function quit(req, res) {
   }
 }
 
-function connectionHanlder(socket) {
+function ioConnection(socket) {
   //  console.log(socket);
 }
 
@@ -98,6 +104,8 @@ function LOG_ROOM(room) {
   });
 }
 
-module.exports = LoginHandler;
-
-
+module.exports = {
+  IsOnIndex   : IsOnIndex,
+  HandleIndex : HandleIndex,
+  Init        : Init
+} 

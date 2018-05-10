@@ -25,12 +25,12 @@ http.listen(8080, "localhost", null, function(){
   console.log('PORT : 8080')
 });
 
-LoginHandler.init(app, io);
+LoginHandler.Init(app, io);
 RoomHandler.init(app, io);
 
 function tryHandler(handler, req, res){
-  if (handler.onIndex(req, res)){
-    handler.handleIndex(req, res);
+  if (handler.IsOnIndex(req, res)){
+    handler.HandleIndex(req, res);
     return true;
   }
   return false;
