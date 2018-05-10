@@ -87,7 +87,6 @@ function GenName() {
   Get("login/gen-name", function( data ){
       name = data;
       Cookies.set("name", name);
-      LOG(data);
   });
 }
 

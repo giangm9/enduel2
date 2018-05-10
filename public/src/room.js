@@ -1,4 +1,6 @@
 const Get = $.get;
+const LOG = console.log;
+
 var status = null,
     $Lock, 
     $RoomID, 
@@ -7,9 +9,9 @@ var status = null,
     socket;
 
 $(function() {
-  $PlayerList    = $("#player-list");
+  $PlayerList = $("#player-list");
   $Lock       = $("#img-lock");
-  $RoomID       = $("#p-room-id");
+  $RoomID     = $("#p-room-id");
   $Quit       = $("#quit");
 
   updateRoomStatus();
@@ -36,22 +38,10 @@ function initQuit(){
 function updateRoomStatus() {
   Get("/room/status", function(data){
     status = data;
+    LOG(data);
     render();
   });
 }
-
-//  function initBan(){
-//    $(".btn-ban").hover(
-//        function() {
-//          console.log('hover in');
-//          $(this).css("opacity", "1.0");
-//        }, 
-//        function(){
-//          console.log('hover out');
-//          $(this).css("opacity", "0.5");
-//        }
-//      );
-//  }
 
 function initLock(){
   $Lock.click(function() {

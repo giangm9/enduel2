@@ -23,6 +23,7 @@ Init = function( app, io){
 function LeaveHandler(req, res){
   var player = Player.getByID(req.cookies.id);
   res.cookie("state", "main");
+  res.cookie("room", undefined);
 
   if (player){
     var room = player.room;

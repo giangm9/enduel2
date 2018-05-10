@@ -53,32 +53,32 @@ function JoinRoomHandler(req, res) {
 
 function CreateRoomHandler(req, res) {
   var name    = req.query.name;
-  var room    = new Room();
-  var player  = new Player(name);
-  LOG(player)
-  
+      room    = new Room();
+      player  = new Player(name);
 
-  player.room  = room;
-  player.state = 'room'
+  player.room   = room;
+  player.state  = 'room'
   player.isHost = true;
   
   room.host = player;
   room.add(player)
 
-  room.add(player);
   res.cookie("room", room.id);
+  res.cookie("id", player.id);
   res.cookie("state", "room");
   res.sendStatus(200);
   LOG(player.nameid() + " created room " + room.id);
+  LOG_ROOM(room);
 }
 
 function QuitGameHandler(req, res) {
-  var id = req.cookies.id;
+  var id     = req.cookies.id;
   var player = Player.getByID(id);
 
   // the condition in case server is restarted
   if (player) {
-    req.cookies.id = undefined;
+    res.cookies('id', undefined);
+    res.cookies('room', undefined);
     player.quit();
     LOG(player.roomid() + " quit");
     LOGCOUNT();
