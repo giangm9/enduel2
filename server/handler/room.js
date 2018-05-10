@@ -21,6 +21,7 @@ Init = function( app, io){
 }
 
 function LeaveHandler(req, res){
+
   var player = Player.getByID(req.cookies.id);
   res.cookie("state", "main");
   res.cookie("room", undefined);
@@ -31,7 +32,7 @@ function LeaveHandler(req, res){
       LOG(player.name 
         + " (id=" + player.id + ") leave room " 
         + req.cookies.room);
-      
+
       player.leave();
       if (room.players.length == 0) {
         room.dismiss();

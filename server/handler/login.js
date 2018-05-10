@@ -5,8 +5,6 @@ const utils   = require("../utils");
 const GenName = require("../libs/GenName.js");
 const LOG     = utils.LOG;
 
-
-
 function Init(app, io) {
   GenName.Init(common.dir + "/data/names.txt");
 
