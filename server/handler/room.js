@@ -5,15 +5,15 @@ const utils  = require("../utils");
 const LOG    = utils.LOG;
 
 
-IsOnIndex = function( req, res ){
+function IsOnIndex( req, res ){
   return (req.cookies && req.cookies.state == "room");
 }
 
-HandleIndex = function( req, res ){
+function HandleIndex( req, res ){
   res.sendFile(common.dir + "/public/room.html");
 }
 
-Init = function( app, io){
+function Init( app, io){
   app.get("/room/status"      , StatusHandler);
   app.get("/room/start"       , StartHandler);
   app.get("/room/toggle-lock" , ToogleHanlder);
@@ -54,8 +54,8 @@ function StatusHandler(req, res){
     res.cookie("room", room.id);
     res.send(room.status());
   } else {
-    res.send("reload");
     res.cookie("state", "main");
+    res.send("reload");
   }
 }
 

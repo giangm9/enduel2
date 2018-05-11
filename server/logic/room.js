@@ -4,15 +4,15 @@
  */
 
 const common = require("./common");
-const genID = common.genUniqueID;
-const rm = common.removeFromArray;
+
+var AllRooms = [];
 
 function Room() {
-  this.id      = genID(Room.all);
+  this.id      = common.GenUID(AllRooms);
   this.lock    = true;
   this.players = [];
   this.host    = null;
-  Room.all.push(this);
+  AllRooms.push(this);
 }
 
 /**
@@ -25,8 +25,8 @@ Room.prototype.add = function(player) {
 }
 
 Room.prototype.dismiss = function() {
-  rm(Room.all, function(room) {
-    return Room.id = this.id;
+  AllRooms.remove(function(room){
+    return this.id = room.id
   }.bind(this));
 }
 
@@ -46,10 +46,12 @@ Room.prototype.status = function(){
   }
 }
 
-Room.all = [];
+Room.count = function(){
+  return AllRooms.length;
+}
 
-Room.exist = function(id) {
-  return Room.getByID( id ) != null;
+Room.getRandom = function(){
+  return AllRooms.getRandom();
 }
 
 Room.getByID = function(id) {

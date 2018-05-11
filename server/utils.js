@@ -24,6 +24,26 @@ Array.prototype.getRandom = function() {
   return this[floor(rand() * this.length)];
 }
 
+/**
+ * Return true if the element need to be removed
+ * @callback RemoveCallback
+ * @param {any} element
+ * @returns {boolean}
+ */
+
+/**
+ * Remove the all elements in satisfy callback 
+ * @param {RemoveCallback} callback 
+ */
+Array.prototype.remove = function( callback ) {
+  for (var i = 0 ; i < this.length; ++i ) {
+    if (callback(this[i])) {
+      this.splice( i, 1 );
+      i--;
+    }
+  }
+}
+
 module.exports = {
-  LOG: LOG
+  LOG : LOG
 }

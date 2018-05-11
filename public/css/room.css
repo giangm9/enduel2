@@ -44,10 +44,10 @@ img {
 
 .p-name {
   width: 50vmin;
-  padding: 0px;
+  padding: 0;
   font-size: 4vmin;
-  margin: 0px;
-  margin-left : 10px;
+  margin: 0;
+  margin-left : 1vmin;
 }
 .img-crown {
   margin-left: 1em;
@@ -55,10 +55,9 @@ img {
 
 .btn-ban {
   opacity: 0.5;
-  background-size: 4vmin 4vmin;
   border: none;
   outline: none;
-  padding: 0px;
+  padding: 0;
   width: 4vmin;
   height: 4vmin;
 }
@@ -74,11 +73,11 @@ img {
 
 
 #p-room-id {
-  padding: 0px;
+  padding: 0;
   font-size: 5vmin;
   font-weight: bold;
   text-align: left;
-  margin: 2vmin 0px 2vmin 0vmin;
+  margin: 2vmin 0 2vmin 0vmin;
   color : black ;
   width: 44.5vmin;
   display: inline-block;

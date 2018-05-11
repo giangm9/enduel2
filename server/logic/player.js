@@ -3,29 +3,29 @@
  * Represent a player
  */
 const common = require("./common");
-const genID  = common.genUniqueID;
-const rm     = common.removeFromArray;
 const utils  = require("../utils");
 
 
 Player.all = [];
 
+var AllPlayers = [];
+
 function Player(name){
-  this.id    = genID(Player.all);
-  this.name  = name ? name : "__UNSET__";
-  this.state = 'room'; // room | ingame
+  this.id     = common.GenUID(Player.all);
+  this.name   = name ? name : "__UNSET__";
+  this.state  = 'room'; // room | ingame
+  this.isHost = false;
   Player.all.push(this);
 }
 
 
 Player.prototype.leave = function() {
-  rm(this.room.players, function( player) {
-    return this.id = player.id;
-  }.bind(this));
-  rm(Player.all, function( player ) {
-    return player.id == this.id;
-  }.bind(this));
+  function matchid( player ) {
+    return this.id == player.id;
+  }
 
+  this.room.players.remove(matchid.bind(this));
+  Player.all.remove(matchid.bind(this));
 }
 
 Player.prototype.nameid =  function() {
@@ -50,6 +50,10 @@ Player.getByID = function(id){
       return all[i];
     }
   }
+}
+
+Player.count = function(){
+  return AllPlayers.length;
 }
 
 

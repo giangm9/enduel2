@@ -9,7 +9,6 @@ function Init(app, io) {
   GenName.Init(common.dir + "/data/names.txt");
 
   app.get("/login/create-room" , CreateRoomHandler);
-  app.get("/login/quit"        , QuitGameHandler);
   app.get("/login/gen-name"    , (_, res) => {res.send(GenName.Gen());});
   app.get("/login/join"        , JoinRoomHandler);
 }
@@ -35,7 +34,7 @@ function JoinRoomHandler(req, res) {
   var roomid = req.query.room;
   var name   = req.query.name;
   
-  if (roomid == '' && Room.all.length == 0) {
+  if (roomid == '' && Room.count() == 0) {
     CreateRoomHandler(req, res);
     return;
   }
@@ -43,7 +42,7 @@ function JoinRoomHandler(req, res) {
   var player = new Player(name);
   var room = null;
   if (roomid == '') {
-    room = Room.all.getRandom();
+    room = Room.getRandom();
   } else {
     room = Room.getByID(roomid);
     if (!room) {
@@ -78,28 +77,6 @@ function CreateRoomHandler(req, res) {
   res.sendStatus(200);
   LOG(player.nameid() + " created room " + room.id);
   LOG_ROOM(room);
-}
-
-function QuitGameHandler(req, res) {
-  var id     = req.cookies.id;
-  var player = Player.getByID(id);
-
-  // the condition in case server is restarted
-  if (player) {
-    res.cookies('id', undefined);
-    res.cookies('room', undefined);
-    player.quit();
-    LOG(player.roomid() + " quit");
-    LOGCOUNT();
-  }
-}
-
-function LOGCOUNT() {
-  LOG("Current playing : " + Player.all.length);
-  Player.all.forEach(function (player) {
-    LOG(" | " + player.nameid());
-
-  });
 }
 
 function LOG_ROOM(room) {
