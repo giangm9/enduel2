@@ -25,22 +25,27 @@ function LeaveHandler(req, res){
   var player = Player.getByID(req.cookies.id);
   res.cookie("state", "main");
   res.cookie("room", undefined);
-
-  if (player){
-    var room = player.room;
-    if (room) {
-      LOG(player.name 
-        + " (id=" + player.id + ") leave room " 
-        + req.cookies.room);
-
-      player.leave();
-      if (room.players.length == 0) {
-        room.dismiss();
-        LOG("Room " + room.id + " dismissed");
-      }
-    }
-  }
   res.sendStatus(200);
+
+  if (!player) {
+    return;
+  }
+
+  var room = player.room;
+  if (!room){
+    return;
+  }
+
+
+  LOG(player.nameid() + " leave room " 
+    + req.cookies.room);
+
+  player.leave();
+  if (room.players.length == 0) {
+    room.dismiss();
+    LOG("Room " + room.id + " dismissed");
+  }
+
 }
 
 function StatusHandler(req, res){

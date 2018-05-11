@@ -12,7 +12,6 @@ function Init(app, io) {
   app.get("/login/quit"        , QuitGameHandler);
   app.get("/login/gen-name"    , (_, res) => {res.send(GenName.Gen());});
   app.get("/login/join"        , JoinRoomHandler);
-//  io.on("connection"           , );
 }
 
 function IsOnIndex(req, res) {
@@ -33,9 +32,15 @@ function HandleIndex(req, res) {
 }
 
 function JoinRoomHandler(req, res) {
-  var player = Player.getByID(req.cookies.id);
-  player.name = req.cookies.name;
-  var room = Room.getByID(req.query.room);
+  var roomid = req.query.room;
+  
+  if (roomid == '') {
+    CreateRoomHandler(req, res);
+    return;
+  }
+
+  var player = new Player(req.query.name);
+  var room   = Room.getByID(roomid);
 
   if (!room) {
     res.send("not-found");
@@ -83,10 +88,6 @@ function QuitGameHandler(req, res) {
   }
 }
 
-function ioConnection(socket) {
-  //  console.log(socket);
-}
-
 function LOGCOUNT() {
   LOG("Current playing : " + Player.all.length);
   Player.all.forEach(function (player) {
@@ -105,6 +106,7 @@ function LOG_ROOM(room) {
     LOG(str);
   });
 }
+
 
 module.exports = {
   IsOnIndex   : IsOnIndex,

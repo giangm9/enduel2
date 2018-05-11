@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 const Get = $.get;
 const LOG = console.log;
 
@@ -15,17 +17,12 @@ $(function() {
   $Quit       = $("#quit");
 
   updateRoomStatus();
-//  initBan();
-  initLock();
-  initQuit();
-  initSocket();
+  InitLock();
+  InitQuit();
 })
 
-function initSocket(){
-  socket = io();
-}
 
-function initQuit(){
+function InitQuit(){
   $Quit.click (function(){
     $Quit.attr("disabled", "disabled");
     Get("/room/leave", function(data){
@@ -35,15 +32,7 @@ function initQuit(){
   });
 }
 
-function updateRoomStatus() {
-  Get("/room/status", function(data){
-    status = data;
-    LOG(data);
-    render();
-  });
-}
-
-function initLock(){
+function InitLock(){
   $Lock.click(function() {
     $Lock.css("opacity", 0.2);
     Get("/room/toggle-lock", function(lock){
@@ -53,6 +42,15 @@ function initLock(){
       });
   });
 }
+
+
+function updateRoomStatus() {
+  Get("/room/status", function(data){
+    status = data;
+    render();
+  });
+}
+
 
 
 function render(){

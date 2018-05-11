@@ -17,39 +17,30 @@ $(function() {
   $Warning = $("#warning");
 
   InitDice($("#cdice"), GenName, SetName );
-
-  InitStartButton();
-  InitInput();
-  InitJoinButton();
+  InitCreate();
+  InitInputName();
+  InitJoin();
 })
 
-function InitJoinButton(){
+function InitJoin(){
   $Join.click(function() {
-    if (inpName.val() == '') {
-      $Warning.text("Name must be filled");
-      return
-    } 
-    if (inpRoomID.val() == '') {
-      $Warning.text("Room ID must be filled");
-      return;
-    } 
-
-    get("/login/join", 
+    if (!ValidateName()) return;
+    Get("/login/join", 
       {
-        room: inpRoomID.val()
+        room: $RoomID.val(),
+        name: $Name.val()
       }, 
       function(data){
         if (data ==  "not-found"){
         $Warning.text("Can't find room ID");
       } else {
-        console.log("found room");
         location.reload();
       }
     });
   });
 }
 
-function InitInput(){
+function InitInputName(){
   name = Cookies.get("name");
   $Name.val(name === undefined ? name : '');
   $RoomID.on("input", function() {
@@ -66,20 +57,16 @@ function InitInput(){
 
 }
 
-function InitStartButton(){
+function InitCreate(){
   $Start.click(function(){
-    if ($Name.val() == ''){
-      $Warning.text("Name must be filled");
-    } else {
-      $.get(
-        "/login/create-room", 
+    if (!ValidateName()) return;
+    Get("/login/create-room", 
         { name: name },
         function(data){
           location.reload();
         }
-      );
-    }
-   });
+    );
+  });
 }
 
 function GenName() {
@@ -92,4 +79,12 @@ function GenName() {
 
 function SetName() {
   $Name.val(Cookies.get("name"));
+}
+
+function ValidateName(){
+  if ($Name.val() == '') {
+    $Warning.text("Name must be filled");
+    return false;
+  } 
+  return true;
 }
