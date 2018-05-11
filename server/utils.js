@@ -1,3 +1,6 @@
+const floor = Math.floor;
+const rand  = Math.random;
+
 function LOG( message ) {
   console.log(message);
 }
@@ -12,6 +15,13 @@ if (!String.format) {
       ;
     });
   };
+}
+
+/**
+ * Return a random element from array
+ */
+Array.prototype.getRandom = function() {
+  return this[floor(rand() * this.length)];
 }
 
 module.exports = {

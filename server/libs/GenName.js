@@ -1,9 +1,6 @@
 const utils = require("../utils");
 const LOG   = utils.LOG;
 const fs    = require("fs");
-const floor = Math.floor;
-const rand  = Math.random;
-
 
 var names = [];
 
@@ -17,7 +14,7 @@ function Init(path) {
 }
 
 function Gen() {
-  return names[floor(rand() * names.length)].trim();
+  return names.getRandom().trim();
 }
 
 module.exports = {
