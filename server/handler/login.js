@@ -33,25 +33,31 @@ function HandleIndex(req, res) {
 
 function JoinRoomHandler(req, res) {
   var roomid = req.query.room;
+  var name   = req.query.name;
   
-  if (roomid == '') {
+  if (roomid == '' && Room.all.length == 0) {
     CreateRoomHandler(req, res);
     return;
   }
 
-  var player = new Player(req.query.name);
-  var room   = Room.getByID(roomid);
-
-  if (!room) {
-    res.send("not-found");
+  var player = new Player(name);
+  var room = null;
+  if (roomid == '') {
+    room = Room.all.getRandom();
   } else {
-    room.add(player);
-    res.cookie("state", "room");
-    res.cookie("room", room.id);
-    LOG(player.nameid() + " join room " + room.id);
-    LOG_ROOM(room);
-    res.sendStatus(200);
+    room = Room.getByID(roomid);
+    if (!room) {
+      res.send("not-found");
+      return;
+    }
   }
+  room.add(player);
+  res.cookie("state", "room");
+  res.cookie("room", room.id);
+  res.cookie("id", player.id);
+  LOG(player.nameid() + " join room " + room.id);
+  LOG_ROOM(room);
+  res.sendStatus(200);
 }
 
 function CreateRoomHandler(req, res) {

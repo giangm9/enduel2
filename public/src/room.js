@@ -46,6 +46,9 @@ function InitLock(){
 
 function updateRoomStatus() {
   Get("/room/status", function(data){
+    if (data == "reload") {
+      location.reload();
+    }
     status = data;
     render();
   });

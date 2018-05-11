@@ -21,7 +21,6 @@ Init = function( app, io){
 }
 
 function LeaveHandler(req, res){
-
   var player = Player.getByID(req.cookies.id);
   res.cookie("state", "main");
   res.cookie("room", undefined);
@@ -55,11 +54,8 @@ function StatusHandler(req, res){
     res.cookie("room", room.id);
     res.send(room.status());
   } else {
-    res.send({
-      id: -1,
-      players: []
-    });
-
+    res.send("reload");
+    res.cookie("state", "main");
   }
 }
 
