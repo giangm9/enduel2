@@ -1,4 +1,6 @@
-import { InitDice } from "./dice"
+import { InitDice } from "./dice";
+import $ from "jquery";
+import Cookies from "js-cookie";
 
 const Get = $.get;
 const LOG = console.log;

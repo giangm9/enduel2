@@ -1,4 +1,6 @@
-import $ from 'jquery'
+import $ from 'jquery';
+import Cookies from 'js-cookie';
+import io from "socket.io-client"
 
 const Get = $.get;
 const LOG = console.log;
@@ -66,11 +68,14 @@ function render(){
     var index = status.players.indexOf(player);
     var template = ["<div class='player'>",
         "<div class='player-wrapper limit-width'>"]
+
+    var crownHTML = "<img class='img-crown' src='img/crown.png'"
     if (player.isHost){
-      template.push("<img class='img-crown' src='img/crown.png'/>");
-    } else {
-      template.push("<img class='img-crown' style='opacity: 0' src='img/crown.png'/>");
-    }
+      crownHTML += "style='opacity:0'";
+    } 
+    crownHTML += "/>"
+    template.push(crownHTML);
+
     template.push("<p class='p-name'>" + player.name + "</p>");
     if (!player.isHost){
       template.push("<button class='btn-ban' style=" 

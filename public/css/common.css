@@ -1,5 +1,5 @@
 h1, input, button, p , span{
-  font-family: 'Jura', sans-serif;
+  font-family: 'Jura', Inconsolata, monospace;
   padding: 2vmin;
   margin-top: 2vmin;
   outline: none;
