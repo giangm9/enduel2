@@ -23,8 +23,10 @@ $(function() {
   InitLock();
   InitQuit();
   InitIO();
+  InitKick();
   UpdateFromServer();
 })
+
 function InitIO(){
   socket = io("/room");
   socket.on("connect_error", function(){
@@ -33,10 +35,16 @@ function InitIO(){
     location.reload();
   });
 
-  socket.on("connect",    () => LOG('Connect') );
-  socket.on("disconnect", () => LOG("Disconnected"));
   socket.on("update",     () => UpdateFromServer());
- }
+}
+
+function InitKick(){
+  var $Kick = $(".btn-kick");
+  for (var i = 0 ; i < $Kick.lenght; i++){
+    var id = $Kick[i].val();
+    console.log(id);
+  }
+}
 
 function InitQuit(){
   $Quit.click (function(){
@@ -70,10 +78,7 @@ function UpdateFromServer() {
   });
 }
 
-
-
 function render(){
-
   $Lock.attr("src", status.lock ? "img/lock.png" : "img/unlock.png");
   $RoomID.text("ROOM ID : " + status.id);  
   $PlayerList.html("");
@@ -95,7 +100,7 @@ function render(){
     var HostID    = status.host.id; 
     if (CurrentID == HostID) {
       if (!player.isHost){
-        template.push("<button class='btn-ban' style=" 
+        template.push("<button class='btn-kick' style=" 
           + (index % 2 == 1 ? "'background: white;" : "'background : #DDD;")
           + "font-size: 2.5vmin'"
           + "value='" + player.id + "'> kick </button>")

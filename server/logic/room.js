@@ -59,6 +59,18 @@ Room.prototype.toggle = function(){
   }
 }
 
+Room.prototype.getPlayer = function(id){
+  return this.players.getByID(id); 
+}
+
+Room.prototype.getNextHost = function(){
+  for (var i = 0 ; i < this.players.length; i++){
+    if (!this.players[i].isHost){
+      return this.players[i];
+    }
+  }
+}
+
 Room.count = function(){
   return AllRooms.length;
 }

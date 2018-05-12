@@ -35,14 +35,35 @@ function InitIO(io){
     socket.join(room.id);
     room.sockets = io.of('/room').to(room.id);
     room.emit("update");
+
+    socket.on("kick", KickHandler(player));
   });
 
 }
 
+function KickHandler(player){
+  function handler(id){
+    var host = player;
+    var room = player.room;
+    var kick = room.getByID(id); 
+
+    if (!player.isHost){
+      LOG("* HACK *");
+      return;
+    }
+
+    kick.leave();
+    room.emit("update"); 
+  }
+  return handler;
+}
+
 function LeaveHandler(req, res){
   var player = Player.getByID(req.cookies.id);
+  var room   = Room.getByID(req.cookies.room);
   res.cookie("state", "main");
   res.cookie("room", undefined);
+  room.emit("update");
   res.sendStatus(200);
 
   if (!player) {
@@ -58,9 +79,17 @@ function LeaveHandler(req, res){
     + req.cookies.room);
 
   player.leave();
-  if (room.players.length == 0) {
-    room.dismiss();
-    LOG("Room " + room.id + " dismissed");
+  // Host to next player
+  if (player.isHost){
+    
+    var newHost = room.getNextHost();
+    // No more player in room
+    if (!newHost) {
+      room.dismiss();
+      LOG("Room " + room.id + " dismissed");
+    }
+    room.host = newHost;
+    newHost.isHost = true;
   }
 }
 
@@ -87,6 +116,7 @@ function ToogleHanlder(req, res){
   res.send(room.lock);
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
 }
+
 
 function SocketCookie(socket){
   return parseCookie(socket.handshake.headers.cookie);
