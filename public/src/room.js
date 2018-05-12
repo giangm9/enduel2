@@ -23,7 +23,6 @@ $(function() {
   InitLock();
   InitQuit();
   InitIO();
-  InitKick();
   UpdateFromServer();
 })
 
@@ -36,14 +35,6 @@ function InitIO(){
   });
 
   socket.on("update",     () => UpdateFromServer());
-}
-
-function InitKick(){
-  var $Kick = $(".btn-kick");
-  for (var i = 0 ; i < $Kick.lenght; i++){
-    var id = $Kick[i].val();
-    console.log(id);
-  }
 }
 
 function InitQuit(){
@@ -75,6 +66,11 @@ function UpdateFromServer() {
       status = data;
       render();
     }
+  });
+}
+function BindKick() {
+  $(".btn-kick").click(function(event){
+    console.log(event.target.value);
   });
 }
 
@@ -109,4 +105,5 @@ function render(){
     template.push("</div>", "</div>");
     $PlayerList.append(template.join("\n"));
   });
+  BindKick();
 }
