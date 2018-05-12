@@ -1,6 +1,7 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
 import io from "socket.io-client"
+import { loadavg } from "os";
 
 const Get        = $.get;
 const LOG        = console.log;
@@ -34,7 +35,9 @@ function InitIO(){
     location.reload();
   });
 
-  socket.on("update",     () => UpdateFromServer());
+  socket.on("update", () => UpdateFromServer());
+  socket.on("kicked", () => Leave());
+
 }
 
 function InitQuit(){
@@ -56,7 +59,10 @@ function InitLock(){
       });
   });
 }
-
+function Leave(){
+  SetCookies("state", "main");
+  location.reload();
+}
 
 function UpdateFromServer() {
   Get("/room/status", function(data){
@@ -68,9 +74,12 @@ function UpdateFromServer() {
     }
   });
 }
+
 function BindKick() {
   $(".btn-kick").click(function(event){
-    console.log(event.target.value);
+    Get("./room/kick",
+      { id : event.target.value },
+      () => UpdateFromServer())
   });
 }
 

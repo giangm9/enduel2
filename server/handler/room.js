@@ -18,6 +18,8 @@ function Init( app, io){
   app.get("/room/start"       , StartHandler);
   app.get("/room/toggle-lock" , ToogleHanlder);
   app.get("/room/leave"       , LeaveHandler);
+  app.get("/room/kick"        , KickHandler);
+
   InitIO(io);
 }
 
@@ -35,27 +37,17 @@ function InitIO(io){
     socket.join(room.id);
     room.sockets = io.of('/room').to(room.id);
     room.emit("update");
-
-    socket.on("kick", KickHandler(player));
   });
 
 }
 
-function KickHandler(player){
-  function handler(id){
-    var host = player;
-    var room = player.room;
-    var kick = room.getByID(id); 
-
-    if (!player.isHost){
-      LOG("* HACK *");
-      return;
-    }
-
-    kick.leave();
-    room.emit("update"); 
-  }
-  return handler;
+function KickHandler(req, res){
+  var player = Player.getByID(req.query.id);
+  var host   = player.room.host;
+  LOG(host.nameid() + " kicks " + player.nameid());
+  player.leave();
+  player.emit("kicked");
+  res.sendStatus(200);
 }
 
 function LeaveHandler(req, res){
