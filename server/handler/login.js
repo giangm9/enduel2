@@ -90,7 +90,6 @@ function LOG_ROOM(room) {
   });
 }
 
-
 module.exports = {
   IsOnIndex   : IsOnIndex,
   HandleIndex : HandleIndex,

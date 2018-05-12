@@ -1,9 +1,9 @@
-const Player = require("../logic/player.js");
-const Room   = require("../logic/room.js");
-const common = require("./common");
-const utils  = require("../utils");
-const LOG    = utils.LOG;
-
+const Player      = require("../logic/player.js");
+const Room        = require("../logic/room.js");
+const common      = require("./common");
+const utils       = require("../utils");
+const parseCookie = require("cookie").parse;
+const LOG         = utils.LOG;
 
 function IsOnIndex( req, res ){
   return (req.cookies && req.cookies.state == "room");
@@ -18,6 +18,25 @@ function Init( app, io){
   app.get("/room/start"       , StartHandler);
   app.get("/room/toggle-lock" , ToogleHanlder);
   app.get("/room/leave"       , LeaveHandler);
+  InitIO(io);
+}
+
+function InitIO(io){
+
+  io.of('/room').on("connection", function(socket){
+    var cookie = SocketCookie(socket);
+    var player = Player.getByID(cookie.id);
+    var room   = Room.getByID(cookie.room);
+
+    if (!player || !room) {
+      return;
+    }
+    player.socket = socket;
+    socket.join(room.id);
+    room.sockets = io.of('/room').to(room.id);
+    room.emit("update");
+  });
+
 }
 
 function LeaveHandler(req, res){
@@ -35,7 +54,6 @@ function LeaveHandler(req, res){
     return;
   }
 
-
   LOG(player.nameid() + " leave room " 
     + req.cookies.room);
 
@@ -44,7 +62,6 @@ function LeaveHandler(req, res){
     room.dismiss();
     LOG("Room " + room.id + " dismissed");
   }
-
 }
 
 function StatusHandler(req, res){
@@ -71,8 +88,20 @@ function ToogleHanlder(req, res){
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
 }
 
+function SocketCookie(socket){
+  return parseCookie(socket.handshake.headers.cookie);
+}
+
+Room.prototype.emit = function(event, message){
+  this.sockets.emit(event, message);
+}
+
+Player.prototype.emit = function(event, message){
+  this.socket.emit(event, message);
+}
+
 module.exports = {
-  IsOnIndex: IsOnIndex,
-  Init: Init,
-  HandleIndex: HandleIndex
+  IsOnIndex   : IsOnIndex,
+  Init        : Init,
+  HandleIndex : HandleIndex
 }

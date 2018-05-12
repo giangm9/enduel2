@@ -27,7 +27,7 @@ Room.prototype.add = function(player) {
 
 Room.prototype.dismiss = function() {
   AllRooms.remove(function(room){
-    return this.id = room.id
+    return this.id == room.id
   }.bind(this));
 }
 
@@ -53,7 +53,7 @@ Room.prototype.toggle = function(){
   if (!this.lock) {
     OpenRooms.push(this);
   } else {
-    OpenRoom.remove(function(room) {
+    OpenRooms.remove(function(room) {
       return this.id = room.id;
     }.bind(this));
   }

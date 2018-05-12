@@ -1,12 +1,11 @@
-import $ from 'jquery';
-import Cookies from 'js-cookie';
+import $ from "jquery";
+import Cookies from "js-cookie";
 import io from "socket.io-client"
 
 const Get        = $.get;
 const LOG        = console.log;
 const GetCookies = Cookies.get;
 const SetCookies = Cookies.set;
-
 
 var status = null,
     $Lock, 
@@ -21,11 +20,23 @@ $(function() {
   $RoomID     = $("#p-room-id");
   $Quit       = $("#quit");
 
-  updateRoomStatus();
   InitLock();
   InitQuit();
+  InitIO();
+  UpdateFromServer();
 })
+function InitIO(){
+  socket = io("/room");
+  socket.on("connect_error", function(){
+    console.log("Connection Failed");
+    SetCookies("state", "main");
+    location.reload();
+  });
 
+  socket.on("connect",    () => LOG('Connect') );
+  socket.on("disconnect", () => LOG("Disconnected"));
+  socket.on("update",     () => UpdateFromServer());
+ }
 
 function InitQuit(){
   $Quit.click (function(){
@@ -48,13 +59,14 @@ function InitLock(){
 }
 
 
-function updateRoomStatus() {
+function UpdateFromServer() {
   Get("/room/status", function(data){
     if (data == "reload") {
       location.reload();
+    } else {
+      status = data;
+      render();
     }
-    status = data;
-    render();
   });
 }
 
@@ -64,7 +76,7 @@ function render(){
 
   $Lock.attr("src", status.lock ? "img/lock.png" : "img/unlock.png");
   $RoomID.text("ROOM ID : " + status.id);  
-  $PlayerList.html('');
+  $PlayerList.html("");
   if (!status) return;
   status.players.forEach(function(player){
     var index = status.players.indexOf(player);

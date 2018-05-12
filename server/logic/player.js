@@ -4,13 +4,14 @@
  */
 const common = require("./common");
 const utils  = require("../utils");
+const Room   = require("./room")
 
 
 var AllPlayers = [];
 
-function Player(name){
+function Player(name = "__UNSET__"){
   this.id     = common.GenUID(AllPlayers);
-  this.name   = name ? name : "__UNSET__";
+  this.name   = name;
   this.state  = 'room'; // room | ingame
   this.isHost = false;
   AllPlayers.push(this);
