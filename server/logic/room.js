@@ -5,7 +5,8 @@
 
 const common = require("./common");
 
-var AllRooms = [];
+var AllRooms  = [];
+var OpenRooms = [];
 
 function Room() {
   this.id      = common.GenUID(AllRooms);
@@ -32,17 +33,29 @@ Room.prototype.dismiss = function() {
 
 Room.prototype.status = function(){
   var players = [];
+  var host = null;
   this.players.forEach( function(player) {
-    players.push({
-      "name"   : player.name,
-      "id"     : player.id,
-      "isHost" : player.isHost
-    })
+    players.push(player.readableData());
+    if (player.isHost) {
+      host = player.readableData();
+    }
   });
   return {
     id      : this.id,
     lock    : this.lock,
-    players : players
+    players : players,
+    host    : host
+  }
+}
+
+Room.prototype.toggle = function(){
+  this.lock = !this.lock;
+  if (!this.lock) {
+    OpenRooms.push(this);
+  } else {
+    OpenRoom.remove(function(room) {
+      return this.id = room.id;
+    }.bind(this));
   }
 }
 
@@ -50,17 +63,16 @@ Room.count = function(){
   return AllRooms.length;
 }
 
-Room.getRandom = function(){
-  return AllRooms.getRandom();
+Room.countOpen = function(){
+  return OpenRooms.length;
+}
+
+Room.getRandomOpen = function(){
+  return OpenRooms.getRandom();
 }
 
 Room.getByID = function(id) {
-  for (var i = 0; i < Room.all.length; ++i) {
-    if (Room.all[i].id == id) {
-      return Room.all[i];
-    }
-  }
-  return null;
+  return AllRooms.getByID(id)
 }
 
 module.exports = Room;

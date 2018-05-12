@@ -34,7 +34,7 @@ function JoinRoomHandler(req, res) {
   var roomid = req.query.room;
   var name   = req.query.name;
   
-  if (roomid == '' && Room.count() == 0) {
+  if (roomid == '' && Room.countOpen() == 0) {
     CreateRoomHandler(req, res);
     return;
   }
@@ -42,7 +42,7 @@ function JoinRoomHandler(req, res) {
   var player = new Player(name);
   var room = null;
   if (roomid == '') {
-    room = Room.getRandom();
+    room = Room.getRandomOpen();
   } else {
     room = Room.getByID(roomid);
     if (!room) {

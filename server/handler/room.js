@@ -64,9 +64,9 @@ function StartHandler(req, res ){
 }
 
 function ToogleHanlder(req, res){
-  var room = Room.getByID(req.cookies.room);
-  console.log(room.lock);
-  room.lock = !room.lock;
+  var roomid = req.cookies.room; 
+  var room = Room.getByID(roomid);
+  room.toggle();
   res.send(room.lock);
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
 }

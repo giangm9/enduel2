@@ -10,6 +10,14 @@ function GenUniqueID(array, limit = 0xffffff ){
   }
 }
 
+Array.prototype.getByID = function(id) {
+  for (var i = 0 ; i < this.length; i++){
+    if (this[i].id == id){
+      return this[i];
+    }
+  }
+}
+
 module.exports = {
   GenUID : GenUniqueID
 }

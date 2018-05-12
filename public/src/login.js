@@ -9,7 +9,6 @@ var $RoomID,
     $Start, 
     $Name, 
     $Warning;
-    name;
 
 $(function() {
   $RoomID  = $("#inp-roomid");
@@ -17,7 +16,6 @@ $(function() {
   $Start   = $("#btn-start");
   $Name    = $("#inp-name");
   $Warning = $("#warning");
-
   InitDice($("#cdice"), GenName, SetName );
   InitCreate();
   InitInputName();
@@ -27,6 +25,7 @@ $(function() {
 function InitJoin(){
   $Join.click(function() {
     if (!ValidateName()) return;
+    SaveName();
     Get("/login/join", 
       {
         room: $RoomID.val(),
@@ -43,8 +42,7 @@ function InitJoin(){
 }
 
 function InitInputName(){
-  name = Cookies.get("name");
-  $Name.val(name === undefined ? name : '');
+  $Name.val(GetSavedName());
   $RoomID.on("input", function() {
     if ($RoomID.val() == "") {
       $Join.text("JOIN RANDOM");
@@ -62,8 +60,9 @@ function InitInputName(){
 function InitCreate(){
   $Start.click(function(){
     if (!ValidateName()) return;
+    SaveName();
     Get("/login/create-room", 
-        { name: name },
+        { name: GetSavedName()},
         function(data){
           location.reload();
         }
@@ -73,14 +72,13 @@ function InitCreate(){
 
 function GenName() {
   $Warning.html("&nbsp");
-  Get("login/gen-name", function( data ){
-      name = data;
+  Get("login/gen-name", function(name){
       Cookies.set("name", name);
   });
 }
 
 function SetName() {
-  $Name.val(Cookies.get("name"));
+  $Name.val(GetSavedName());
 }
 
 function ValidateName(){
@@ -89,4 +87,12 @@ function ValidateName(){
     return false;
   } 
   return true;
+}
+
+function SaveName(){
+  Cookies.set("name", $Name.val());
+}
+
+function GetSavedName() {
+  return Cookies.get("name", '');
 }

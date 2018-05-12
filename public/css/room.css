@@ -43,7 +43,7 @@ img {
 }
 
 .p-name {
-  width: 50vmin;
+  width: 45vmin;
   padding: 0;
   font-size: 4vmin;
   margin: 0;
@@ -124,7 +124,7 @@ img {
 
 
 #quit {
-  padding: 0.3em;
+  padding: 1vmin;
   font-weight: bold;
   font-size: 3vmin;
 }
