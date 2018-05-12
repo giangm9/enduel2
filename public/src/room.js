@@ -43,9 +43,7 @@ function InitIO(){
 function InitQuit(){
   $Quit.click (function(){
     $Quit.attr("disabled", "disabled");
-    Get("/room/leave", function(data){
-      location.reload();
-    });
+    Get("/room/leave", () => Leave() );
   });
 }
 
@@ -59,6 +57,7 @@ function InitLock(){
       });
   });
 }
+
 function Leave(){
   SetCookies("state", "main");
   location.reload();
