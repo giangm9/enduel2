@@ -4,6 +4,7 @@
   "description": "A good English game",
   "main": "index.js",
   "scripts": {
+    "start" : "node main.js",
     "test": "nodemon main.js",
     "build": "webpack"
   },
