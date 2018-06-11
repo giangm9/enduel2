@@ -1,14 +1,18 @@
-import { InitDice } from "./dice";
 import $ from "jquery";
 import Cookies from "js-cookie";
+import io from "socket.io-client";
+
+import Dice from "./dice";
 
 const Get = $.get;
 const LOG = console.log;
+
 var $RoomID, 
     $Join,
     $Start, 
     $Name, 
-    $Warning;
+    $Warning,
+    socket;
 
 $(function() {
   $RoomID  = $("#inp-roomid");
@@ -16,11 +20,19 @@ $(function() {
   $Start   = $("#btn-start");
   $Name    = $("#inp-name");
   $Warning = $("#warning");
-  InitDice($("#cdice"), GenName, SetName );
+  
+  var $dice =$("#cdice")
+
+  Dice.init($dice, GenName, SetName );
   InitCreate();
   InitInputName();
   InitJoin();
+
 })
+function InitIO(){
+  socket = io("/login");
+  socket.on("reload", () => location.reload() );
+}
 
 function InitJoin(){
   $Join.click(function() {

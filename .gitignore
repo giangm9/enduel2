@@ -2,3 +2,4 @@ node_modules
 *.blend1
 package-lock.json
 .vscode
+.tern-project

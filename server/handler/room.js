@@ -106,6 +106,7 @@ function ToogleHanlder(req, res){
   var roomid = req.cookies.room; 
   var room = Room.getByID(roomid);
   room.toggle();
+  room.emit("update");
   res.send(room.lock);
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
 }

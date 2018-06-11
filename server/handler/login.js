@@ -13,6 +13,12 @@ function Init(app, io) {
   app.get("/login/join"        , JoinRoomHandler);
 }
 
+function InitIO(io){
+  io.of("/login").on("connection", function(socket){
+
+  })
+}
+
 function IsOnIndex(req, res) {
   // First time on page 
   if (!req.cookies.state) {

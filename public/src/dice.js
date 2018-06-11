@@ -15,7 +15,9 @@ var fps     = 30.0,
     click   = null, 
     finish  = null;
 
-function InitDice($canvas, click, finishcb) {
+var Dice = {};
+
+Dice.init = function($canvas, click, finishcb) {
   canvas      = $canvas[0];
   context     = canvas.getContext('2d');
   imgNorm     = new Image();
@@ -41,14 +43,21 @@ function InitDice($canvas, click, finishcb) {
   step();
 }
 
+Dice.disable = function(){
+  canvas.css("opacity", "0.8");
+  state = "disable";
+}
+
+Dice.enable = function(){
+  canvas.css("opacity", "1");
+  state = "idle";
+}
+
 function step(timestamp) {
   requestAnimationFrame(step);
-
-  if (!last) last = timestamp;
-
+  if (!last) last = time 
   if (state == "spin") {
     time += (timestamp - last) * 0.001;
-
     if (time > next) {
         finish();
       state = "idle";
@@ -83,4 +92,4 @@ function render(index) {
 
 } 
 
-export { InitDice };
+export default Dice;

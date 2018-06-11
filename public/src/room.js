@@ -1,14 +1,14 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
 import io from "socket.io-client"
-import { loadavg } from "os";
 
-const Get        = $.get;
 const LOG        = console.log;
+const Get        = $.get;
 const GetCookies = Cookies.get;
 const SetCookies = Cookies.set;
 
-var status = null,
+var Status = null,
+    Player = null,
     $Lock, 
     $RoomID, 
     $PlayerList,
@@ -35,8 +35,9 @@ function InitIO(){
     location.reload();
   });
 
-  socket.on("update", () => UpdateFromServer());
-  socket.on("kicked", () => Leave());
+  socket
+  .on("update", () => UpdateFromServer())
+  .on("kicked", () => Leave());
 
 }
 
@@ -49,10 +50,11 @@ function InitQuit(){
 
 function InitLock(){
   $Lock.click(function() {
+    if (!Player.isHost()) return;
     $Lock.css("opacity", 0.2);
     Get("/room/toggle-lock", function(lock){
         $Lock.css("opacity", 1);
-        status.lock = lock;
+        Status.lock = lock;
         render();
       });
   });
@@ -68,8 +70,9 @@ function UpdateFromServer() {
     if (data == "reload") {
       location.reload();
     } else {
-      status = data;
+      Status = data;
       render();
+      updatePlayer();
     }
   });
 }
@@ -83,12 +86,12 @@ function BindKick() {
 }
 
 function render(){
-  $Lock.attr("src", status.lock ? "img/lock.png" : "img/unlock.png");
-  $RoomID.text("ROOM ID : " + status.id);  
+  $Lock.attr("src", Status.lock ? "img/lock.png" : "img/unlock.png");
+  $RoomID.text("ROOM ID : " + Status.id);  
   $PlayerList.html("");
-  if (!status) return;
-  status.players.forEach(function(player){
-    var index = status.players.indexOf(player);
+  if (!Status) return;
+  Status.players.forEach(function(player){
+    var index = Status.players.indexOf(player);
     var template = ["<div class='player'>",
         "<div class='player-wrapper limit-width'>"]
 
@@ -101,7 +104,7 @@ function render(){
 
     template.push("<p class='p-name'>" + player.name + "</p>");
     var CurrentID = GetCookies('id');
-    var HostID    = status.host.id; 
+    var HostID    = Status.host.id; 
     if (CurrentID == HostID) {
       if (!player.isHost){
         template.push("<button class='btn-kick' style=" 
@@ -114,4 +117,16 @@ function render(){
     $PlayerList.append(template.join("\n"));
   });
   BindKick();
+}
+
+function updatePlayer() { 
+  Status.players.forEach(function(player){
+    if (player.id == GetCookies("id")){
+      Player = player;
+    }
+  });
+
+  Player.isHost = function () {
+    return Status.host.id == Player.id
+  };
 }
