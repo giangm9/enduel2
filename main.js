@@ -5,6 +5,7 @@ const http          = require('http').Server(app);
 const io            = require('socket.io')(http);
 const LoginHandler  = require("./server/handler/login");
 const RoomHandler   = require("./server/handler/room");
+const IngameHandler = require("./server/handler/ingame");
 
 app.use(express.static('public'));
 app.use(require('cookie-parser')());
@@ -15,11 +16,10 @@ app.use(require('cookie-session')({
 }));
 
 app.get('/', function(req, res) {
-    if (!tryHandler(LoginHandler, req, res)){
-      tryHandler(RoomHandler, req, res);
-    }
-  }
-);
+  if (tryHandler(LoginHandler, req, res)) return;
+  if (tryHandler(RoomHandler , req, res)) return; 
+  tryHandler(IngameHandler, req, res);
+});
 
 http.listen(8080, "localhost", null, function(){
   console.log('PORT : 8080')

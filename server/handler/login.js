@@ -29,6 +29,14 @@ function IsOnIndex(req, res) {
   if (req.cookies.state == "main"){
     return true;
   }
+
+  // Sometimes, cookies still on the browser, but the server restart
+  var id = req.cookies.id;
+  var room = req.cookies.room;
+
+  if (!Player.getByID(id)) return true;
+  if (!Room.getByID(room)) return true;
+
   return false;
 }
 

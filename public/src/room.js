@@ -13,6 +13,7 @@ var Status = null,
     $RoomID, 
     $PlayerList,
     $Quit,
+    $Start,
     socket;
 
 $(function() {
@@ -23,6 +24,7 @@ $(function() {
 
   InitLock();
   InitQuit();
+  InitStart();
   InitIO();
   UpdateFromServer();
 })
@@ -36,10 +38,13 @@ function InitIO(){
   });
 
   socket
-  .on("update", () => UpdateFromServer())
-  .on("kicked", () => Leave());
+  .on("update", UpdateFromServer)
+  .on("kicked", Leave)
+  .on("start" , Start);
 
 }
+
+
 
 function InitQuit(){
   $Quit.click (function(){
@@ -47,6 +52,7 @@ function InitQuit(){
     Get("/room/leave", () => Leave() );
   });
 }
+
 
 function InitLock(){
   $Lock.click(function() {
@@ -60,6 +66,20 @@ function InitLock(){
   });
 }
 
+function InitStart(){
+  $Start = $("#btn-start");
+  $Start.click(function(){
+    if (Player.isHost){ 
+      Get("/room/start");
+    }
+  });
+}
+
+function Start(){
+  SetCookies("state", "ingame"); 
+  location.reload();
+}
+
 function Leave(){
   SetCookies("state", "main");
   location.reload();
@@ -71,8 +91,8 @@ function UpdateFromServer() {
       location.reload();
     } else {
       Status = data;
-      render();
       updatePlayer();
+      render();
     }
   });
 }
@@ -116,6 +136,13 @@ function render(){
     template.push("</div>", "</div>");
     $PlayerList.append(template.join("\n"));
   });
+
+
+  if (!Player.isHost){
+    $Start.hide();
+  } else {
+    $Start.show();
+  }
   BindKick();
 }
 
@@ -125,8 +152,4 @@ function updatePlayer() {
       Player = player;
     }
   });
-
-  Player.isHost = function () {
-    return Status.host.id == Player.id
-  };
 }

@@ -66,7 +66,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./public/src/room.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./public/src/ingame.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -600,15 +600,39 @@ eval("\n\nvar alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
 
 /***/ }),
 
-/***/ "./public/src/room.js":
-/*!****************************!*\
-  !*** ./public/src/room.js ***!
-  \****************************/
+/***/ "./public/src/ingame.js":
+/*!******************************!*\
+  !*** ./public/src/ingame.js ***!
+  \******************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ \"./node_modules/js-cookie/src/js.cookie.js\");\n/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! socket.io-client */ \"./node_modules/socket.io-client/lib/index.js\");\n/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\n\nconst LOG        = console.log;\nconst Get        = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get;\nconst GetCookies = js_cookie__WEBPACK_IMPORTED_MODULE_1___default.a.get;\nconst SetCookies = js_cookie__WEBPACK_IMPORTED_MODULE_1___default.a.set;\n\nvar Status = null,\n    Player = null,\n    $Lock, \n    $RoomID, \n    $PlayerList,\n    $Quit,\n    $Start,\n    socket;\n\njquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {\n  $PlayerList = jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#player-list\");\n  $Lock       = jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#img-lock\");\n  $RoomID     = jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#p-room-id\");\n  $Quit       = jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#quit\");\n\n  InitLock();\n  InitQuit();\n  InitStart();\n  InitIO();\n  UpdateFromServer();\n})\n\nfunction InitIO(){\n  socket = socket_io_client__WEBPACK_IMPORTED_MODULE_2___default()(\"/room\");\n  socket.on(\"connect_error\", function(){\n    console.log(\"Connection Failed\");\n    SetCookies(\"state\", \"main\");\n    location.reload();\n  });\n\n  socket\n  .on(\"update\", UpdateFromServer)\n  .on(\"kicked\", Leave)\n  .on(\"start\" , Start);\n\n}\n\n\n\nfunction InitQuit(){\n  $Quit.click (function(){\n    $Quit.attr(\"disabled\", \"disabled\");\n    Get(\"/room/leave\", () => Leave() );\n  });\n}\n\n\nfunction InitLock(){\n  $Lock.click(function() {\n    if (!Player.isHost()) return;\n    $Lock.css(\"opacity\", 0.2);\n    Get(\"/room/toggle-lock\", function(lock){\n        $Lock.css(\"opacity\", 1);\n        Status.lock = lock;\n        render();\n      });\n  });\n}\n\nfunction InitStart(){\n  $Start = jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#btn-start\");\n  $Start.click(function(){\n    if (Player.isHost){ \n      Get(\"/room/start\");\n    }\n  });\n}\n\nfunction Start(){\n  SetCookies(\"state\", \"ingame\"); \n  location.reload();\n}\n\nfunction Leave(){\n  SetCookies(\"state\", \"main\");\n  location.reload();\n}\n\nfunction UpdateFromServer() {\n  Get(\"/room/status\", function(data){\n    if (data == \"reload\") {\n      location.reload();\n    } else {\n      Status = data;\n      updatePlayer();\n      render();\n    }\n  });\n}\n\nfunction BindKick() {\n  jquery__WEBPACK_IMPORTED_MODULE_0___default()(\".btn-kick\").click(function(event){\n    Get(\"./room/kick\",\n      { id : event.target.value },\n      () => UpdateFromServer())\n  });\n}\n\nfunction render(){\n  $Lock.attr(\"src\", Status.lock ? \"img/lock.png\" : \"img/unlock.png\");\n  $RoomID.text(\"ROOM ID : \" + Status.id);  \n  $PlayerList.html(\"\");\n  if (!Status) return;\n  Status.players.forEach(function(player){\n    var index = Status.players.indexOf(player);\n    var template = [\"<div class='player'>\",\n        \"<div class='player-wrapper limit-width'>\"]\n\n    var crownHTML = \"<img class='img-crown' src='img/crown.png'\"\n    if (!player.isHost){\n      crownHTML += \"style='opacity:0'\";\n    } \n    crownHTML += \"/>\"\n    template.push(crownHTML);\n\n    template.push(\"<p class='p-name'>\" + player.name + \"</p>\");\n    var CurrentID = GetCookies('id');\n    var HostID    = Status.host.id; \n    if (CurrentID == HostID) {\n      if (!player.isHost){\n        template.push(\"<button class='btn-kick' style=\" \n          + (index % 2 == 1 ? \"'background: white;\" : \"'background : #DDD;\")\n          + \"font-size: 2.5vmin'\"\n          + \"value='\" + player.id + \"'> kick </button>\")\n      }\n    }\n    template.push(\"</div>\", \"</div>\");\n    $PlayerList.append(template.join(\"\\n\"));\n  });\n\n\n  if (!Player.isHost){\n    $Start.hide();\n  } else {\n    $Start.show();\n  }\n  BindKick();\n}\n\nfunction updatePlayer() { \n  Status.players.forEach(function(player){\n    if (player.id == GetCookies(\"id\")){\n      Player = player;\n    }\n  });\n}\n\n\n//# sourceURL=webpack:///./public/src/room.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ \"./node_modules/js-cookie/src/js.cookie.js\");\n/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! socket.io-client */ \"./node_modules/socket.io-client/lib/index.js\");\n/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingame/chatbox.js */ \"./public/src/ingame/chatbox.js\");\n/* harmony import */ var _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ingame/put.js */ \"./public/src/ingame/put.js\");\n\n\n\n\n\n\nconst LOG = console.log;\nconst Get = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get;\nconst GetCookies = js_cookie__WEBPACK_IMPORTED_MODULE_1___default.a.get;\nconst SetCookies = js_cookie__WEBPACK_IMPORTED_MODULE_1___default.a.set;\n\n\nvar \n  Status = null,\n  Player = null,\n  Box    = null,\n  Input  = null;\n\njquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {\n  Box = new _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"](jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#chatbox\"));\n  Input = new _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__[\"default\"](jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#put\"));\n\n  Input.on(\"put\", function(message){\n//    console.log(message);\n    Box.add(message);\n  });\n});\n\n\n//# sourceURL=webpack:///./public/src/ingame.js?");
+
+/***/ }),
+
+/***/ "./public/src/ingame/chatbox.js":
+/*!**************************************!*\
+  !*** ./public/src/ingame/chatbox.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function(global) {\nfunction Chatbox(jcontainer) {\n  this.container = jcontainer;\n  jcontainer.append(\"<div id='chatbox-wrapper'> </div>\");\n}\n\n/**\n * @type {string} message\n * */\nChatbox.prototype.add = function(message){\n\n  var c = this.container;\n  global.c = c;\n  var wrapper = c.find(\"#chatbox-wrapper\");\n  wrapper.append(\"<p>\" + message + \"</p>\");\n  c.scrollTop(wrapper.height());\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Chatbox);\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../usr/lib/node_modules/webpack/buildin/global.js */ \"../../../../usr/lib/node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./public/src/ingame/chatbox.js?");
+
+/***/ }),
+
+/***/ "./public/src/ingame/put.js":
+/*!**********************************!*\
+  !*** ./public/src/ingame/put.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nfunction Put(container){\n  this.jcontainer = container;\n\n  this.state = \"ans\"; // chat\n  this.callbacks = {};\n  this.jinp = container.find(\"#inp-put\");\n  this.jbtn = container.find(\"#btn-put\");\n\n  this.jbtn.click(function() {\n    if (this.callbacks[\"put\"]){\n      this.callbacks[\"put\"](this.jinp.val());\n    }\n  }.bind(this));\n}\n\nPut.prototype.on = function(event, callback){\n  this.callbacks[event] = callback;\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Put);\n\n\n//# sourceURL=webpack:///./public/src/ingame/put.js?");
 
 /***/ }),
 

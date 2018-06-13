@@ -13,6 +13,7 @@ function Room() {
   this.lock    = true;
   this.players = [];
   this.host    = null;
+  this.state   = "wait"; //ingame
   AllRooms.push(this);
 }
 

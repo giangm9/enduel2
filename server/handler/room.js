@@ -99,7 +99,12 @@ function StatusHandler(req, res){
 }
 
 function StartHandler(req, res ){
-
+  var roomid = req.cookies.room; 
+  var room = Room.getByID(roomid);
+  room.state = "ingame";
+  room.emit("start");
+  res.sendStatus(200);
+  LOG("Room " + room.id + " started ");
 }
 
 function ToogleHanlder(req, res){

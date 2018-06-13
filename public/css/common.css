@@ -35,3 +35,7 @@ button.shadow:active {
   width: 68vmin;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
