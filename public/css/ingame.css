@@ -1,9 +1,15 @@
-.message-user, .message-content{
+.message-user, .message-content, #put > p{
   display: inline-block;
 }
 
 .message-user {
   font-weight: bold;
+}
+
+.queue p {
+  display: inline-block;
+  margin: 0.6vmin;
+  padding: 0px;
 }
 
 #chatbox {
