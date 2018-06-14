@@ -14,17 +14,28 @@ function HandleIndex(req, res) {
 
 function Init(app, io) {
   io.of("/ingame").on("connection", function(socket){
+
     var cookie = common.SocketCookie(socket);     
     var player = Player.getByID(cookie.id);
     var room   = Room.getByID(cookie.room);
-
     if (!player || !room){
       return;
     }
-
     player.socket = socket;
-    socket.on("put", (message) => LOG(message));
+    socket.join(room.id);
+    room.sockets = io.of('/ingame').to(room.id);
+    socket.on("put", socketPut);
+  });
+}
 
+function socketPut(message){
+  var player = common.GetPlayerFromSocket(this);  
+  var room   = common.GetRoomFromSocket(this);  
+  
+  LOG("Room " + room.id + ": "  + player.nameid() + " puts " + message);
+  room.emit("put", { 
+    name : player.name, 
+    word : message 
   });
 }
 

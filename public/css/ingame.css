@@ -1,5 +1,15 @@
+.message-user, .message-content{
+  display: inline-block;
+}
+
+.message-user {
+  font-weight: bold;
+}
+
 #chatbox {
   overflow: scroll;
   overflow-x: hidden;
   height: 40vmin;
 }
+
+

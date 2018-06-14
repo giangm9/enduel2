@@ -16,8 +16,20 @@ SocketCookie = function(socket) {
   return parseCookie(socket.handshake.headers.cookie);
 }
 
+GetPlayerFromSocket = function(socket){
+  var cookie = SocketCookie(socket);
+  return Player.getByID(cookie.id);
+}
+
+GetRoomFromSocket = function(socket){
+  var cookie = SocketCookie(socket);
+  return Room.getByID(cookie.room);
+}
+
 module.exports =  {
-  Dir : appDir,
-  SocketCookie
+  Dir                 : appDir,
+  SocketCookie        : SocketCookie,
+  GetPlayerFromSocket : GetPlayerFromSocket,
+  GetRoomFromSocket   : GetRoomFromSocket
 }
 

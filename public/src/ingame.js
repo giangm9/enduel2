@@ -24,12 +24,20 @@ $(function() {
 
   Socket
     .on("connect_error", connectionFail)
-    .on("put", (message) => console.log(message));
+    .on("put", putHandler);
+
 
   Input.on("put", function(message){
     Socket.emit("put", message);
   });
 });
+
+function putHandler( message ) {
+  var name = message.name;
+  var word = message.word;
+  
+  Box.add(name, word);
+}
 
 function connectionFail(){
   console.log("Connection Failed");

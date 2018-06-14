@@ -27,6 +27,7 @@ http.listen(8080, "localhost", null, function(){
 
 LoginHandler.Init(app, io);
 RoomHandler.Init(app, io);
+IngameHandler.Init(app, io);
 
 function tryHandler(handler, req, res){
   if (handler.IsOnIndex(req, res)){
