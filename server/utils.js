@@ -24,6 +24,12 @@ Array.prototype.getRandom = function() {
   return this[floor(rand() * this.length)];
 }
 
+String.prototype.getRandom = function() {
+  return this[floor(rand() * this.length)];
+}
+
+
+
 /**
  * Return true if the element need to be removed
  * @callback RemoveCallback

@@ -1,4 +1,5 @@
 const Dict = require("./dict.js");
+require("../utils");
 
 /**
  * @type {Room} room
@@ -12,11 +13,13 @@ function Game(room) {
   this.time     = 0;
   this.handlers = {};
   this.current  = room.host;
-  this.players  = host.players;
+  this.players  = room.players;
 
   this.players.forEach(function(player){
     player.hp = MAX_HP;
   });
+
+  this.letter = 'qwertyupoip'.getRandom();
 }
 
 
@@ -61,11 +64,15 @@ Game.prototype.next = function(){
   trigger("next", last, this.current);
 }
 
-Game.prototype.stats = function(){
+Game.prototype.status = function(){
+  var players = [];
+  this.players.forEach(function(player){
+    players.push(player.status());
+  });
   return {
-    current : this.current,
+    current : this.current.status(),
     letter  : this.letter,
-    players : this.players
+    players : players
   }
 }
 

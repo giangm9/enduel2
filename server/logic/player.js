@@ -37,7 +37,7 @@ Player.prototype.nameid = function() {
   return str;
 }
 
-Player.prototype.readableData = function(){
+Player.prototype.status = function(){
   return {
     "name"   : this.name,
     "id"     : this.id,

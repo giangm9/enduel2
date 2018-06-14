@@ -36,9 +36,9 @@ Room.prototype.status = function(){
   var players = [];
   var host = null;
   this.players.forEach( function(player) {
-    players.push(player.readableData());
+    players.push(player.status());
     if (player.isHost) {
-      host = player.readableData();
+      host = player.status();
     }
   });
   return {
@@ -70,6 +70,14 @@ Room.prototype.getNextHost = function(){
       return this.players[i];
     }
   }
+}
+
+Room.prototype.setHost = function(player){
+  this.players.forEach(function(player){
+    player.isHost = false;
+  });
+  this.host = player;
+  player.isHost = true;
 }
 
 Room.count = function(){

@@ -80,8 +80,7 @@ function LeaveHandler(req, res){
       LOG("Room " + room.id + " dismissed");
       return;
     }
-    room.host = newHost;
-    newHost.isHost = true;
+    room.setHost(newHost);
   }
 }
 
