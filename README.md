@@ -1,3 +1,5 @@
 TODO
-  update when unlock
-  leave room when close
+  - update when unlock
+  
+  - test game logic
+
