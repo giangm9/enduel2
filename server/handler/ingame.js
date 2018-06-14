@@ -2,7 +2,6 @@ const Player = require("../logic/player.js");
 const Room = require("../logic/room.js");
 const common = require("./common");
 const utils = require("../utils");
-const parseCookie = require("cookie").parse;
 const LOG = utils.LOG;
 
 function IsOnIndex(req, res) {
@@ -10,10 +9,23 @@ function IsOnIndex(req, res) {
 }
 
 function HandleIndex(req, res) {
-  res.sendFile(common.dir + "/public/ingame.html");
+  res.sendFile(common.Dir + "/public/ingame.html");
 }
 
 function Init(app, io) {
+  io.of("/ingame").on("connection", function(socket){
+    var cookie = common.SocketCookie(socket);     
+    var player = Player.getByID(cookie.id);
+    var room   = Room.getByID(cookie.room);
+
+    if (!player || !room){
+      return;
+    }
+
+    player.socket = socket;
+    socket.on("put", (message) => LOG(message));
+
+  });
 }
 
 module.exports = {

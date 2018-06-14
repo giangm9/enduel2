@@ -14,14 +14,25 @@ var
   Status = null,
   Player = null,
   Box    = null,
-  Input  = null;
+  Input  = null,
+  Socket = null;
 
 $(function() {
   Box = new Chatbox($("#chatbox"));
   Input = new Put($("#put"));
+  Socket = io("/ingame");
+
+  Socket
+    .on("connect_error", connectionFail)
+    .on("put", (message) => console.log(message));
 
   Input.on("put", function(message){
-//    console.log(message);
-    Box.add(message);
+    Socket.emit("put", message);
   });
 });
+
+function connectionFail(){
+  console.log("Connection Failed");
+  SetCookies("state", "main");
+  location.reload();
+}

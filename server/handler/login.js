@@ -6,7 +6,7 @@ const GenName = require("../libs/GenName.js");
 const LOG     = utils.LOG;
 
 function Init(app, io) {
-  GenName.Init(common.dir + "/data/names.txt");
+  GenName.Init(common.Dir+ "/data/names.txt");
 
   app.get("/login/create-room" , CreateRoomHandler);
   app.get("/login/gen-name"    , (_, res) => {res.send(GenName.Gen());});
@@ -20,6 +20,7 @@ function InitIO(io){
 }
 
 function IsOnIndex(req, res) {
+
   // First time on page 
   if (!req.cookies.state) {
     return true;
@@ -41,7 +42,7 @@ function IsOnIndex(req, res) {
 }
 
 function HandleIndex(req, res) {
-  res.sendFile(common.dir + '/public/login.html');
+  res.sendFile(common.Dir+ '/public/login.html');
 }
 
 function JoinRoomHandler(req, res) {

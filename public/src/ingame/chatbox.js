@@ -8,7 +8,6 @@ function Chatbox(jcontainer) {
  * @type {string} message
  * */
 Chatbox.prototype.add = function(message){
-
   var c = this.container;
   global.c = c;
   var wrapper = c.find("#chatbox-wrapper");

@@ -2,7 +2,6 @@ const Player      = require("../logic/player.js");
 const Room        = require("../logic/room.js");
 const common      = require("./common");
 const utils       = require("../utils");
-const parseCookie = require("cookie").parse;
 const LOG         = utils.LOG;
 
 function IsOnIndex( req, res ){
@@ -10,7 +9,7 @@ function IsOnIndex( req, res ){
 }
 
 function HandleIndex( req, res ){
-  res.sendFile(common.dir + "/public/room.html");
+  res.sendFile(common.Dir + "/public/room.html");
 }
 
 function Init( app, io){
@@ -26,7 +25,7 @@ function Init( app, io){
 function InitIO(io){
 
   io.of('/room').on("connection", function(socket){
-    var cookie = SocketCookie(socket);
+    var cookie = common.SocketCookie(socket);
     var player = Player.getByID(cookie.id);
     var room   = Room.getByID(cookie.room);
 
@@ -114,19 +113,6 @@ function ToogleHanlder(req, res){
   room.emit("update");
   res.send(room.lock);
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
-}
-
-
-function SocketCookie(socket){
-  return parseCookie(socket.handshake.headers.cookie);
-}
-
-Room.prototype.emit = function(event, message){
-  this.sockets.emit(event, message);
-}
-
-Player.prototype.emit = function(event, message){
-  this.socket.emit(event, message);
 }
 
 module.exports = {
