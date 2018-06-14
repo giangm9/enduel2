@@ -47,24 +47,24 @@ Game.prototype.put = function( word ){
 
 }
 
-Game.prototype.check0HP(){
+Game.prototype.check0HP = function(){
   if (this.current.hp  <= 0){
     this.current.hp = 0;
     this.trigger("die");
   }
 }
 
-Game.prototype.next(){
+Game.prototype.next = function(){
   var last = this.current;
   var index = this.players.indexOf(this.current);
   this.current = this.players[(index == this.players.length) ? 0 : index + 1]
   trigger("next", last, this.current);
 }
 
-Game.prototype.stats(){
+Game.prototype.stats = function(){
   return {
     current : this.current,
-    letter  : this.letter
+    letter  : this.letter,
     players : this.players
   }
 }
@@ -83,3 +83,5 @@ Game.prototype.on = function(event, handler){
   }
   h[event].append(handler);
 }
+
+module.exports = Game;
