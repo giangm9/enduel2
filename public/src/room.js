@@ -56,7 +56,7 @@ function InitQuit(){
 
 function InitLock(){
   $Lock.click(function() {
-    if (!Player.isHost()) return;
+    if (!Player.isHost) return;
     $Lock.css("opacity", 0.2);
     Get("/room/toggle-lock", function(lock){
         $Lock.css("opacity", 1);
