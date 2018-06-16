@@ -10,6 +10,11 @@ function TestLogic(Dict){
   var main = new Player("main");
   var int = new Player("int");
 
+  var int64 = new Player("int64");
+  var npm = new Player("npm");
+  var ssh = new Player("ssh");
+
+
   var room = new Room();
 
   room.add(float);
@@ -29,14 +34,25 @@ function TestLogic(Dict){
   game.put("toon");
   game.tick("101");
   game.put("noon");
+
   game.put("new");
   game.put("world");
+
   game.put("doez");
   game.put("day");
   game.put("yes");
   main.leaveGame();
   float.leaveGame();
   game.put("sun");
+
+  var linux = new Room();
+  linux.add(int64);
+  linux.add(npm);
+  linux.add(ssh);
+  linux.setHost(npm);
+  var linuxGame = new Game(linux);
+  linuxGame.tick(301);
+
 
 }
 

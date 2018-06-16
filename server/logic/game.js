@@ -125,13 +125,10 @@ Game.prototype.check0HP = function( source ){
       if (player.hp > 0)
         this.LOG("  | " + player.namehp());
     }.bind(this));
-
-    this.next();
     this.trigger("die");
-
     this._livingCount--; 
     this.tryEnd();
-
+    this.next();
   }
 }
 
@@ -140,7 +137,7 @@ Game.prototype.next = function(){
   var last = this.current;
   var index = this.players.indexOf(this.current);
   var nextIndex = index;
-  while (true) {
+  while (true && this._livingCount > 0) {
     nextIndex = (nextIndex + 1 == this.players.length) ? 0 : nextIndex + 1;
     if (this.players[nextIndex].hp > 0) break;
   }
