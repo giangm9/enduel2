@@ -32,6 +32,10 @@ $(function() {
   });
 });
 
+function Quit(){
+
+}
+
 function putHandler( message ) {
   var name = message.name;
   var word = message.word;

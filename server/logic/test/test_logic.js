@@ -34,6 +34,7 @@ function TestLogic(Dict){
   game.put("doez");
   game.put("day");
   game.put("yes");
+  main.leaveGame();
 }
 
 module.exports = TestLogic;

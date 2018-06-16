@@ -1,3 +1,6 @@
+p{
+  text-align: left;
+}
 .message-user, .message-content, #put > p{
   display: inline-block;
 }
@@ -18,4 +21,6 @@
   height: 40vmin;
 }
 
-
+#quit{
+  margin-bottom: 1vmin;
+}

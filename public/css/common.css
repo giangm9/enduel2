@@ -31,6 +31,10 @@ button.shadow:active {
   text-align: center;
 }
 
+.right {
+  text-align: right;
+}
+
 .limit-width {
   width: 68vmin;
 }

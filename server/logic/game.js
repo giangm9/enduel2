@@ -4,6 +4,8 @@ const Player = require("./player");
 const LOG = utils.LOG;
 
 
+
+
 /**
  * @type {Room} room
  */
@@ -11,35 +13,36 @@ const LOG = utils.LOG;
 const MAX_HP               = 100;
 const DAMAGE_SKIP          = 30;
 const DAMAGE_INCORRECT     = 20;
+const DAMAGE_USED          = 10;
+
 const DEBUG                = false;
 const TICK_DAMAGE_INTERVAL = 20;
 
-Player.prototype.namehp = function() {
-  return this.name + " { hp:" + this.hp + " }";
-}
-
-var old_status = Player.prototype.status;
-
-Player.prototype.status = function( ) {
-  var status = old_status.call(this);
-  status.hp = this.hp;
-  return status;
-}
+/**
+ * Available events 
+ * -- Events trigger on current player -- 
+ * @event correct   : put a correct word
+ * @event incorrect : put an incorrect word
+ * @event die       : hp <=0
+ * @event skip      : 
+ * @event used      : put an used word
+ * */
 
 function Game(room) {
   this.time     = 0;
   this.handlers = {};
   this.current  = room.host;
   this.players  = room.players;
-  this.room = room;
+  this.room     = room;
+  this.used     = [];
+  this.letter   = 'qwertyuiopasdfghjklzxcvbnm'.getRandom();
 
   this.players.forEach(function(player){
-    player.hp = MAX_HP;
+    player.hp         = MAX_HP;
     player.timeDamage = 0;
-  });
+    player.game       = this;
+  }.bind(this));
 
-  this.letter = 'qwertyuiopasdfghjklzxcvbnm'.getRandom();
-  this.log = 'none';
 }
 
 Game.prototype.LOG = function(message){
@@ -89,6 +92,12 @@ Game.prototype.put = function( word ){
 
 
   if (Dict.Exist(word)){
+    if (this.used.includes(word)){
+      c.hp -= DAMAGE_USED;
+      this.LOG("  | used");
+      this.trigger("used");
+      this.check0HP("used");
+    }
     this.LOG("  | correct");
     this.letter = word[word.length  - 1];
     this.LOG("current letter : '" +  this.letter + "'");
@@ -97,8 +106,8 @@ Game.prototype.put = function( word ){
   } else {
     this.trigger("  | incorrect");
     c.hp -= DAMAGE_INCORRECT;
-    this.check0HP("incorrect");
     this.LOG("  | incorrect, " + current.namehp() + " ( -" + DAMAGE_INCORRECT + "hp )");
+    this.check0HP("incorrect");
   }
 }
 
@@ -159,5 +168,35 @@ Game.prototype.on = function(event, handler){
   }
   h[event].append(handler);
 }
+
+
+Player.prototype.status = function( ) {
+  var status = old_status.call(this);
+  status.hp = this.hp;
+  return status;
+}
+
+Player.prototype.leaveGame = function() {
+  var game = this.game;
+  if (game.current.id == this.id){
+    game.next();
+  }
+
+  game.LOG(this.namehp() + " has left");
+  game.LOG("  | current player " + game.current.namehp()); 
+  game.players.remove(function(player){
+    return player.id == this.id;
+  }.bind(this));
+
+  this.game = undefined;
+  this.room = undefined;
+}
+
+Player.prototype.namehp = function() {
+  return this.name + " { hp:" + this.hp + " }";
+}
+
+var old_status = Player.prototype.status;
+
 
 module.exports = Game;
