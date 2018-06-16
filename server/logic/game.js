@@ -26,10 +26,6 @@ Player.prototype.status = function( ) {
   return status;
 }
 
-/**
- * TODO next player must be living player
- */
-
 function Game(room) {
   this.time     = 0;
   this.handlers = {};
