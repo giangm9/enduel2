@@ -20,12 +20,15 @@ const TICK_DAMAGE_INTERVAL = 20;
 
 /**
  * Available events 
+ *
  * -- Events trigger on current player -- 
  * @event correct   : put a correct word
  * @event incorrect : put an incorrect word
- * @event die       : hp <=0
+ * @event die       : hp <= 0
  * @event skip      : 
  * @event used      : put an used word
+ * -- Event trigger on game
+ * @event end       : all players left/die, game ends
  * */
 
 function Game(room) {
@@ -35,6 +38,7 @@ function Game(room) {
   this.players  = room.players;
   this.room     = room;
   this.used     = [];
+  this.id       = room.id;
   this.letter   = 'qwertyuiopasdfghjklzxcvbnm'.getRandom();
 
   this.players.forEach(function(player){
@@ -43,6 +47,7 @@ function Game(room) {
     player.game       = this;
   }.bind(this));
 
+  this._livingCount = this.players.length;
 }
 
 Game.prototype.LOG = function(message){
@@ -123,6 +128,10 @@ Game.prototype.check0HP = function( source ){
 
     this.next();
     this.trigger("die");
+
+    this._livingCount--; 
+    this.tryEnd();
+
   }
 }
 
@@ -169,6 +178,19 @@ Game.prototype.on = function(event, handler){
   h[event].append(handler);
 }
 
+Game.prototype.tryEnd = function(){
+  if (this._livingCount != 0) return;
+  this.current = undefined;
+  this.trigger("end");
+
+
+  Object.getOwnPropertyNames(this.__proto__).forEach(function(prop){
+    if (typeof this[prop] == 'function'){
+      this[prop] = () => LOG("Game (id=" + this.id + ")  already end");
+    }
+  }.bind(this));
+}
+
 
 Player.prototype.status = function( ) {
   var status = old_status.call(this);
@@ -178,6 +200,7 @@ Player.prototype.status = function( ) {
 
 Player.prototype.leaveGame = function() {
   var game = this.game;
+
   if (game.current.id == this.id){
     game.next();
   }
@@ -190,6 +213,9 @@ Player.prototype.leaveGame = function() {
 
   this.game = undefined;
   this.room = undefined;
+
+  game._livingCount--;
+  game.tryEnd();
 }
 
 Player.prototype.namehp = function() {
