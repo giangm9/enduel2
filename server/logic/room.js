@@ -23,6 +23,9 @@ function Room() {
  */
 Room.prototype.add = function(player) {
   this.players.push(player);
+  if (this.players.length == 0){
+    this.setHost(player);
+  }
   player.room = this;
 }
 
