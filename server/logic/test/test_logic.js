@@ -53,7 +53,6 @@ function TestLogic(Dict){
   var linuxGame = new Game(linux);
   linuxGame.tick(301);
 
-
 }
 
 module.exports = TestLogic;
