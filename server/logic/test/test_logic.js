@@ -21,8 +21,6 @@ function TestLogic(Dict){
   room.add(main);
   room.add(int);
 
-  room.setHost(float);
-
   var game = new Game(room);
   game.log = 'all';
   LOG("NEXT LOG MUST SHOW ERROR");
@@ -49,7 +47,6 @@ function TestLogic(Dict){
   linux.add(int64);
   linux.add(npm);
   linux.add(ssh);
-  linux.setHost(npm);
   var linuxGame = new Game(linux);
   linuxGame.tick(301);
 
