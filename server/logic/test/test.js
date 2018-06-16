@@ -1,23 +1,12 @@
-const Player = require("../player.js");
-const Room   = require("../room.js");
-const Game   = require("../game.js");
-const LOG    = console.log;
+const Dict   = require("../dict.js");
 
 
-var float = new Player("float");
-var main = new Player("main");
-var int = new Player("int");
+Dict.Init("./test/full_word.txt", test);
 
-var room = new Room();
 
-room.add(float);
-room.add(main);
-room.add(int);
-
-room.setHost(float);
-
-var game = new Game(room);
-
-LOG(game.status());
+function test() {
+//  require("./test_dict")(Dict);
+  require("./test_logic")(Dict);
+}
 
 
