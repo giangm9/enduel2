@@ -55,25 +55,36 @@ Game.prototype.LOG = function(message){
 }
 
 
-Game.prototype.tick = function(dt){
+Game.prototype.Tick = function(dt){
   while (dt > 0){
     this.tick1sec();
     dt -= 1;
   }
 }
 
-Game.prototype.tick1sec = function(){
-  var c = this.current;   
-  c.hp -= 1;
-  c.timeDamage += 1;
-  if (c.timeDamage >= TICK_DAMAGE_INTERVAL){
-    this.LOG(c.namehp() + " takes " + TICK_DAMAGE_INTERVAL + " damages, source : time-out");
-    c.timeDamage -= TICK_DAMAGE_INTERVAL;
+Game.prototype.Status = function(){
+  var players = [];
+  this.players.forEach(function(player){
+    players.push(player.status());
+  });
+  return {
+    room    : this.room.id,
+    current : this.current.status(),
+    letter  : this.letter,
+    players : players
   }
-  this.check0HP("time-out");
 }
 
-Game.prototype.put = function( word ){
+Game.prototype.On = function(event, handler){
+  var h = this.handlers;
+  if (!h[event]){
+    h[event] = [];
+  }
+  h[event].append(handler);
+}
+
+
+Game.prototype.Put = function( word ){
   var current = this.current;
   var room = this.room;
 
@@ -116,6 +127,17 @@ Game.prototype.put = function( word ){
   }
 }
 
+Game.prototype.tick1sec = function(){
+  var c = this.current;   
+  c.hp -= 1;
+  c.timeDamage += 1;
+  if (c.timeDamage >= TICK_DAMAGE_INTERVAL){
+    this.LOG(c.namehp() + " takes " + TICK_DAMAGE_INTERVAL + " damages, source : time-out");
+    c.timeDamage -= TICK_DAMAGE_INTERVAL;
+  }
+  this.check0HP("time-out");
+}
+
 Game.prototype.check0HP = function( source ){
   if (this.current.hp  <= 0){
     this.current.hp = 0;
@@ -147,18 +169,7 @@ Game.prototype.next = function(){
   this.LOG("current player " + this.current.namehp());
 }
 
-Game.prototype.status = function(){
-  var players = [];
-  this.players.forEach(function(player){
-    players.push(player.status());
-  });
-  return {
-    room    : this.room.id,
-    current : this.current.status(),
-    letter  : this.letter,
-    players : players
-  }
-}
+
 
 Game.prototype.trigger = function(event, data){
   if (!this.handlers[event]) return;
@@ -167,13 +178,7 @@ Game.prototype.trigger = function(event, data){
   });
 }
 
-Game.prototype.on = function(event, handler){
-  var h = this.handlers;
-  if (!h[event]){
-    h[event] = [];
-  }
-  h[event].append(handler);
-}
+
 
 Game.prototype.tryEnd = function(){
   if (this._livingCount != 0) return;
@@ -195,7 +200,7 @@ Player.prototype.status = function( ) {
   return status;
 }
 
-Player.prototype.leaveGame = function() {
+Player.prototype.LeaveGame = function() {
   var game = this.game;
 
   if (game.current.id == this.id){
@@ -203,16 +208,20 @@ Player.prototype.leaveGame = function() {
   }
 
   game.LOG(this.namehp() + " has left");
-  game.LOG("  | current player " + game.current.namehp()); 
   game.players.remove(function(player){
     return player.id == this.id;
   }.bind(this));
 
   this.game = undefined;
   this.room = undefined;
+  this.hp   = 0;
 
   game._livingCount--;
   game.tryEnd();
+  if (game.current){
+    game.LOG("  | current player " + game.current.namehp()); 
+  }
+
 }
 
 Player.prototype.namehp = function() {

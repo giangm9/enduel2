@@ -16,39 +16,34 @@ function TestLogic(Dict){
 
 
   var room = new Room();
-
   room.add(float);
   room.add(main);
   room.add(int);
-
   var game = new Game(room);
   game.log = 'all';
   LOG("NEXT LOG MUST SHOW ERROR");
   game.letter = 'c';
-  game.put("moon");
-  game.put("cat");
-  game.put("tooooo");
-  game.tick(30);
-  game.put("toon");
-  game.tick("101");
-  game.put("noon");
-
-  game.put("new");
-  game.put("world");
-
-  game.put("doez");
-  game.put("day");
-  game.put("yes");
-  main.leaveGame();
-  float.leaveGame();
-  game.put("sun");
-
+  game.Put("moon");
   var linux = new Room();
+  game.Put("cat");
+  game.Put("tooooo");
+  game.Tick(30);
+  game.Put("toon");
+  game.Tick("101");
+  game.Put("noon");
   linux.add(int64);
+  game.Put("new");
+  game.Put("world");
+  game.Put("doez");
   linux.add(npm);
+  game.Put("day");
+  game.Put("yes");
+  main.LeaveGame();
+  game.Put("sun");
   linux.add(ssh);
   var linuxGame = new Game(linux);
-  linuxGame.tick(301);
+  linuxGame.Tick(301);
+  float.LeaveGame();
 
 }
 
