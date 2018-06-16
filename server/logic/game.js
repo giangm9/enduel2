@@ -77,7 +77,7 @@ Game.prototype.put = function( word ){
   this.LOG(current.namehp() + " puts '" + word + "'");
   var c = this.current;
   if (word[0]  == "!"){
-    this.LOG(current.namehp() + " skip");
+    this.LOG(current.namehp() + "  | skip");
     this.trigger("skip");
     c.hp -= SKIP_DAMAGE;
     this.check0HP("skip");
@@ -93,16 +93,16 @@ Game.prototype.put = function( word ){
 
 
   if (Dict.Exist(word)){
-    this.LOG("correct");
+    this.LOG("  | correct");
     this.letter = word[word.length  - 1];
     this.LOG("current letter : '" +  this.letter + "'");
     this.trigger("correct");
     this.next();
   } else {
-    this.trigger("incorrect");
+    this.trigger("  | incorrect");
     c.hp -= DAMAGE_INCORRECT;
     this.check0HP("incorrect");
-    this.LOG("incorrect, " + current.namehp() + " ( -" + DAMAGE_INCORRECT + "hp )");
+    this.LOG("  | incorrect, " + current.namehp() + " ( -" + DAMAGE_INCORRECT + "hp )");
   }
 }
 
@@ -110,6 +110,12 @@ Game.prototype.check0HP = function( source ){
   if (this.current.hp  <= 0){
     this.current.hp = 0;
     this.LOG(this.current.name + " DIE, source : " + source);
+    this.LOG("living players ");
+    this.players.forEach(function(player){
+      if (player.hp > 0)
+        this.LOG("  | " + player.namehp());
+    }.bind(this));
+
     this.next();
     this.trigger("die");
   }

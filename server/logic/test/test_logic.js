@@ -28,6 +28,12 @@ function TestLogic(Dict){
   game.tick(30);
   game.put("toon");
   game.tick("101");
+  game.put("noon");
+  game.put("new");
+  game.put("world");
+  game.put("doez");
+  game.put("day");
+  game.put("yes");
 }
 
 module.exports = TestLogic;
