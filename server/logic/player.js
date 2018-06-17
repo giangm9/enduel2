@@ -18,7 +18,7 @@ function Player(name = "__UNSET__"){
 }
 
 
-Player.prototype.leave = function() {
+Player.prototype.Leave = function() {
   function matchid( player ) {
     return this.id == player.id;
   }
@@ -27,7 +27,7 @@ Player.prototype.leave = function() {
   AllPlayers.remove(matchid.bind(this));
 }
 
-Player.prototype.nameid = function() {
+Player.prototype.NameID = function() {
   var str = this.name;
   for (var i = 0; i < 10 - this.name.length; i++){
     str += ' ';
@@ -37,7 +37,7 @@ Player.prototype.nameid = function() {
   return str;
 }
 
-Player.prototype.status = function(){
+Player.prototype.Status = function(){
   return {
     "name"   : this.name,
     "id"     : this.id,
@@ -50,11 +50,11 @@ Player.prototype.status = function(){
  * @param {number} id 
  * @returns {Player}
  */
-Player.getByID = function(id){
+Player.GetByID = function(id){
   return AllPlayers.getByID(id)
 }
 
-Player.count = function(){
+Player.Count = function(){
   return AllPlayers.length;
 }
 

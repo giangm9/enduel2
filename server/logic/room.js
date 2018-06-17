@@ -21,7 +21,7 @@ function Room() {
  * Add a player 
  * @param {Player} player
  */
-Room.prototype.add = function(player) {
+Room.prototype.Add = function(player) {
   this.players.push(player);
   if (this.players.length == 1){
     this.setHost(player);
@@ -29,13 +29,13 @@ Room.prototype.add = function(player) {
   player.room = this;
 }
 
-Room.prototype.dismiss = function() {
+Room.prototype.Dismiss = function() {
   AllRooms.remove(function(room){
     return this.id == room.id
   }.bind(this));
 }
 
-Room.prototype.status = function(){
+Room.prototype.Status = function(){
   var players = [];
   var host = null;
   this.players.forEach( function(player) {
@@ -52,7 +52,7 @@ Room.prototype.status = function(){
   }
 }
 
-Room.prototype.toggle = function(){
+Room.prototype.Toggle = function(){
   this.lock = !this.lock;
   if (!this.lock) {
     OpenRooms.push(this);
@@ -63,11 +63,11 @@ Room.prototype.toggle = function(){
   }
 }
 
-Room.prototype.getPlayer = function(id){
+Room.prototype.GetPlayer = function(id){
   return this.players.getByID(id); 
 }
 
-Room.prototype.getNextHost = function(){
+Room.prototype.GetNextHost = function(){
   for (var i = 0 ; i < this.players.length; i++){
     if (!this.players[i].isHost){
       return this.players[i];
@@ -75,7 +75,7 @@ Room.prototype.getNextHost = function(){
   }
 }
 
-Room.prototype.setHost = function(player){
+Room.prototype.SetHost = function(player){
   this.players.forEach(function(player){
     player.isHost = false;
   });
