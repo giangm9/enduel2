@@ -113,7 +113,7 @@ Game.prototype.Put = function( word ){
       c.hp -= DAMAGE_USED;
       this.LOG("  | used");
       this.LOG("  | current player " + this.current.namehp());
-      this.trigger("used");
+      this.trigger("used", word);
       this.check0HP("used");
       return;
     }
@@ -121,10 +121,10 @@ Game.prototype.Put = function( word ){
     this.letter = word[word.length  - 1];
     this.LOG("current letter : '" +  this.letter + "'");
     this.used.push(word);
-    this.trigger("correct");
+    this.trigger("correct", word);
     this.next();
   } else {
-    this.trigger("  | incorrect");
+    this.trigger("incorrect", word);
     c.hp -= DAMAGE_INCORRECT;
     this.LOG("  | incorrect, " + current.namehp() + " ( -" + DAMAGE_INCORRECT + "hp )");
     this.check0HP("incorrect");

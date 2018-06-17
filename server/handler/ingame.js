@@ -42,14 +42,19 @@ function Init(app, io) {
     }
     
     room.game
-      .On("end", endGame.bind(room));
+      .On("end"       , gameEnd.bind(room))
+      .On("used"      , (word) => room.emit("used", {name : room.game.current.name, word: word}))
+      .On("incorrect" , (word) => room.emit("incorrect", {name : room.game.current.name, word: word}))
+      .On("correct"   , (word) => room.emit("correct", {name : room.game.current.name, word: word}))
 
     player.game = room.game;
   });
 }
 
 
-function endGame(){
+
+
+function gameEnd(){
   clearInterval(this.routine); 
   this.emit('end');
 }
@@ -83,8 +88,6 @@ function socketPut(message){
   var room   = SocketRoom(this);
 
   room.game.Put(message);
-  room.emit("put", { name: player.name , word : message });
-
 }
 
 Room.prototype.tick = function() {

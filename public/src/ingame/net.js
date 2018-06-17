@@ -17,10 +17,12 @@ Net.Init = function() {
   socket
     .on("connection_error" , Net.onFail)
     .on("put"              , Net.onPut)
-    .on("update"           , ( data ) => Net.trigger("update" , data) )
-    .on("leave"            , ( data ) => Net.trigger("leave"  , data) )
-    .on("skip"             , ( data ) => Net.trigger("skip"  , data) );
-
+    .on("update"           , ( data ) => Net.trigger("update"    , data) )
+    .on("leave"            , ( data ) => Net.trigger("leave"     , data) )
+    .on("skip"             , ( data ) => Net.trigger("skip"      , data) )
+    .on("used"             , ( data ) => Net.trigger("used"      , data) )
+    .on("incorrect"        , ( data ) => Net.trigger("incorrect" , data) )
+    .on("correct"          , ( data ) => Net.trigger("correct"   , data) );
   EventBase(Net);
 }
 
