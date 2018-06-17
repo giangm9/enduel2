@@ -69,18 +69,18 @@ function LeaveHandler(req, res){
   LOG(player.NameID() + " leave room " 
     + req.cookies.room);
 
-  player.leave();
+  player.Leave();
   // Host to next player
   if (player.isHost){
     
-    var newHost = room.getNextHost();
+    var newHost = room.GetNextHost();
     // No more player in room
     if (!newHost) {
-      room.dismiss();
+      room.Dismiss();
       LOG("Room " + room.id + " dismissed");
       return;
     }
-    room.setHost(newHost);
+    room.SetHost(newHost);
   }
 }
 

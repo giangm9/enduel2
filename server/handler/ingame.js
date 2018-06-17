@@ -21,18 +21,24 @@ function Init(app, io) {
     var cookie = common.SocketCookie(socket);     
     var player = Player.GetByID(cookie.id);
     var room   = Room.GetByID(cookie.room);
-    if (!player || !room){
-      return;
-    }
+
+    // In case server restart
+    if (!player || !room) return;
+    
     player.socket = socket;
     socket.join(room.id);
     room.sockets = io.of('/ingame').to(room.id);
-    socket
-      .on("put", socketPut)
-      .on("skip", socketSkip)
-      .on("leave", socketLeave);
 
-    player.game = new Game(room);
+    socket
+      .on("put"   , socketPut)
+      .on("skip"  , socketSkip)
+      .on("leave" , socketLeave);
+
+    if (!room.game) {
+      room.game = new Game(room);
+    }
+    
+    player.game = room.game;
   });
 }
 
