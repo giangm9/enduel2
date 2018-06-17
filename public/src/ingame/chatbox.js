@@ -1,14 +1,20 @@
+import $ from "jquery";
 
-function Chatbox(jcontainer) {
-  this.container = jcontainer;
+var 
+  Chatbox = {},
+  jcontainer;
+
+
+Chatbox.Init = function() {
+  jcontainer = $("#chatbox");
   jcontainer.append("<div id='chatbox-wrapper'> </div>");
 }
 
 /**
  * @type {string} message
  * */
-Chatbox.prototype.add = function(name, word){
-  var c = this.container;
+Chatbox.add = function(name, word){
+  var c = jcontainer;
   global.c = c;
   var wrapper = c.find("#chatbox-wrapper");
   wrapper.append("<div class='message-wrapper'> </div>");

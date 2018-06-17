@@ -15,8 +15,8 @@ Net.Init = function() {
   socket = io("/ingame");
   handlers = {};
   socket
-    .on("connection_error" , connectionFail )
-    .on("put"              , ( message ) => Net.trigger("put" , message) )
+    .on("connection_error" , Net.onFail)
+    .on("put"              , Net.onPut)
     .on("update"           , ( data ) => Net.trigger("update" , data) )
     .on("leave"            , ( data ) => Net.trigger("leave"  , data) )
     .on("skip"             , ( data ) => Net.trigger("skip"  , data) );
@@ -40,8 +40,13 @@ Net.Update = function() {
   socket.emit("update");
 }
 
+Net.onPut = function(message) {
+  Net.trigger("put", message);
+  console.log(message);
+  Net.Update();
+}
 
-function connectionFail(){
+Net.onFail = function(){
   console.log("Connection Failed");
   SetCookies("state", "main");
   location.reload();

@@ -74,7 +74,8 @@ function socketPut(message){
   var room   = SocketRoom(this);
 
   room.game.Put(message);
-  LOG(player.NameID() + " puts " + message);
+  room.emit("put", { name: player.name , word : message });
+
 }
 
 

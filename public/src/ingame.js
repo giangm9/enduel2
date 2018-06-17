@@ -4,29 +4,33 @@ import io from "socket.io-client";
 import Chatbox from "./ingame/chatbox.js";
 import Put from "./ingame/put.js";
 import Net from "./ingame/net.js";
+import Queue from "./ingame/queue.js";
 
 const LOG = console.log;
 const Get = $.get;
 const GetCookies = Cookies.get;
 const SetCookies = Cookies.set;
 
-
-var 
-  Status = null,
-  Player = null,
-  Box    = null,
-  Input  = null,
-  Socket = null;
-
 $(function() {
-  Box = new Chatbox($("#chatbox"));
-  Input = new Put($("#put"));
-  Input.on("put", function(message){
+  InitNet();
+  Queue.Init();
+  Put.Init();
+  Chatbox.Init();
+
+  Put.On("put", function(message){
     Net.Put(message);
   });
 
-  InitNet();
-
+  Net.On("update", function(data) {
+    console.log('update');
+    var letter = data.letter;
+    var currentName = data.current.name;
+    var nextName = data.next.name;
+    Queue.Set(currentName, nextName);
+    Put.Letter(letter);
+  });
+  
+  Net.Update();
 });
 
 function putHandler( message ) {
@@ -45,11 +49,10 @@ function InitNet() {
     console.log(data);
   }
 
-  Net.On("put", logData);
-  Net.On("skip", logData);
-  Net.On("put", logData);
-  Net.On("update", logData);
-  Net.On("leave", logData);
-
+  Net.On("put"    , logData);
+  Net.On("skip"   , logData);
+  Net.On("put"    , logData);
+  Net.On("update" , logData);
+  Net.On("leave"  , logData);
 }
 

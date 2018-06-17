@@ -1,20 +1,37 @@
-function Put(container){
-  this.jcontainer = container;
+import EventBase from "../eventbase.js";
+import $ from "jquery";
 
-  this.state = "ans"; // chat
-  this.callbacks = {};
-  this.jinp = container.find("#inp-put");
-  this.jbtn = container.find("#btn-put");
+var Put = {},
+  jcontainer,
+  jinp,
+  jbtn,
+  jletter;
 
-  this.jbtn.click(function() {
-    if (this.callbacks["put"]){
-      this.callbacks["put"](this.jinp.val());
+Put.Init = function(){
+
+  jcontainer = $("#put");
+  jinp       = jcontainer.find("#inp-put");
+  jbtn       = jcontainer.find("#btn-put");
+  jletter    = jcontainer.find("#letter");
+
+  jbtn.click(submit);
+
+  jinp.keyup(function(event){ 
+    if (event.keyCode  === 13) { 
+      jbtn.click();
     }
-  }.bind(this));
+  });
+
+  EventBase(Put);
 }
 
-Put.prototype.on = function(event, callback){
-  this.callbacks[event] = callback;
+Put.Letter = function(letter) {
+ return jletter.html(letter);
+}
+
+function submit() {
+  Put.trigger("put", jinp.val());
+  jinp.val('');
 }
 
 export default Put;

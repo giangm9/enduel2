@@ -69,6 +69,7 @@ Game.prototype.Status = function(){
   return {
     room    : this.room.id,
     current : this.current.Status(),
+    next    : this.getNext().Status(),
     letter  : this.letter,
     players : players
   }
@@ -158,7 +159,7 @@ Game.prototype.check0HP = function( source ){
   }
 }
 
-Game.prototype.next = function(){
+Game.prototype.getNext = function() {
   var last = this.current;
   var index = this.players.indexOf(this.current);
   var nextIndex = index;
@@ -166,7 +167,12 @@ Game.prototype.next = function(){
     nextIndex = (nextIndex + 1 == this.players.length) ? 0 : nextIndex + 1;
     if (this.players[nextIndex].hp > 0) break;
   }
-  this.current = this.players[nextIndex];
+  return this.players[nextIndex];
+}
+
+Game.prototype.next = function(){
+  var last = this.current;
+  this.current = this.getNext();
   this.current.timeDamage = 0;
   this.trigger("next", last, this.current);
   this.LOG("current player " + this.current.namehp());
