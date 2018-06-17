@@ -42,7 +42,6 @@ Net.Update = function() {
 
 Net.onPut = function(message) {
   Net.trigger("put", message);
-  console.log(message);
   Net.Update();
 }
 

@@ -57,7 +57,7 @@ function JoinRoomHandler(req, res) {
   var player = new Player(name);
   var room = null;
   if (roomid == '') {
-    room = Room.getRandomOpen();
+    room = Room.GetRandomOpen();
   } else {
     room = Room.GetByID(roomid);
     if (!room) {
@@ -65,11 +65,11 @@ function JoinRoomHandler(req, res) {
       return;
     }
   }
-  room.add(player);
+  room.Add(player);
   res.cookie("state", "room");
   res.cookie("room", room.id);
   res.cookie("id", player.id);
-  LOG(player.nameid() + " join room " + room.id);
+  LOG(player.NameID() + " join room " + room.id);
   LOG_ROOM(room);
   res.sendStatus(200);
 }

@@ -21,25 +21,20 @@ $(function() {
     Net.Put(message);
   });
 
-  Net.On("update", function(data) {
-    console.log('update');
-    var letter = data.letter;
-    var currentName = data.current.name;
-    var nextName = data.next.name;
-    Queue.Set(currentName, nextName);
-    Put.Letter(letter);
-  });
+  Net
+    .On("update", function(data) {
+      var letter = data.letter;
+      var currentName = data.current.name;
+      var nextName = data.next.name;
+      Queue.Set(currentName, nextName);
+      Put.Letter(letter);
+    })
+    .On("put", function(message) {
+      Chatbox.Add(message.name, message.word);
+    });
   
   Net.Update();
 });
-
-function putHandler( message ) {
-  var name = message.name;
-  var word = message.word;
-  
-  Box.add(name, word);
-}
-
 
 function InitNet() {
   Net.Init();

@@ -13,7 +13,7 @@ Chatbox.Init = function() {
 /**
  * @type {string} message
  * */
-Chatbox.add = function(name, word){
+Chatbox.Add = function(name, word){
   var c = jcontainer;
   global.c = c;
   var wrapper = c.find("#chatbox-wrapper");
