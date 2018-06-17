@@ -8,4 +8,4 @@
 
 * private variable/method: _dashLowerCamelCase
     
-    
+* jquery object, name starts with "j" ex : jbutton, jinput    
