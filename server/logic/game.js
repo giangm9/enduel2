@@ -155,7 +155,7 @@ Game.prototype.check0HP = function( source ){
       }
     }.bind(this));
     this.LOG("  | count = " + count);
-    this.trigger("die");
+    this.trigger("die", this.current.name);
     this._livingCount--; 
     this.tryEnd();
     this.next();

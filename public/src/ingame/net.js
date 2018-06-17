@@ -22,7 +22,9 @@ Net.Init = function() {
     .on("skip"             , ( data ) => Net.trigger("skip"      , data) )
     .on("used"             , ( data ) => Net.trigger("used"      , data) )
     .on("incorrect"        , ( data ) => Net.trigger("incorrect" , data) )
-    .on("correct"          , ( data ) => Net.trigger("correct"   , data) );
+    .on("correct"          , ( data ) => Net.trigger("correct"   , data) )
+    .on("die"              , ( data ) => Net.trigger("die"       , data) )
+    .on("end"              , ( data ) => Net.trigger("end") );
   EventBase(Net);
 }
 

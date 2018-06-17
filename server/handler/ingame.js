@@ -46,6 +46,7 @@ function Init(app, io) {
       .On("used"      , (word) => room.emit("used", {name : room.game.current.name, word: word}))
       .On("incorrect" , (word) => room.emit("incorrect", {name : room.game.current.name, word: word}))
       .On("correct"   , (word) => room.emit("correct", {name : room.game.current.name, word: word}))
+      .On("die"       , (name) => room.emit("die", name)); 
 
     player.game = room.game;
   });
