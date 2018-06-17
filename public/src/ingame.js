@@ -22,8 +22,10 @@ $(function() {
   Box = new Chatbox($("#chatbox"));
   Input = new Put($("#put"));
   Input.on("put", function(message){
-    Socket.emit("put", message);
+    Net.Put(message);
   });
+
+  InitNet();
 
 });
 
@@ -34,4 +36,20 @@ function putHandler( message ) {
   Box.add(name, word);
 }
 
+
+function InitNet() {
+  Net.Init();
+  global.net = Net;
+
+  function logData(data){
+    console.log(data);
+  }
+
+  Net.On("put", logData);
+  Net.On("skip", logData);
+  Net.On("put", logData);
+  Net.On("update", logData);
+  Net.On("leave", logData);
+
+}
 

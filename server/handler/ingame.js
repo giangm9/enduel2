@@ -32,16 +32,24 @@ function Init(app, io) {
     socket
       .on("put"   , socketPut)
       .on("skip"  , socketSkip)
+      .on("leave" , socketLeave)
+      .on("update", socketUpdate)
       .on("leave" , socketLeave);
 
     if (!room.game) {
       room.game = new Game(room);
     }
-    
+
     player.game = room.game;
+
   });
 }
 
+
+function socketUpdate(){
+  var player = SocketPlayer(this);
+  player.emit("update", player.game.Status());
+}
 
 function socketLeave() {
   var player = SocketPlayer(this);
@@ -64,11 +72,9 @@ function socketSkip(){
 function socketPut(message){
   var player = SocketPlayer(this);
   var room   = SocketRoom(this);
-  
-  room.emit("put", { 
-    name : player.name, 
-    word : message 
-  });
+
+  room.game.Put(message);
+  LOG(player.NameID() + " puts " + message);
 }
 
 

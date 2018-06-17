@@ -64,11 +64,11 @@ Game.prototype.Tick = function(dt){
 Game.prototype.Status = function(){
   var players = [];
   this.players.forEach(function(player){
-    players.push(player.status());
+    players.push(player.Status());
   });
   return {
     room    : this.room.id,
-    current : this.current.status(),
+    current : this.current.Status(),
     letter  : this.letter,
     players : players
   }
@@ -79,7 +79,7 @@ Game.prototype.On = function(event, handler){
   if (!h[event]){
     h[event] = [];
   }
-  h[event].append(handler);
+  h[event].push(handler);
   return this;
 }
 

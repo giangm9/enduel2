@@ -4,34 +4,40 @@
 import io from "socket.io-client";
 import EventBase from "../eventbase.js";
 
-var Net = () => console.error("Net is a static function");
-
+var Net = {};
 
 var 
   socket,
   handlers;
 
 
-Init = function() {
+Net.Init = function() {
   socket = io("/ingame");
   handlers = {};
   socket
-    .on("connection_error", connectionFail)
-    .on("put", (message) => trigger("put", message)); 
+    .on("connection_error" , connectionFail )
+    .on("put"              , ( message ) => Net.trigger("put" , message) )
+    .on("update"           , ( data ) => Net.trigger("update" , data) )
+    .on("leave"            , ( data ) => Net.trigger("leave"  , data) )
+    .on("skip"             , ( data ) => Net.trigger("skip"  , data) );
 
   EventBase(Net);
 }
 
-Net.leave = function() {
+Net.Leave = function() {
   socket.emit("leave");
 }
 
-Net.skip = function() {
-  socket.emit("skip"): 
+Net.Skip = function() {
+  socket.emit("skip"); 
 }
 
-Net.put = function(message) {
-  socket.emit(message);
+Net.Put = function(message) {
+  socket.emit("put", message);
+}
+
+Net.Update = function() {
+  socket.emit("update");
 }
 
 
@@ -43,13 +49,4 @@ function connectionFail(){
 
 export default Net;
 
-// DEBUG
-global.Net = Net;
 
-function logData(data){
-  console.log(data);
-}
-
-Net.On("put", logData);
-Net.On("skip", logData);
-Net.On("put", logData);
