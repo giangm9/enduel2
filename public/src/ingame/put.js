@@ -28,15 +28,30 @@ Put.Init = function(){
   EventBase(Put);
 }
 
-function keepLetter(event) {
-  var word = jinp.val();
 
-  jinp.val(Put.letter + word.slice(1));
+Put.Disable = function() {
+  jinp.prop("disabled", true);
+  jbtn.prop("disabled", true);
+}
+
+Put.Enable = function() {
+  jinp.prop("disabled", false);
+  jbtn.prop("disabled", false);
+}
+
+
+function keepLetter() {
+  var word = jinp.val();
+  if (word.length > 0){
+    jinp.val(Put.letter + word.slice(1));
+  } else {
+    jinp.val(Put.letter);
+  }
 }
 
 Put.Letter = function(letter) {
   Put.letter = letter;
-  jinp.val(letter);
+  keepLetter();
 }
 
 function submit() {

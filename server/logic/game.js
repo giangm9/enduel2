@@ -112,12 +112,15 @@ Game.prototype.Put = function( word ){
     if (this.used.includes(word)){
       c.hp -= DAMAGE_USED;
       this.LOG("  | used");
+      this.LOG("  | current player " + this.current.namehp());
       this.trigger("used");
       this.check0HP("used");
+      return;
     }
     this.LOG("  | correct");
     this.letter = word[word.length  - 1];
     this.LOG("current letter : '" +  this.letter + "'");
+    this.used.push(word);
     this.trigger("correct");
     this.next();
   } else {
@@ -179,10 +182,9 @@ Game.prototype.next = function(){
 }
 
 
-
 Game.prototype.trigger = function(event, data){
   if (!this.handlers[event]) return;
-  this.hanlders[event].forEach(function(handler){
+  this.handlers[event].forEach(function(handler){
     handler(data);
   });
 }
@@ -191,9 +193,9 @@ Game.prototype.trigger = function(event, data){
 
 Game.prototype.tryEnd = function(){
   if (this._livingCount != 0) return;
-  this.current = undefined;
   this.trigger("end");
 
+  this.current = undefined;
 
   Object.getOwnPropertyNames(this.__proto__).forEach(function(prop){
     if (typeof this[prop] == 'function'){

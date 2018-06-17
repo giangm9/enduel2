@@ -38,11 +38,20 @@ function Init(app, io) {
 
     if (!room.game) {
       room.game = new Game(room);
+      room.routine = setInterval(room.tick.bind(room), 1000);
     }
+    
+    room.game
+      .On("end", endGame.bind(room));
 
     player.game = room.game;
-
   });
+}
+
+
+function endGame(){
+  clearInterval(this.routine); 
+  this.emit('end');
 }
 
 
@@ -78,6 +87,10 @@ function socketPut(message){
 
 }
 
+Room.prototype.tick = function() {
+  this.game.tick1sec();
+  room.emit("update", this.game.Status());
+}
 
 
 module.exports = {

@@ -18,28 +18,43 @@ $(function() {
   Put.Init();
   HP.Init();
   Chatbox.Init();
-  DEBUG_NET();
   Put.On("put", function(message){
     Net.Put(message);
   });
 
   Net
     .On("update", function(data) {
+      if (!data) {
+        toMain();
+      }
       var letter = data.letter;
       var current = data.current.name + "[" + data.current.hp + "]";
       var next = data.next.name + "[" + data.next.hp + "]";
+      var player = ownPlayer(data);
       Queue.Set(current , next);
       Put.Letter(letter);
-      HP.SetHP(currentPlayer(data).hp);
+      HP.SetHP(player.hp);
+      if (player.id == data.current.id){
+        Put.Enable();
+      } else {
+        Put.Disable();
+      }
+  
     })
     .On("put", function(message) {
       Chatbox.Add(message.name, message.word);
-    });
-  
+    })
+    .On("end", toMain);
+
   Net.Update();
 });
 
-function currentPlayer(data){
+function toMain() {
+  SetCookies("state", "main"); 
+  location.reload();
+}
+
+function ownPlayer(data){
   var res = null;
   data.players.forEach(function(player) {
     if (player.id == GetCookies("id")){
@@ -47,20 +62,5 @@ function currentPlayer(data){
     }
   });
   return res;
-}
-
-function DEBUG_NET() {
-
-  global.net = Net;
-
-  function logData(data){
-    console.log(data);
-  }
-
-  Net.On("put"    , logData);
-  Net.On("skip"   , logData);
-  Net.On("put"    , logData);
-  Net.On("update" , logData);
-  Net.On("leave"  , logData);
 }
 
