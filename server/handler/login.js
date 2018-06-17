@@ -35,8 +35,8 @@ function IsOnIndex(req, res) {
   var id = req.cookies.id;
   var room = req.cookies.room;
 
-  if (!Player.getByID(id)) return true;
-  if (!Room.getByID(room)) return true;
+  if (!Player.GetByID(id)) return true;
+  if (!Room.GetByID(room)) return true;
 
   return false;
 }
@@ -59,7 +59,7 @@ function JoinRoomHandler(req, res) {
   if (roomid == '') {
     room = Room.getRandomOpen();
   } else {
-    room = Room.getByID(roomid);
+    room = Room.GetByID(roomid);
     if (!room) {
       res.send("not-found");
       return;
@@ -83,21 +83,21 @@ function CreateRoomHandler(req, res) {
   player.state  = 'room'
   player.isHost = true;
   
-  room.host = player;
-  room.add(player)
+  room.SetHost(player);
+  room.Add(player)
 
   res.cookie("room", room.id);
   res.cookie("id", player.id);
   res.cookie("state", "room");
   res.sendStatus(200);
-  LOG(player.nameid() + " created room " + room.id);
+  LOG(player.NameID() + " created room " + room.id);
   LOG_ROOM(room);
 }
 
 function LOG_ROOM(room) {
   LOG("Room " + room.id);
   room.players.forEach(function (player) {
-    var str = " | " + player.nameid();
+    var str = " | " + player.NameID();
     if (player.isHost) {
       str += '  <- host';
     }

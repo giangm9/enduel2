@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import io from "socket.io-client";
 import Chatbox from "./ingame/chatbox.js";
 import Put from "./ingame/put.js";
+import Net from "./ingame/net.js";
 
 const LOG = console.log;
 const Get = $.get;
@@ -20,21 +21,11 @@ var
 $(function() {
   Box = new Chatbox($("#chatbox"));
   Input = new Put($("#put"));
-  Socket = io("/ingame");
-
-  Socket
-    .on("connect_error", connectionFail)
-    .on("put", putHandler);
-
-
   Input.on("put", function(message){
     Socket.emit("put", message);
   });
+
 });
-
-function Quit(){
-
-}
 
 function putHandler( message ) {
   var name = message.name;
@@ -43,8 +34,4 @@ function putHandler( message ) {
   Box.add(name, word);
 }
 
-function connectionFail(){
-  console.log("Connection Failed");
-  SetCookies("state", "main");
-  location.reload();
-}
+

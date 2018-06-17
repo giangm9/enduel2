@@ -24,7 +24,7 @@ function Room() {
 Room.prototype.Add = function(player) {
   this.players.push(player);
   if (this.players.length == 1){
-    this.setHost(player);
+    this.SetHost(player);
   }
   player.room = this;
 }
@@ -39,9 +39,9 @@ Room.prototype.Status = function(){
   var players = [];
   var host = null;
   this.players.forEach( function(player) {
-    players.push(player.status());
+    players.push(player.Status());
     if (player.isHost) {
-      host = player.status();
+      host = player.Status();
     }
   });
   return {
@@ -95,7 +95,7 @@ Room.getRandomOpen = function(){
   return OpenRooms.getRandom();
 }
 
-Room.getByID = function(id) {
+Room.GetByID = function(id) {
   return AllRooms.getByID(id)
 }
 

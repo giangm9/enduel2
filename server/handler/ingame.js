@@ -1,7 +1,11 @@
-const Player = require("../logic/player.js");
-const Room = require("../logic/room.js");
-const common = require("./common");
-const utils = require("../utils");
+const Player       = require("../logic/player.js");
+const Room         = require("../logic/room.js");
+const Game         = require("../logic/game.js");
+const common       = require("./common");
+const SocketPlayer = common.GetPlayerFromSocket;
+const SocketRoom   = common.GetRoomFromSocket;
+const utils        = require("../utils");
+
 const LOG = utils.LOG;
 
 function IsOnIndex(req, res) {
@@ -14,30 +18,54 @@ function HandleIndex(req, res) {
 
 function Init(app, io) {
   io.of("/ingame").on("connection", function(socket){
-
     var cookie = common.SocketCookie(socket);     
-    var player = Player.getByID(cookie.id);
-    var room   = Room.getByID(cookie.room);
+    var player = Player.GetByID(cookie.id);
+    var room   = Room.GetByID(cookie.room);
     if (!player || !room){
       return;
     }
     player.socket = socket;
     socket.join(room.id);
     room.sockets = io.of('/ingame').to(room.id);
-    socket.on("put", socketPut);
+    socket
+      .on("put", socketPut)
+      .on("skip", socketSkip)
+      .on("leave", socketLeave);
+
+    player.game = new Game(room);
   });
 }
 
+
+function socketLeave() {
+  var player = SocketPlayer(this);
+  var room   = SocketRoom(this);
+  var game   = player.game;
+
+  player.LeaveGame();
+  room.emit("leave", { 
+    name    : player.status(),
+    current : game.current.status(),
+  } );
+}
+
+function socketSkip(){
+  var player = SocketPlayer(this);
+  var room   = SocketRoom(this);
+  room.emit("leave", { name : player.name } );
+}
+
 function socketPut(message){
-  var player = common.GetPlayerFromSocket(this);  
-  var room   = common.GetRoomFromSocket(this);  
+  var player = SocketPlayer(this);
+  var room   = SocketRoom(this);
   
-  LOG("Room " + room.id + ": "  + player.nameid() + " puts " + message);
   room.emit("put", { 
     name : player.name, 
     word : message 
   });
 }
+
+
 
 module.exports = {
   IsOnIndex : IsOnIndex,

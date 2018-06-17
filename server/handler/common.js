@@ -18,12 +18,12 @@ SocketCookie = function(socket) {
 
 GetPlayerFromSocket = function(socket){
   var cookie = SocketCookie(socket);
-  return Player.getByID(cookie.id);
+  return Player.GetByID(cookie.id);
 }
 
 GetRoomFromSocket = function(socket){
   var cookie = SocketCookie(socket);
-  return Room.getByID(cookie.room);
+  return Room.GetByID(cookie.room);
 }
 
 module.exports =  {

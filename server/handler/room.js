@@ -26,8 +26,8 @@ function InitIO(io){
 
   io.of('/room').on("connection", function(socket){
     var cookie = common.SocketCookie(socket);
-    var player = Player.getByID(cookie.id);
-    var room   = Room.getByID(cookie.room);
+    var player = Player.GetByID(cookie.id);
+    var room   = Room.GetByID(cookie.room);
 
     if (!player || !room) {
       return;
@@ -41,17 +41,17 @@ function InitIO(io){
 }
 
 function KickHandler(req, res){
-  var player = Player.getByID(req.query.id);
+  var player = Player.GetByID(req.query.id);
   var host   = player.room.host;
-  LOG(host.nameid() + " kicks " + player.nameid());
+  LOG(host.NameID() + " kicks " + player.NameID());
   player.leave();
   player.emit("kicked");
   res.sendStatus(200);
 }
 
 function LeaveHandler(req, res){
-  var player = Player.getByID(req.cookies.id);
-  var room   = Room.getByID(req.cookies.room);
+  var player = Player.GetByID(req.cookies.id);
+  var room   = Room.GetByID(req.cookies.room);
   res.cookie("state", "main");
   res.cookie("room", undefined);
   room.emit("update");
@@ -66,7 +66,7 @@ function LeaveHandler(req, res){
     return;
   }
 
-  LOG(player.nameid() + " leave room " 
+  LOG(player.NameID() + " leave room " 
     + req.cookies.room);
 
   player.leave();
@@ -85,11 +85,11 @@ function LeaveHandler(req, res){
 }
 
 function StatusHandler(req, res){
-  var player = Player.getByID(req.cookies.id);
+  var player = Player.GetByID(req.cookies.id);
   if (player) {
     var room = player.room;
     res.cookie("room", room.id);
-    res.send(room.status());
+    res.send(room.Status());
   } else {
     res.cookie("state", "main");
     res.send("reload");
@@ -98,7 +98,7 @@ function StatusHandler(req, res){
 
 function StartHandler(req, res ){
   var roomid = req.cookies.room; 
-  var room = Room.getByID(roomid);
+  var room = Room.GetByID(roomid);
   room.state = "ingame";
   room.emit("start");
   res.sendStatus(200);
@@ -107,7 +107,7 @@ function StartHandler(req, res ){
 
 function ToogleHanlder(req, res){
   var roomid = req.cookies.room; 
-  var room = Room.getByID(roomid);
+  var room = Room.GetByID(roomid);
   room.toggle();
   room.emit("update");
   res.send(room.lock);

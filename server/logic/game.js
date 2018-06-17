@@ -54,7 +54,6 @@ Game.prototype.LOG = function(message){
   LOG("Room " + this.room.id + " : " + message);
 }
 
-
 Game.prototype.Tick = function(dt){
   while (dt > 0){
     this.tick1sec();
@@ -81,8 +80,15 @@ Game.prototype.On = function(event, handler){
     h[event] = [];
   }
   h[event].append(handler);
+  return this;
 }
 
+Game.prototype.Skip = function(){
+  this.LOG(this.current.namehp() + "  | skip");
+  this.current.hp -= DAMAGE_SKIP;
+  this.trigger("skip");
+  this.check0HP("skip");
+}
 
 Game.prototype.Put = function( word ){
   var current = this.current;
@@ -91,13 +97,7 @@ Game.prototype.Put = function( word ){
 
   this.LOG(current.namehp() + " puts '" + word + "'");
   var c = this.current;
-  if (word[0]  == "!"){
-    this.LOG(current.namehp() + "  | skip");
-    this.trigger("skip");
-    c.hp -= SKIP_DAMAGE;
-    this.check0HP("skip");
-  }
-
+  
   if (word[0] != this.letter){
     if (DEBUG){
       throw "ERROR : first letter must match";
@@ -143,17 +143,20 @@ Game.prototype.check0HP = function( source ){
     this.current.hp = 0;
     this.LOG(this.current.name + " DIE, source : " + source);
     this.LOG("living players ");
+    var count = 0 ;
     this.players.forEach(function(player){
-      if (player.hp > 0)
+      if (player.hp > 0) {
+        count++;
         this.LOG("  | " + player.namehp());
+      }
     }.bind(this));
+    this.LOG("  | count = " + count);
     this.trigger("die");
     this._livingCount--; 
     this.tryEnd();
     this.next();
   }
 }
-
 
 Game.prototype.next = function(){
   var last = this.current;

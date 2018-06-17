@@ -16,9 +16,9 @@ function TestLogic(Dict){
 
 
   var room = new Room();
-  room.add(float);
-  room.add(main);
-  room.add(int);
+  room.Add(float);
+  room.Add(main);
+  room.Add(int);
   var game = new Game(room);
   game.log = 'all';
   LOG("NEXT LOG MUST SHOW ERROR");
@@ -31,16 +31,17 @@ function TestLogic(Dict){
   game.Put("toon");
   game.Tick("101");
   game.Put("noon");
-  linux.add(int64);
+  linux.Add(int64);
   game.Put("new");
   game.Put("world");
   game.Put("doez");
-  linux.add(npm);
+  linux.Add(npm);
   game.Put("day");
+  game.Skip();
   game.Put("yes");
   main.LeaveGame();
   game.Put("sun");
-  linux.add(ssh);
+  linux.Add(ssh);
   var linuxGame = new Game(linux);
   linuxGame.Tick(301);
   float.LeaveGame();
