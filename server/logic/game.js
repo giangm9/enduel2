@@ -202,8 +202,9 @@ Game.prototype.tryEnd = function(){
   }.bind(this));
 }
 
+var old_status = Player.prototype.Status;
 
-Player.prototype.status = function( ) {
+Player.prototype.Status = function( ) {
   var status = old_status.call(this);
   status.hp = this.hp;
   return status;
@@ -237,7 +238,6 @@ Player.prototype.namehp = function() {
   return this.name + " { hp:" + this.hp + " }";
 }
 
-var old_status = Player.prototype.status;
 
 
 module.exports = Game;

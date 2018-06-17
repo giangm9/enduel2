@@ -4,29 +4,39 @@ import $ from "jquery";
 var Put = {},
   jcontainer,
   jinp,
-  jbtn,
-  jletter;
+  jbtn;
 
 Put.Init = function(){
 
   jcontainer = $("#put");
   jinp       = jcontainer.find("#inp-put");
   jbtn       = jcontainer.find("#btn-put");
-  jletter    = jcontainer.find("#letter");
 
   jbtn.click(submit);
 
   jinp.keyup(function(event){ 
     if (event.keyCode  === 13) { 
       jbtn.click();
+    } else {
+      keepLetter();
     }
   });
+
+  jinp.keydown(keepLetter)
+
 
   EventBase(Put);
 }
 
+function keepLetter(event) {
+  var word = jinp.val();
+
+  jinp.val(Put.letter + word.slice(1));
+}
+
 Put.Letter = function(letter) {
- return jletter.html(letter);
+  Put.letter = letter;
+  jinp.val(letter);
 }
 
 function submit() {

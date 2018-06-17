@@ -13,6 +13,15 @@ p{
   display: inline-block;
   margin: 0.6vmin;
   padding: 0px;
+  text-align: left;
+}
+
+.queue div {
+  text-align: left;
+}
+
+.queue-current-label, .queue-current-name {
+  font-weight: bold;
 }
 
 #chatbox {
