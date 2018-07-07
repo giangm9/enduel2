@@ -1,4 +1,4 @@
-# A simple Enlish game
+# A simple English game
 
 ## Game rule
 
