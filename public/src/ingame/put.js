@@ -27,7 +27,11 @@ Put.Init = function(){
 
   inp.keydown(keepLetter)
   eventEmiter = new EventEmiter();
+
+  keepCaret();
 }
+
+
 
 
 Put.Disable = function() {
@@ -47,6 +51,15 @@ function keepLetter() {
     inp.val(Put.letter + word.slice(1));
   } else {
     inp.val(Put.letter);
+  }
+
+}
+
+function keepCaret() {
+  requestAnimationFrame(keepCaret);
+  if(!inp.is(":focus")) return;
+  if (inp[0].selectionStart == 0) {
+    inp[0].setSelectionRange(1, 1);
   }
 }
 

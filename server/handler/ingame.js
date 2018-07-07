@@ -25,15 +25,11 @@ function Init(app, io) {
   io.of("/ingame").on("connection", (socket) => socket.on("join", socketJoin));
 }
 
-
-
-
 function gameEnd(){
   clearInterval(this.routine); 
   this.emit('end');
   this.Dismiss();
 }
-
 
 function socketJoin() {
   var cookie = common.SocketCookie(this);     
