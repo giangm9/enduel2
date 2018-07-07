@@ -205,8 +205,8 @@ Player.prototype.Status = function( ) {
 
 Player.prototype.LeaveGame = function() {
   var game = this.game;
-
-  if (game.current.id == this.id){
+  
+  if (!game.current || (game.current.id == this.id)){
     game.next();
   }
 
@@ -217,7 +217,7 @@ Player.prototype.LeaveGame = function() {
 
   this.game = undefined;
   this.room = undefined;
-  this.hp   = 0;
+//  this.hp   = 0;
 
   game._livingCount--;
   game.tryEnd();

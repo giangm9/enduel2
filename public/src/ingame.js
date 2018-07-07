@@ -14,7 +14,9 @@ const SetCookies = Cookies.set;
 
 var 
   data,
-  player; 
+  player,
+  quit; 
+
 
 $(function() {
   Net.Init();
@@ -22,6 +24,13 @@ $(function() {
   Put.Init();
   HP.Init();
   Chatbox.Init();
+  quit = $("#quit");
+
+  quit.click(function() {
+    Net.Leave();
+    SetCookies("state", "main");
+    location.reload();
+  });
 
   Put.On("put", function(message){
     Net.Put(message);
@@ -30,24 +39,34 @@ $(function() {
   Net.Join();
 
   Net
-    .On("update"    , updateData)
+    .On("update"    , updateFromData)
     .On("end"       , toMain)
     .On("used"      , (data) => Chatbox.Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => Chatbox.Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
     .On("correct"   , (data) => Chatbox.Add(data.name , " puts correct : " +  data.word))
-    .On("die"       , (name) => Chatbox.Add(name      , " die"));
+    .On("die"       , (name) => Chatbox.Add(name      , " die"))
+    .On("leave"     , leaveGame);
 
   Net.Update();
 });
 
-function updateData(dat) {
-  if (!dat) toMain();
+function leaveGame(data) {
+  Chatbox.Add(data.name,  " left ");
+  updateFromData(data.data);
+}
+
+function updateFromData(dat) {
+  if (!dat)  {
+    toMain();
+    return;
+  }
   data = dat;
   player = getCurrentPlayer(data);
   Put.Letter(data.letter);
   HP.SetHP(player.hp);
-  onTurn() ? Put.Enable() : Put.Disable();
   Queue.UpdateFromData(data);
+  onTurn() ? Put.Enable() : Put.Disable();
+
 }
 
 function toMain() {

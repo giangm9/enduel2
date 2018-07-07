@@ -22,6 +22,7 @@ function HandleIndex(req, res) {
 
 function Init(app, io) {
   IO = io;
+
   io.of("/ingame").on("connection", (socket) => socket.on("join", socketJoin));
 }
 
@@ -47,8 +48,8 @@ function socketJoin() {
     .on("put"   , socketPut)
     .on("skip"  , socketSkip)
     .on("leave" , socketLeave)
-    .on("update", socketUpdate)
-    .on("leave" , socketLeave);
+    .on("update", socketUpdate);
+
 
   if (!room.game) {
     room.game = new Game(room);
@@ -60,11 +61,8 @@ function socketJoin() {
       .On("incorrect" , (word) => room.emit("incorrect" , {name : currentName() , word: word}))
       .On("correct"   , (word) => room.emit("correct"   , {name : currentName() , word: word}))
       .On("die"       , (name) => room.emit("die"       , name));
-
   }
     
-
-
   player.game = room.game;
 
 }
@@ -81,9 +79,9 @@ function socketLeave() {
 
   player.LeaveGame();
   room.emit("leave", { 
-    name    : player.status(),
-    current : game.current.status(),
-  } );
+    name : player.name,
+    data : game.Status()
+  });
 }
 
 function socketSkip(){

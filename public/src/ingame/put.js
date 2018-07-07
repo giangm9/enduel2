@@ -61,6 +61,7 @@ function keepCaret() {
   if (inp[0].selectionStart == 0) {
     inp[0].setSelectionRange(1, 1);
   }
+
 }
 
 Put.Letter = function(letter) {
