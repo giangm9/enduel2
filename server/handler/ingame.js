@@ -2,11 +2,16 @@ const Player       = require("../logic/player.js");
 const Room         = require("../logic/room.js");
 const Game         = require("../logic/game.js");
 const common       = require("./common");
+const utils        = require("../utils");
+const util         = require('util')
+
 const SocketPlayer = common.GetPlayerFromSocket;
 const SocketRoom   = common.GetRoomFromSocket;
-const utils        = require("../utils");
 
 const LOG = utils.LOG;
+
+var 
+  IO;
 
 function IsOnIndex(req, res) {
   return req.cookies && req.cookies.state == "ingame";
@@ -17,41 +22,8 @@ function HandleIndex(req, res) {
 }
 
 function Init(app, io) {
-  io.of("/ingame").on("connection", function(socket){
-    var cookie = common.SocketCookie(socket);     
-    var player = Player.GetByID(cookie.id);
-    var room   = Room.GetByID(cookie.room);
-
-    // In case server restart
-    if (!player || !room) return;
-    
-    player.socket = socket;
-    socket.join(room.id);
-    room.sockets = io.of('/ingame').to(room.id);
-
-    socket
-      .on("put"   , socketPut)
-      .on("skip"  , socketSkip)
-      .on("leave" , socketLeave)
-      .on("update", socketUpdate)
-      .on("leave" , socketLeave);
-
-    if (!room.game) {
-      room.game = new Game(room);
-      room.routine = setInterval(room.tick.bind(room), 1000);
-    }
-    
-
-    var currentName = room.game.current.name;
-    room.game
-      .On("end"       , gameEnd.bind(room))
-      .On("used"      , (word) => room.emit("used"      , {name : currentName , word: word}))
-      .On("incorrect" , (word) => room.emit("incorrect" , {name : currentName , word: word}))
-      .On("correct"   , (word) => room.emit("correct"   , {name : currentName , word: word}))
-      .On("die"       , (name) => room.emit("die"       , name));
-
-    player.game = room.game;
-  });
+  IO = io;
+  io.of("/ingame").on("connection", (socket) => socket.on("join", socketJoin));
 }
 
 
@@ -63,6 +35,43 @@ function gameEnd(){
   this.Dismiss();
 }
 
+
+function socketJoin() {
+  var cookie = common.SocketCookie(this);     
+  var player = Player.GetByID(cookie.id);
+  var room   = Room.GetByID(cookie.room);
+
+  // In case server restart
+  if (!player || !room) return;
+
+  player.socket = this;
+  this.join(room.id);
+  room.sockets = IO.of('/ingame');
+
+  this
+    .on("put"   , socketPut)
+    .on("skip"  , socketSkip)
+    .on("leave" , socketLeave)
+    .on("update", socketUpdate)
+    .on("leave" , socketLeave);
+
+  if (!room.game) {
+    room.game = new Game(room);
+    room.routine = setInterval(room.tick.bind(room), 1000);
+  }
+    
+
+  var currentName = room.game.current.name;
+  room.game
+    .On("end"       , gameEnd.bind(room))
+    .On("used"      , (word) => room.emit("used"      , {name : currentName , word: word}))
+    .On("incorrect" , (word) => room.emit("incorrect" , {name : currentName , word: word}))
+    .On("correct"   , (word) => room.emit("correct"   , {name : currentName , word: word}))
+    .On("die"       , (name) => room.emit("die"       , name));
+
+  player.game = room.game;
+
+}
 
 function socketUpdate(){
   var player = SocketPlayer(this);
@@ -96,12 +105,11 @@ function socketPut(message){
 
 Room.prototype.tick = function() {
   this.game.tick1sec();
-  room.emit("update", this.game.Status());
+  this.emit("update", this.game.Status());
 }
 
-
 module.exports = {
-  IsOnIndex : IsOnIndex,
+  IsOnIndex   : IsOnIndex,
   HandleIndex : HandleIndex,
-  Init : Init
+  Init        : Init
 }

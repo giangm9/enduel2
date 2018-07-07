@@ -39,6 +39,10 @@ Net.trigger = function(event, data) {
   return this;
 }
 
+Net.Join = function() {
+  socket.emit("join");
+}
+
 Net.Leave = function() {
   socket.emit("leave");
 }

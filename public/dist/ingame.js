@@ -18721,8 +18721,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {
     _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Put(message);
   });
 
+  _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Join();
+
   _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-    .On("update", updateData)
+    .On("update"    , updateData)
     .On("end"       , toMain)
     .On("used"      , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
@@ -18890,6 +18892,10 @@ Net.trigger = function(event, data) {
   return this;
 }
 
+Net.Join = function() {
+  socket.emit("join");
+}
+
 Net.Leave = function() {
   socket.emit("leave");
 }
@@ -18918,6 +18924,7 @@ Net.onFail = function(){
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Net);
+
 
 /***/ }),
 

@@ -27,8 +27,10 @@ $(function() {
     Net.Put(message);
   });
 
+  Net.Join();
+
   Net
-    .On("update", updateData)
+    .On("update"    , updateData)
     .On("end"       , toMain)
     .On("used"      , (data) => Chatbox.Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => Chatbox.Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
