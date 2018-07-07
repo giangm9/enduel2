@@ -5,8 +5,6 @@ const EventEmiter = require("events");
 
 const LOG = utils.LOG;
 
-
-
 /**
  * @type {Room} room
  */
@@ -184,8 +182,6 @@ Game.prototype.trigger = function(event, data){
   this.events.emit(event, data); 
 }
 
-
-
 Game.prototype.tryEnd = function(){
   if (this._livingCount != 0) return;
   this.trigger("end");
@@ -234,7 +230,5 @@ Player.prototype.LeaveGame = function() {
 Player.prototype.namehp = function() {
   return this.name + " { hp:" + this.hp + " }";
 }
-
-
 
 module.exports = Game;

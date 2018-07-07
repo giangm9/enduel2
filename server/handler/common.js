@@ -6,6 +6,8 @@ const Room        = require("../logic/room.js");
 
 Room.prototype.emit = function(event, message){
   this.sockets.to(this.strID).emit(event, message);
+  if (event != "update") 
+    console.log(event, message);
 }
 
 Player.prototype.emit = function(event, message){

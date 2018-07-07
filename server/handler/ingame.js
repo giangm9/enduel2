@@ -3,7 +3,6 @@ const Room         = require("../logic/room.js");
 const Game         = require("../logic/game.js");
 const common       = require("./common");
 const utils        = require("../utils");
-const util         = require('util')
 
 const SocketPlayer = common.GetPlayerFromSocket;
 const SocketRoom   = common.GetRoomFromSocket;
@@ -58,16 +57,17 @@ function socketJoin() {
   if (!room.game) {
     room.game = new Game(room);
     room.routine = setInterval(room.tick.bind(room), 1000);
+    currentName = () => { return room.game.current.name };
+    room.game
+      .On("end"       , gameEnd.bind(room))
+      .On("used"      , (word) => room.emit("used"      , {name : currentName() , word: word}))
+      .On("incorrect" , (word) => room.emit("incorrect" , {name : currentName() , word: word}))
+      .On("correct"   , (word) => room.emit("correct"   , {name : currentName() , word: word}))
+      .On("die"       , (name) => room.emit("die"       , name));
+
   }
     
 
-  var currentName = room.game.current.name;
-  room.game
-    .On("end"       , gameEnd.bind(room))
-    .On("used"      , (word) => room.emit("used"      , {name : currentName , word: word}))
-    .On("incorrect" , (word) => room.emit("incorrect" , {name : currentName , word: word}))
-    .On("correct"   , (word) => room.emit("correct"   , {name : currentName , word: word}))
-    .On("die"       , (name) => room.emit("die"       , name));
 
   player.game = room.game;
 
