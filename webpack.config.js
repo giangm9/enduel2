@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
+  devtool: 'source-map',
   entry: {
     login: "./public/src/login.js",
     room: "./public/src/room.js",

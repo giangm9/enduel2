@@ -75,7 +75,8 @@ function InitStart(){
   });
 }
 
-function Start(){
+function Start(data){
+  console.log(data);
   SetCookies("state", "ingame"); 
   location.reload();
 }

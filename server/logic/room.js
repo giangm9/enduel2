@@ -10,6 +10,7 @@ var OpenRooms = [];
 
 function Room() {
   this.id      = common.GenUID(AllRooms);
+  this.strID   = this.id.toString();
   this.lock    = true;
   this.players = [];
   this.host    = null;

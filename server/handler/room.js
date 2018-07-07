@@ -33,8 +33,8 @@ function InitIO(io){
       return;
     }
     player.socket = socket;
-    socket.join(room.id);
-    room.sockets = io.of('/room').to(room.id);
+    socket.join(room.strID);
+    room.sockets = io.of('/room').to(room.strID);
     room.emit("update");
   });
 
@@ -97,12 +97,13 @@ function StatusHandler(req, res){
 }
 
 function StartHandler(req, res ){
-  var roomid = req.cookies.room; 
-  var room = Room.GetByID(roomid);
+  var player = Player.GetByID(req.cookies.id);
+  var room = Room.GetByID(req.cookies.room);
+  LOG(room.id);
   room.state = "ingame";
-  room.emit("start");
   res.sendStatus(200);
-  LOG("Room " + room.id + " started ");
+  LOG("Player " + player.NameID() + " started room " + room.id);
+  room.emit("start", room.Status());
 }
 
 function ToogleHanlder(req, res){

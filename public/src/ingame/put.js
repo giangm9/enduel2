@@ -1,51 +1,52 @@
-import EventBase from "../eventbase.js";
-import $ from "jquery";
+import $           from "jquery";
+import EventEmiter from "events";
 
-var Put = {},
-  jcontainer,
-  jinp,
-  jbtn;
+var 
+  Put = {},
+  container,
+  inp,
+  btn, 
+  eventEmiter;
+
 
 Put.Init = function(){
 
-  jcontainer = $("#put");
-  jinp       = jcontainer.find("#inp-put");
-  jbtn       = jcontainer.find("#btn-put");
+  container = $("#put");
+  inp       = container.find("#inp-put");
+  btn       = container.find("#btn-put");
 
-  jbtn.click(submit);
+  btn.click(submit);
 
-  jinp.keyup(function(event){ 
+  inp.keyup(function(event){ 
     if (event.keyCode  === 13) { 
-      jbtn.click();
+      btn.click();
     } else {
       keepLetter();
     }
   });
 
-  jinp.keydown(keepLetter)
-
-
-  EventBase(Put);
+  inp.keydown(keepLetter)
+  eventEmiter = new EventEmiter();
 }
 
 
 Put.Disable = function() {
-  jinp.prop("disabled", true);
-  jbtn.prop("disabled", true);
+  inp.prop("disabled", true);
+  btn.prop("disabled", true);
 }
 
 Put.Enable = function() {
-  jinp.prop("disabled", false);
-  jbtn.prop("disabled", false);
+  inp.prop("disabled", false);
+  btn.prop("disabled", false);
 }
 
 
 function keepLetter() {
-  var word = jinp.val();
+  var word = inp.val();
   if (word.length > 0){
-    jinp.val(Put.letter + word.slice(1));
+    inp.val(Put.letter + word.slice(1));
   } else {
-    jinp.val(Put.letter);
+    inp.val(Put.letter);
   }
 }
 
@@ -54,9 +55,19 @@ Put.Letter = function(letter) {
   keepLetter();
 }
 
-function submit() {
-  Put.trigger("put", jinp.val());
-  jinp.val('');
+Put.On = function(event, handler) {
+  eventEmiter.on(event, handler);
+  return this;
 }
+
+Put.trigger = function(event, data) {
+  eventEmiter.emit(event, data);
+}
+
+function submit() {
+  Put.trigger("put", inp.val());
+  inp.val('');
+}
+
 
 export default Put;

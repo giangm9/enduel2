@@ -1,8 +1,9 @@
-const Dict = require("./dict.js");
-const utils = require("../utils");
-const Player = require("./player");
-const LOG = utils.LOG;
+const Dict        = require("./dict.js");
+const utils       = require("../utils");
+const Player      = require("./player");
+const EventEmiter = require("events");
 
+const LOG = utils.LOG;
 
 
 
@@ -33,12 +34,12 @@ const TICK_DAMAGE_INTERVAL = 20;
 
 function Game(room) {
   this.time     = 0;
-  this.handlers = {};
   this.current  = room.host;
   this.players  = room.players;
   this.room     = room;
   this.used     = [];
   this.id       = room.id;
+  this.events   = new EventEmiter();
   this.letter   = 'qwertyuiopasdfghjklzxcvbnm'.getRandom();
 
   this.players.forEach(function(player){
@@ -48,6 +49,7 @@ function Game(room) {
   }.bind(this));
 
   this._livingCount = this.players.length;
+  LOG("Created Game " + this.id);
 }
 
 Game.prototype.LOG = function(message){
@@ -76,11 +78,7 @@ Game.prototype.Status = function(){
 }
 
 Game.prototype.On = function(event, handler){
-  var h = this.handlers;
-  if (!h[event]){
-    h[event] = [];
-  }
-  h[event].push(handler);
+  this.events.on(event, handler);
   return this;
 }
 
@@ -183,10 +181,7 @@ Game.prototype.next = function(){
 
 
 Game.prototype.trigger = function(event, data){
-  if (!this.handlers[event]) return;
-  this.handlers[event].forEach(function(handler){
-    handler(data);
-  });
+  this.events.emit(event, data); 
 }
 
 

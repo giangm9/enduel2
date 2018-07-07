@@ -41,12 +41,14 @@ function Init(app, io) {
       room.routine = setInterval(room.tick.bind(room), 1000);
     }
     
+
+    var currentName = room.game.current.name;
     room.game
       .On("end"       , gameEnd.bind(room))
-      .On("used"      , (word) => room.emit("used", {name : room.game.current.name, word: word}))
-      .On("incorrect" , (word) => room.emit("incorrect", {name : room.game.current.name, word: word}))
-      .On("correct"   , (word) => room.emit("correct", {name : room.game.current.name, word: word}))
-      .On("die"       , (name) => room.emit("die", name)); 
+      .On("used"      , (word) => room.emit("used"      , {name : currentName , word: word}))
+      .On("incorrect" , (word) => room.emit("incorrect" , {name : currentName , word: word}))
+      .On("correct"   , (word) => room.emit("correct"   , {name : currentName , word: word}))
+      .On("die"       , (name) => room.emit("die"       , name));
 
     player.game = room.game;
   });
@@ -58,6 +60,7 @@ function Init(app, io) {
 function gameEnd(){
   clearInterval(this.routine); 
   this.emit('end');
+  this.Dismiss();
 }
 
 

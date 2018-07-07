@@ -1,14 +1,15 @@
 /**
  * Networking with server wrapper
  * */
-import io from "socket.io-client";
-import EventBase from "../eventbase.js";
+import io          from "socket.io-client";
+import EventEmiter from "events"
 
 var Net = {};
 
 var 
   socket,
-  handlers;
+  handlers,
+  eEmiter;
 
 
 Net.Init = function() {
@@ -25,7 +26,17 @@ Net.Init = function() {
     .on("correct"          , ( data ) => Net.trigger("correct"   , data) )
     .on("die"              , ( data ) => Net.trigger("die"       , data) )
     .on("end"              , ( data ) => Net.trigger("end") );
-  EventBase(Net);
+  eEmiter = new EventEmiter();
+}
+
+Net.On = function(event, handler) {
+  eEmiter.on(event, handler);
+  return this;
+}
+
+Net.trigger = function(event, data) {
+  eEmiter.emit(event, data);
+  return this;
 }
 
 Net.Leave = function() {
@@ -56,5 +67,3 @@ Net.onFail = function(){
 }
 
 export default Net;
-
-

@@ -48,4 +48,15 @@ function TestLogic(Dict){
 
 }
 
+function TestEvents(Dict){
+  var room = new Room();
+  room.Add(float);
+  room.Add(main);
+  room.Add(int);
+  var game = new Game(room);
+
+
+  
+}
+
 module.exports = TestLogic;

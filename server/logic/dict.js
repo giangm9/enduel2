@@ -14,7 +14,7 @@ Dict.Init = function( path , onFinish) {
         word =>  all.add(word.trim())
       );
 
-    console.log("Quantity : " + all.size);
+    console.log("Loaded: " + all.size + " words");
     onFinish();
   });
 }

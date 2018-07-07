@@ -12,50 +12,52 @@ const Get = $.get;
 const GetCookies = Cookies.get;
 const SetCookies = Cookies.set;
 
+var 
+  data,
+  player; 
+
 $(function() {
   Net.Init();
   Queue.Init();
   Put.Init();
   HP.Init();
   Chatbox.Init();
+
   Put.On("put", function(message){
     Net.Put(message);
   });
 
   Net
-    .On("update", function(data) {
-      if (!data) {
-        toMain();
-      }
-      var letter = data.letter;
-      var current = data.current.name + "[" + data.current.hp + "]";
-      var next = data.next.name + "[" + data.next.hp + "]";
-      var player = ownPlayer(data);
-      Queue.Set(current , next);
-      Put.Letter(letter);
-      HP.SetHP(player.hp);
-      if (player.id == data.current.id){
-        Put.Enable();
-      } else {
-        Put.Disable();
-      }
-  
-    })
+    .On("update", updateData)
     .On("end"       , toMain)
-    .On("used"      , (data) => Chatbox.Add(data.name , "-10 used word ( " + data.word + " )"))
-    .On("incorrect" , (data) => Chatbox.Add(data.name , " -20 incorrect ( " + data.word + " )"))
+    .On("used"      , (data) => Chatbox.Add(data.name , " -10 ( used word '" + data.word + "')"))
+    .On("incorrect" , (data) => Chatbox.Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
     .On("correct"   , (data) => Chatbox.Add(data.name , " puts correct : " +  data.word))
     .On("die"       , (name) => Chatbox.Add(name      , " die"));
 
   Net.Update();
 });
 
+function updateData(dat) {
+  if (!dat) toMain();
+  data = dat;
+  player = getCurrentPlayer(data);
+  Put.Letter(data.letter);
+  HP.SetHP(player.hp);
+  onTurn() ? Put.Enable() : Put.Disable();
+  Queue.UpdateFromData(data);
+}
+
 function toMain() {
   SetCookies("state", "main"); 
   location.reload();
 }
 
-function ownPlayer(data){
+function onTurn() {
+  return player.id == data.current.id;
+}
+
+function getCurrentPlayer(data){
   var res = null;
   data.players.forEach(function(player) {
     if (player.id == GetCookies("id")){
@@ -64,4 +66,3 @@ function ownPlayer(data){
   });
   return res;
 }
-

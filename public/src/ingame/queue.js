@@ -12,13 +12,17 @@ Queue.Init = function() {
   jnext = $("#next");
 }
 
-Queue.Set = function(current, next){
+Queue.UpdateFromData = function(data){
+  var 
+    current = data.current,
+    next = data.next;
+
   if (current) {
-    jcurrent.html(current);
+    jcurrent.html(current.name + "[" + current.hp + "]");
   }
 
   if (next) {
-    jnext.html(next);
+    jnext.html(next.name + "[" + next.hp + "]");
   }
 }
 
