@@ -44,7 +44,7 @@ function KickHandler(req, res){
   var player = Player.GetByID(req.query.id);
   var host   = player.room.host;
   LOG(host.NameID() + " kicks " + player.NameID());
-  player.leave();
+  player.Leave();
   player.emit("kicked");
   res.sendStatus(200);
 }
