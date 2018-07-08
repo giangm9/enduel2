@@ -10,10 +10,14 @@
 </head>
 <body class="center">
   <div class="limit-width center right">
-    <button id="quit"> quit </button>
+    <button id="quit" class="black shadow"> QUIT </button>
   </div>
 
-  <div id="chatbox" class="limit-width center" ></div>
+  <div id="chatbox" class="limit-width center shadow black-border" ></div>
+  <div id="put" class="limit-width center">
+    <input type="text" id="inp-put" class="black-border"> </input>
+    <button id="btn-put" class="shadow black"> PUT </button>
+  </div>
 
   <div class="queue limit-width center">
     <div>
@@ -26,12 +30,12 @@
     </div>
   </div>
 
-  <div id="put">
-    <input type="text" id="inp-put"> </input>
-    <button id="btn-put"> put </button>
-  </div>
-  <div class="hp">
+  
+
+    <!--
+  <div class="hp" hidden>
     <p id="hp" class="center">HP</p> 
   </div>
+    -->
 </body>
 </html>

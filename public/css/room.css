@@ -71,7 +71,11 @@ img {
   font-weight: bold;
 }
 
-
+.btn-quit {
+  padding: 1vmin;
+  font-weight: bold;
+  font-size: 3vmin;
+}
 #p-room-id {
   padding: 0;
   font-size: 5vmin;
@@ -123,8 +127,4 @@ img {
 }
 
 
-#quit {
-  padding: 1vmin;
-  font-weight: bold;
-  font-size: 3vmin;
-}
+

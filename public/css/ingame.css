@@ -32,4 +32,17 @@ p{
 
 #quit{
   margin-bottom: 1vmin;
+  padding: 1vmin;
+  font-weight: bold;
+  font-size: 3vmin;
 }
+
+#btn-put {
+  font-weight: bold;
+}
+
+#inp-put {
+  width:  51vmin;
+  color: black;
+}
+
