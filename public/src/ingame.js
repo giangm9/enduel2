@@ -17,20 +17,21 @@ var
   player,
   quit; 
 
-
 $(function() {
+  quit = $("#quit");
+
   Net.Init();
   Queue.Init();
   Put.Init();
   HP.Init();
   Chatbox.Init();
-  quit = $("#quit");
 
   quit.click(function() {
     Net.Leave();
     SetCookies("state", "main");
     location.reload();
   });
+
 
   Put.On("put", function(message){
     Net.Put(message);
@@ -66,6 +67,7 @@ function updateFromData(dat) {
   HP.SetHP(player.hp);
   Queue.UpdateFromData(data);
   onTurn() ? Put.Enable() : Put.Disable();
+  $("#player-name").text(player.name);
 
 }
 

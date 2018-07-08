@@ -43,3 +43,7 @@ button.shadow:active {
   white-space: nowrap;
 }
 
+.text-shadow {
+   text-shadow: 1px 1px lightgray;
+}
+

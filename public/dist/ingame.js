@@ -18711,20 +18711,21 @@ var
   player,
   quit; 
 
-
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {
+  quit = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quit");
+
   _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Init();
   _ingame_queue_js__WEBPACK_IMPORTED_MODULE_6__["default"].Init();
   _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Init();
   _ingame_hp_js__WEBPACK_IMPORTED_MODULE_7__["default"].Init();
   _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Init();
-  quit = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quit");
 
   quit.click(function() {
     _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Leave();
     SetCookies("state", "main");
     location.reload();
   });
+
 
   _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].On("put", function(message){
     _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Put(message);
@@ -18760,6 +18761,7 @@ function updateFromData(dat) {
   _ingame_hp_js__WEBPACK_IMPORTED_MODULE_7__["default"].SetHP(player.hp);
   _ingame_queue_js__WEBPACK_IMPORTED_MODULE_6__["default"].UpdateFromData(data);
   onTurn() ? _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Enable() : _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Disable();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#player-name").text(player.name);
 
 }
 
@@ -19023,7 +19025,6 @@ function keepCaret() {
   if (inp[0].selectionStart == 0) {
     inp[0].setSelectionRange(1, 1);
   }
-
 }
 
 Put.Letter = function(letter) {
@@ -19041,7 +19042,7 @@ Put.trigger = function(event, data) {
 }
 
 function submit() {
-  Put.trigger("put", inp.val());
+  Put.trigger("put", inp.val().trim());
   inp.val('');
 }
 

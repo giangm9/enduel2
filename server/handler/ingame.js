@@ -26,11 +26,6 @@ function Init(app, io) {
   io.of("/ingame").on("connection", (socket) => socket.on("join", socketJoin));
 }
 
-function gameEnd(){
-  clearInterval(this.routine); 
-  this.emit('end');
-  this.Dismiss();
-}
 
 function socketJoin() {
   var cookie = common.SocketCookie(this);     
@@ -54,7 +49,8 @@ function socketJoin() {
   if (!room.game) {
     room.game = new Game(room);
     room.routine = setInterval(room.tick.bind(room), 1000);
-    currentName = () => { return room.game.current.name };
+    currentName = () =>  { return SocketRoom(this).game.current.name };
+
     room.game
       .On("end"       , gameEnd.bind(room))
       .On("used"      , (word) => room.emit("used"      , {name : currentName() , word: word}))
@@ -66,6 +62,13 @@ function socketJoin() {
   player.game = room.game;
 
 }
+
+function gameEnd(){
+  clearInterval(this.routine); 
+  this.emit('end');
+  this.Dismiss();
+}
+
 
 function socketUpdate(){
   var player = SocketPlayer(this);
@@ -96,6 +99,7 @@ function socketPut(message){
 
   room.game.Put(message);
 }
+
 
 Room.prototype.tick = function() {
   this.game.tick1sec();

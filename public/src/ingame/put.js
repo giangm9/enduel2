@@ -61,7 +61,6 @@ function keepCaret() {
   if (inp[0].selectionStart == 0) {
     inp[0].setSelectionRange(1, 1);
   }
-
 }
 
 Put.Letter = function(letter) {
@@ -79,7 +78,7 @@ Put.trigger = function(event, data) {
 }
 
 function submit() {
-  Put.trigger("put", inp.val());
+  Put.trigger("put", inp.val().trim());
   inp.val('');
 }
 
