@@ -11,8 +11,8 @@ const LOG = utils.LOG;
 
 const MAX_HP               = 100;
 const DAMAGE_SKIP          = 30;
-const DAMAGE_INCORRECT     = 20;
-const DAMAGE_USED          = 10;
+const DAMAGE_INCORRECT     = 10;
+const DAMAGE_USED          = 5;
 
 const DEBUG                = false;
 const TICK_DAMAGE_INTERVAL = 20;

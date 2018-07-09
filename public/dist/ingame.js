@@ -18738,9 +18738,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {
     .On("end"       , toMain)
     .On("used"      , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
-    .On("correct"   , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " puts correct : " +  data.word))
     .On("die"       , (name) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(name      , " die"))
-    .On("leave"     , leaveGame);
+    .On("leave"     , leaveGame)
+    .On("correct"   , (data) =>  { 
+      _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " puts correct : " +  data.word) 
+      _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Focus();
+    })
+
 
   _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Update();
 });
@@ -19009,6 +19013,30 @@ Put.Enable = function() {
 }
 
 
+
+Put.Letter = function(letter) {
+  Put.letter = letter;
+  keepLetter();
+}
+
+Put.On = function(event, handler) {
+  eventEmiter.on(event, handler);
+  return this;
+}
+
+Put.Focus = function() {
+  inp[0].focus();
+}
+
+Put.trigger = function(event, data) {
+  eventEmiter.emit(event, data);
+}
+
+function submit() {
+  Put.trigger("put", inp.val().trim());
+  inp.val('');
+}
+
 function keepLetter() {
   var word = inp.val();
   if (word.length > 0){
@@ -19025,25 +19053,6 @@ function keepCaret() {
   if (inp[0].selectionStart == 0) {
     inp[0].setSelectionRange(1, 1);
   }
-}
-
-Put.Letter = function(letter) {
-  Put.letter = letter;
-  keepLetter();
-}
-
-Put.On = function(event, handler) {
-  eventEmiter.on(event, handler);
-  return this;
-}
-
-Put.trigger = function(event, data) {
-  eventEmiter.emit(event, data);
-}
-
-function submit() {
-  Put.trigger("put", inp.val().trim());
-  inp.val('');
 }
 
 

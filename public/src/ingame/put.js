@@ -45,6 +45,30 @@ Put.Enable = function() {
 }
 
 
+
+Put.Letter = function(letter) {
+  Put.letter = letter;
+  keepLetter();
+}
+
+Put.On = function(event, handler) {
+  eventEmiter.on(event, handler);
+  return this;
+}
+
+Put.Focus = function() {
+  inp[0].focus();
+}
+
+Put.trigger = function(event, data) {
+  eventEmiter.emit(event, data);
+}
+
+function submit() {
+  Put.trigger("put", inp.val().trim());
+  inp.val('');
+}
+
 function keepLetter() {
   var word = inp.val();
   if (word.length > 0){
@@ -61,25 +85,6 @@ function keepCaret() {
   if (inp[0].selectionStart == 0) {
     inp[0].setSelectionRange(1, 1);
   }
-}
-
-Put.Letter = function(letter) {
-  Put.letter = letter;
-  keepLetter();
-}
-
-Put.On = function(event, handler) {
-  eventEmiter.on(event, handler);
-  return this;
-}
-
-Put.trigger = function(event, data) {
-  eventEmiter.emit(event, data);
-}
-
-function submit() {
-  Put.trigger("put", inp.val().trim());
-  inp.val('');
 }
 
 

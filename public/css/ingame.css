@@ -4,6 +4,7 @@ p{
 }
 .message-user, .message-content, #put > p{
   display: inline-block;
+  font-size: 3vmin;
 }
 
 .message-user {
