@@ -40,12 +40,16 @@ p{
   display: inline-block;
 }
 
+#btn-put, #inp-put {
+  font-size: 4vmin;
+}
+
 #btn-put {
   font-weight: bold;
 }
 
 #inp-put {
-  width:  53vmin;
+  width:  52vmin;
   color: black;
 }
 
