@@ -1,11 +1,11 @@
 import $       from "jquery";
 import Cookies from "js-cookie";
-import io      from "socket.io-client";
 import Chatbox from "./ingame/chatbox.js";
 import Put     from "./ingame/put.js";
 import Net     from "./ingame/net.js";
 import Queue   from "./ingame/queue.js";
 import HP      from "./ingame/hp.js";
+
 
 const LOG = console.log;
 const Get = $.get;
@@ -16,6 +16,8 @@ var
   data,
   player,
   quit; 
+
+var Ingame = {};
 
 $(function() {
   quit = $("#quit");
@@ -46,10 +48,7 @@ $(function() {
     .On("incorrect" , (data) => Chatbox.Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
     .On("die"       , (name) => Chatbox.Add(name      , " die"))
     .On("leave"     , leaveGame)
-    .On("correct"   , (data) =>  { 
-      Chatbox.Add(data.name , " puts correct : " +  data.word) 
-      Put.Focus();
-    })
+    .On("correct"   , (data) => Chatbox.Add(data.name , " puts correct : " +  data.word))
 
 
   Net.Update();
@@ -93,3 +92,4 @@ function getCurrentPlayer(data){
   });
   return res;
 }
+

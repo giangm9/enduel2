@@ -38,7 +38,7 @@ function Game(room) {
   this.used     = [];
   this.id       = room.id;
   this.events   = new EventEmiter();
-  this.letter   = 'qwertyuiopasdfghjklzxcvbnm'.getRandom();
+  this.letter   = 'qwertyuiopasdfghjklzcvbnm'.getRandom();
 
   this.players.forEach(function(player){
     player.hp         = MAX_HP;

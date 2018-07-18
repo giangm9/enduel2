@@ -8,13 +8,11 @@ var Net = {};
 
 var 
   socket,
-  handlers,
   eEmiter;
 
 
 Net.Init = function() {
   socket = io("/ingame");
-  handlers = {};
   socket
     .on("connection_error" , Net.onFail)
     .on("put"              , Net.onPut)
@@ -39,25 +37,15 @@ Net.trigger = function(event, data) {
   return this;
 }
 
-Net.Join = function() {
-  socket.emit("join");
-}
+Net.Join = () =>  { socket.emit("join") }
 
-Net.Leave = function() {
-  socket.emit("leave");
-}
+Net.Leave = () => { socket.emit("leave") }
 
-Net.Skip = function() {
-  socket.emit("skip"); 
-}
+Net.Skip = () => { socket.emit("skip") }
 
-Net.Put = function(message) {
-  socket.emit("put", message);
-}
+Net.Put = (message) => { socket.emit("put", message) }
 
-Net.Update = function() {
-  socket.emit("update");
-}
+Net.Update = () => { socket.emit("update"); }
 
 Net.onPut = function(message) {
   Net.trigger("put", message);

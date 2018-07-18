@@ -18685,13 +18685,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
-/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingame/chatbox.js */ "./public/src/ingame/chatbox.js");
-/* harmony import */ var _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ingame/put.js */ "./public/src/ingame/put.js");
-/* harmony import */ var _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ingame/net.js */ "./public/src/ingame/net.js");
-/* harmony import */ var _ingame_queue_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ingame/queue.js */ "./public/src/ingame/queue.js");
-/* harmony import */ var _ingame_hp_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ingame/hp.js */ "./public/src/ingame/hp.js");
+/* harmony import */ var _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ingame/chatbox.js */ "./public/src/ingame/chatbox.js");
+/* harmony import */ var _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingame/put.js */ "./public/src/ingame/put.js");
+/* harmony import */ var _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ingame/net.js */ "./public/src/ingame/net.js");
+/* harmony import */ var _ingame_queue_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ingame/queue.js */ "./public/src/ingame/queue.js");
+/* harmony import */ var _ingame_hp_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ingame/hp.js */ "./public/src/ingame/hp.js");
 
 
 
@@ -18711,46 +18709,45 @@ var
   player,
   quit; 
 
+var Ingame = {};
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {
   quit = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quit");
 
-  _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Init();
-  _ingame_queue_js__WEBPACK_IMPORTED_MODULE_6__["default"].Init();
-  _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Init();
-  _ingame_hp_js__WEBPACK_IMPORTED_MODULE_7__["default"].Init();
-  _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Init();
+  _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"].Init();
+  _ingame_queue_js__WEBPACK_IMPORTED_MODULE_5__["default"].Init();
+  _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__["default"].Init();
+  _ingame_hp_js__WEBPACK_IMPORTED_MODULE_6__["default"].Init();
+  _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Init();
 
   quit.click(function() {
-    _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Leave();
+    _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"].Leave();
     SetCookies("state", "main");
     location.reload();
   });
 
 
-  _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].On("put", function(message){
-    _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Put(message);
+  _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__["default"].On("put", function(message){
+    _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"].Put(message);
   });
 
-  _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Join();
+  _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"].Join();
 
-  _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+  _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"]
     .On("update"    , updateFromData)
     .On("end"       , toMain)
-    .On("used"      , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " -10 ( used word '" + data.word + "')"))
-    .On("incorrect" , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
-    .On("die"       , (name) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(name      , " die"))
+    .On("used"      , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " -10 ( used word '" + data.word + "')"))
+    .On("incorrect" , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
+    .On("die"       , (name) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(name      , " die"))
     .On("leave"     , leaveGame)
-    .On("correct"   , (data) =>  { 
-      _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name , " puts correct : " +  data.word) 
-      _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Focus();
-    })
+    .On("correct"   , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " puts correct : " +  data.word))
 
 
-  _ingame_net_js__WEBPACK_IMPORTED_MODULE_5__["default"].Update();
+  _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"].Update();
 });
 
 function leaveGame(data) {
-  _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_3__["default"].Add(data.name,  " left ");
+  _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name,  " left ");
   updateFromData(data.data);
 }
 
@@ -18761,10 +18758,10 @@ function updateFromData(dat) {
   }
   data = dat;
   player = getCurrentPlayer(data);
-  _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Letter(data.letter);
-  _ingame_hp_js__WEBPACK_IMPORTED_MODULE_7__["default"].SetHP(player.hp);
-  _ingame_queue_js__WEBPACK_IMPORTED_MODULE_6__["default"].UpdateFromData(data);
-  onTurn() ? _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Enable() : _ingame_put_js__WEBPACK_IMPORTED_MODULE_4__["default"].Disable();
+  _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__["default"].Letter(data.letter);
+  _ingame_hp_js__WEBPACK_IMPORTED_MODULE_6__["default"].SetHP(player.hp);
+  _ingame_queue_js__WEBPACK_IMPORTED_MODULE_5__["default"].UpdateFromData(data);
+  onTurn() ? _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__["default"].Enable() : _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__["default"].Disable();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#player-name").text(player.name);
 
 }
@@ -18789,6 +18786,7 @@ function getCurrentPlayer(data){
 }
 
 
+
 /***/ }),
 
 /***/ "./public/src/ingame/chatbox.js":
@@ -18802,6 +18800,8 @@ function getCurrentPlayer(data){
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _put_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./put.js */ "./public/src/ingame/put.js");
+
 
 
 var 
@@ -18825,6 +18825,7 @@ Chatbox.Add = function(name, word){
   message.append("<p class='message-user'>" + name + "</p>");
   message.append("<p class='message-content'>" + word + "</p>");
   c.scrollTop(wrapper.height());
+
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Chatbox);
@@ -18886,13 +18887,11 @@ var Net = {};
 
 var 
   socket,
-  handlers,
   eEmiter;
 
 
 Net.Init = function() {
   socket = socket_io_client__WEBPACK_IMPORTED_MODULE_0___default()("/ingame");
-  handlers = {};
   socket
     .on("connection_error" , Net.onFail)
     .on("put"              , Net.onPut)
@@ -18917,25 +18916,15 @@ Net.trigger = function(event, data) {
   return this;
 }
 
-Net.Join = function() {
-  socket.emit("join");
-}
+Net.Join = () =>  { socket.emit("join") }
 
-Net.Leave = function() {
-  socket.emit("leave");
-}
+Net.Leave = () => { socket.emit("leave") }
 
-Net.Skip = function() {
-  socket.emit("skip"); 
-}
+Net.Skip = () => { socket.emit("skip") }
 
-Net.Put = function(message) {
-  socket.emit("put", message);
-}
+Net.Put = (message) => { socket.emit("put", message) }
 
-Net.Update = function() {
-  socket.emit("update");
-}
+Net.Update = () => { socket.emit("update"); }
 
 Net.onPut = function(message) {
   Net.trigger("put", message);

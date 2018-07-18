@@ -1,4 +1,5 @@
 import $ from "jquery";
+import Put     from "./put.js";
 
 var 
   Chatbox = {},
@@ -21,6 +22,7 @@ Chatbox.Add = function(name, word){
   message.append("<p class='message-user'>" + name + "</p>");
   message.append("<p class='message-content'>" + word + "</p>");
   c.scrollTop(wrapper.height());
+
 }
 
 export default Chatbox;

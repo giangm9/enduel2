@@ -1,9 +1,10 @@
-h1, input, button, p , span{
+h1, h3, input, button, p , span{
   font-family: 'Jura', Inconsolata, monospace;
   padding: 2vmin;
   margin-top: 2vmin;
   outline: none;
 }
+
 
 .black {
   background-color : black;
@@ -47,3 +48,10 @@ button.shadow:active {
    text-shadow: 1px 1px lightgray;
 }
 
+.feedback {
+  position: fixed;
+  bottom: 1vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2vmin;  
+}

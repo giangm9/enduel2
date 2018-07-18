@@ -11,6 +11,16 @@ input {
 button {
   font-size: 4vmin;
 }
+
+.by {
+  position: fixed;
+  float: right;
+  margin: 0px;
+  padding: 0px;
+  top: 19vmin;
+  right: 33vw;
+  font-size: 2vmin;
+}
 .or-text {
   margin: 1vmin;
   padding: 0px;
@@ -54,3 +64,4 @@ button {
   color: red;
   font-size: 3vmin;
 }
+
