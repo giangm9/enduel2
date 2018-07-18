@@ -72,7 +72,7 @@ function submit() {
 function keepLetter() {
   var word = inp.val();
   if (word.length > 0){
-    inp.val(Put.letter + word.slice(1));
+    inp.val(Put.letter + word.slice(1).toLowerCase());
   } else {
     inp.val(Put.letter);
   }
