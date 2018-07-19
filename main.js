@@ -29,7 +29,7 @@ RoomHandler.Init(app, io);
 IngameHandler.Init(app, io);
 
 Dict.Init("./data/full_word.txt", () => {
-  http.listen(8080, "127.0.0.1", null, function(){
+  http.listen(8080, "0.0.0.0", null, function(){
     console.log('PORT : 8080')
   });
 });
