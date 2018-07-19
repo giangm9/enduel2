@@ -5,7 +5,7 @@ webpack:
 	webpack --watch
 
 test:
-	npm test
+	nodemon main.js
 
 start-server:
 	mv log.txt log.old.txt

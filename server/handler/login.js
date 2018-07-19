@@ -46,10 +46,10 @@ function HandleIndex(req, res) {
 }
 
 function JoinRoomHandler(req, res) {
-  var roomid = req.query.room;
+  var roomid = req.query.room.trim();
   var name   = req.query.name;
   
-  if (roomid == '' && Room.countOpen() == 0) {
+  if (roomid == '' && Room.CountOpen() == 0) {
     CreateRoomHandler(req, res);
     return;
   }
@@ -60,7 +60,7 @@ function JoinRoomHandler(req, res) {
     room = Room.GetRandomOpen();
   } else {
     room = Room.GetByID(roomid);
-    if (!room) {
+    if (!room || ( room.state != 'wait')  ) {
       res.send("not-found");
       return;
     }

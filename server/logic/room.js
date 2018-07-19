@@ -11,11 +11,12 @@ var OpenRooms = [];
 function Room() {
   this.id      = common.GenUID(AllRooms);
   this.strID   = this.id.toString();
-  this.lock    = true;
+  this.lock    = false;
   this.players = [];
   this.host    = null;
   this.state   = "wait"; //ingame
   AllRooms.push(this);
+  OpenRooms.push(this);
 }
 
 /**
@@ -84,16 +85,23 @@ Room.prototype.SetHost = function(player){
   player.isHost = true;
 }
 
+Room.prototype.Ingame = function() {
+  this.state = 'ingame';
+}
+
 Room.count = function(){
   return AllRooms.length;
 }
 
-Room.countOpen = function(){
+Room.CountOpen = function(){
   return OpenRooms.length;
 }
 
-Room.getRandomOpen = function(){
-  return OpenRooms.getRandom();
+Room.GetRandomOpen = function(){
+  var room = OpenRooms.getRandom();
+  console.log(room.id);
+  return room;
+//  return OpenRooms.getRandom();
 }
 
 Room.GetByID = function(id) {
