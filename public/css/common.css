@@ -71,3 +71,9 @@ button.shadow:active {
   font-size: 2vmin;  
   color: #73aeab;
 }
+
+.fb-icon {
+  width: 4vmin;
+  height: 4vmin;
+  vertical-align: text-bottom;
+}

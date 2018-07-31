@@ -21,6 +21,7 @@ img {
   width: 100%;
   background: #FFF;
   text-align: left;
+
 }
 .player-wrapper {
   display: block;
@@ -84,7 +85,7 @@ img {
   font-weight: bold;
   text-align: left;
   margin: 2vmin 0 2vmin 0vmin;
-  color : black ;
+  color : #73aeab;
   width: 49.2vmin;
   display: inline-block;
 }
@@ -128,6 +129,3 @@ img {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
-
-
-
