@@ -1,11 +1,18 @@
 h1 {
   font-size: 14vmin;
-  font-weight: lighter;
 }
 
 input {
   font-size: 4vmin;
-  border: 1px solid black;
+  border:  none;
+  background: #efa18c;
+  border-radius: 1vmin;
+  color: white;
+}
+
+input::placeholder{
+  color: white;
+  opacity: .5;
 }
 
 button {
@@ -24,6 +31,7 @@ button {
 .or-text {
   margin: 1vmin;
   padding: 0px;
+  color: #73aeab;
 }
 
 .name-wrapper {

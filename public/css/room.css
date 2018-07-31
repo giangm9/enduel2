@@ -7,11 +7,12 @@ img {
   box-sizing: border-box;
 }
 .room-info {
-  background: white;
   margin-top: 4vmin;
   margin-bottom: 0px;
   padding: 1vmin;
   text-align: left;
+  border: none;
+
 }
 
 .player{
@@ -35,12 +36,13 @@ img {
 }
 
 .player:nth-child(odd) {
-  background: #DDD
+  background: #e6dde4;
 }
 
 .player:nth-child(even) {
-  background: #FFF
+  background: #efa18c;
 }
+
 
 .p-name {
   width: 45vmin;
@@ -83,13 +85,14 @@ img {
   text-align: left;
   margin: 2vmin 0 2vmin 0vmin;
   color : black ;
-  width: 44.5vmin;
+  width: 49.2vmin;
   display: inline-block;
 }
 
 #player-list {
   height: fit-content;
   overflow: hidden;
+  border-radius: 1vmin;
 }
 
 #btn-start {

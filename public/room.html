@@ -4,27 +4,31 @@
   <meta charset="UTF-8">
   <title>Enduel</title>
   <link rel="shortcut icon" href="img/book.png" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet"> 
+  <!-- <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet">  -->
   <link rel="stylesheet" type="text/css" href="css/common.css">
   <link rel="stylesheet" type="text/css" href="css/room.css">
   <script src="dist/room.js"> </script>
 
 </head>
 <body>
-  <div class="room-info center limit-width shadow black-border border-box nowrap">
+  <div class="room-info center limit-width border-box nowrap">
     <img id="img-lock" src="img/lock.png"> 
     </img>
     <span class="tooltiptext">Prevent random join</span>
     <p id="p-room-id"> ROOM ID :  </p>
-    <button id="quit" class="black shadow btn-quit"> QUIT </button>
+    <button id="quit" class="shadow btn-quit"> QUIT </button>
 
   </div>
-  <div id="player-list" class="limit-width center black-border border-box shadow">
+  <div id="player-list" class="limit-width center border-box">
   </div>
-  <button id="btn-start" class="limit-width center black shadow"> START </button>
+  <button id="btn-start" class="limit-width center shadow"> START </button>
+  
   <p class='center feedback' > 
     send feedback <a target="_blank" href="https://github.com/giangm9/enduel2/issues">here</a> 
+    or 
+    <a href="https://fb.me/enduel.online" target="_blank">
+      <img class='fb-icon' src="img/facebook.png"></img>
+    </a>
   </p>
-
 </body>
 </html>

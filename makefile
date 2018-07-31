@@ -8,5 +8,5 @@ test:
 	nodemon main.js
 
 start-server:
-	mv log.txt log.old.txt
+#	mv log.txt log.old.txt
 	node main.js > log.txt

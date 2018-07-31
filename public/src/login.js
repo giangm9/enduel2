@@ -2,10 +2,7 @@ import $ from "jquery";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
 
-import Dice from "./dice";
-
 const Get = $.get;
-const LOG = console.log;
 
 var $RoomID, 
     $Join,
@@ -21,9 +18,6 @@ $(function() {
   $Name    = $("#inp-name");
   $Warning = $("#warning");
   
-  var $dice =$("#cdice")
-
-  Dice.init($dice, GenName, SetName );
   InitCreate();
   InitInputName();
   InitJoin();
@@ -80,17 +74,6 @@ function InitCreate(){
         }
     );
   });
-}
-
-function GenName() {
-  $Warning.html("&nbsp");
-  Get("login/gen-name", function(name){
-      Cookies.set("name", name);
-  });
-}
-
-function SetName() {
-  $Name.val(GetSavedName());
 }
 
 function ValidateName(){

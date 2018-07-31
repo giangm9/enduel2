@@ -5,6 +5,21 @@ h1, h3, input, button, p , span{
   outline: none;
 }
 
+h1 {
+  font-weight: bold;
+  color: #73aeab;
+}
+
+body {
+  background: #ffefc7;
+}
+
+button {
+  background: #73aeab;
+  border-radius: 1vmin;
+  border: none;
+  color : white;
+}
 
 .black {
   background-color : black;
@@ -17,7 +32,7 @@ h1, h3, input, button, p , span{
 }
 
 .shadow {
-  box-shadow: 3px 3px lightgray;
+  box-shadow: 3px 3px gray;
 }
 
 button.shadow:active {
@@ -54,4 +69,5 @@ button.shadow:active {
   left: 50%;
   transform: translateX(-50%);
   font-size: 2vmin;  
+  color: #73aeab;
 }
