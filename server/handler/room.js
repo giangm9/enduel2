@@ -109,7 +109,7 @@ function StartHandler(req, res ){
 function ToogleHanlder(req, res){
   var roomid = req.cookies.room; 
   var room = Room.GetByID(roomid);
-  room.toggle();
+  room.Toggle();
   room.emit("update");
   res.send(room.lock);
   LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
