@@ -18520,7 +18520,6 @@ function render(){
     if (CurrentID == HostID) {
       if (!player.isHost){
         template.push("<button class='btn-kick' style=" 
-          + (index % 2 == 1 ? "'background: white;" : "'background : #DDD;")
           + "font-size: 2.5vmin'"
           + "value='" + player.id + "'> kick </button>")
       }

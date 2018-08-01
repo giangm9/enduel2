@@ -9,8 +9,7 @@ img {
 .room-info {
   margin-top: 4vmin;
   margin-bottom: 0px;
-  padding: 1vmin;
-  text-align: left;
+  padding: 1vmin; text-align: left;
   border: none;
 
 }
@@ -63,6 +62,7 @@ img {
   padding: 0;
   width: 4vmin;
   height: 4vmin;
+  background: none;
 }
 
 .btn-kick:active {
@@ -86,7 +86,7 @@ img {
   text-align: left;
   margin: 2vmin 0 2vmin 0vmin;
   color : #73aeab;
-  width: 49.2vmin;
+  width: 43.2vmin;
   display: inline-block;
 }
 
@@ -97,7 +97,13 @@ img {
 }
 
 #btn-start {
-  font-size: 5vmin;
+  font-size: 4vmin;
+  padding: 1vmin;
+  position: fixed;
+
+  bottom: 10vmin;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 #img-lock {

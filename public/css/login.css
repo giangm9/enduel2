@@ -24,28 +24,27 @@ button {
   float: right;
   margin: 0px;
   padding: 0px;
-  top: 19vmin;
+  top: 23vmin;
   right: 33vw;
   font-size: 2vmin;
 }
+
 .or-text {
   margin: 1vmin;
   padding: 0px;
   color: #73aeab;
 }
 
-.name-wrapper {
-  margin-bottom: 12vmin;
-}
-
 
 #inp-roomid {
-  width: 30vmin;
+  width: 20vmin;
 }
 
 #inp-name {
   text-align: center;
-  width: 50vmin;
+  width: 90%;
+  margin-bottom: 12vmin;
+
 }
 
 #img-dice {

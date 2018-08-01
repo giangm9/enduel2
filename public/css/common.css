@@ -1,3 +1,7 @@
+html {
+  background: white;
+}
+
 h1, h3, input, button, p , span{
   font-family: 'Jura', Inconsolata, monospace;
   padding: 2vmin;
@@ -12,6 +16,11 @@ h1 {
 
 body {
   background: #ffefc7;
+  height: 100vh;
+  padding: 3vmin;
+  margin: 0px;
+  box-sizing: border-box;
+  border-radius: 2vmin;
 }
 
 button {
@@ -32,12 +41,13 @@ button {
 }
 
 .shadow {
-  box-shadow: 3px 3px gray;
+  box-shadow: 6px 6px gray;
+
 }
 
 button.shadow:active {
   box-shadow: none;
-  transform: translate(2px, 2px)
+  transform: translate(6px, 6px)
 }
 
 .center {
