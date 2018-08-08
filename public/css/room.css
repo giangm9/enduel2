@@ -63,6 +63,8 @@ img {
   width: 4vmin;
   height: 4vmin;
   background: none;
+  font-size: 2.5vmin;
+  font-weight: bold;
 }
 
 .btn-kick:active {
@@ -135,3 +137,4 @@ img {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+

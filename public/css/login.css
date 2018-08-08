@@ -17,6 +17,10 @@ input::placeholder{
 
 button {
   font-size: 4vmin;
+  background: #73aeab;
+  border-radius: 1vmin;
+  border: none;
+  color : white;
 }
 
 .by {

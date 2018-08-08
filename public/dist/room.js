@@ -18519,8 +18519,7 @@ function render(){
     var HostID    = Status.host.id; 
     if (CurrentID == HostID) {
       if (!player.isHost){
-        template.push("<button class='btn-kick' style=" 
-          + "font-size: 2.5vmin'"
+        template.push("<button class='btn-kick'"
           + "value='" + player.id + "'> kick </button>")
       }
     }

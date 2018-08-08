@@ -30,6 +30,14 @@ button {
   color : white;
 }
 
+input {
+  font-size: 4vmin;
+  border:  none;
+  background: #efa18c;
+  border-radius: 1vmin;
+  color: white;
+}
+
 .black {
   background-color : black;
   color:  white;

@@ -5,6 +5,7 @@ p{
 .message-user, .message-content, #put > p{
   display: inline-block;
   font-size: 3vmin;
+  color: white;
 }
 
 .message-user {
@@ -22,8 +23,16 @@ p{
   text-align: left;
 }
 
+.queue > * {
+  font-size: 2vmin;
+}
 .queue-current-label, .queue-current-name {
   font-weight: bold;
+  color: #73aeab;
+}
+
+.queue-next-label, .queue-next-name {
+  color: #73aeab;
 }
 
 
@@ -50,13 +59,19 @@ p{
 }
 
 #inp-put {
-  width:  52vmin;
-  color: black;
+  width:  42vmin;
 }
 
 
 #player-name {
   display: inline-block;
-  width: 55vmin;
+  width: 45vmin;
   padding: 0px;
+  font-size: 2vmin;
+  color: #73aeab;
+  font-weight: bold;
+}
+
+#chatbox {
+  background: #73aeab;
 }
