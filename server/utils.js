@@ -2,6 +2,7 @@ const dateFormat = require('dateformat');
 const floor      = Math.floor;
 const rand       = Math.random;
 
+
 function LOG( message ) {
   console.log(dateFormat(new Date(), "[yyyy-mm-dd h:MM]") , message);
   

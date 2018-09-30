@@ -177,7 +177,6 @@ Game.prototype.next = function(){
   this.LOG("current player " + this.current.namehp());
 }
 
-
 Game.prototype.trigger = function(event, data){
   this.events.emit(event, data); 
 }

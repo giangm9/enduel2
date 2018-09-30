@@ -1,3 +1,4 @@
+"strict mode"
 /*
  * @class Player
  * Represent a player
@@ -9,14 +10,16 @@ const Room   = require("./room")
 
 var AllPlayers = [];
 
-function Player(name = "__UNSET__"){
-  this.id     = common.GenUID(AllPlayers);
-  this.name   = name;
-  this.state  = 'room'; // room | ingame
-  this.isHost = false;
-  AllPlayers.push(this);
+class Player {
+  constructor(name = "") {
+    this.id     = common.GenUID(AllPlayers);
+    this.name   = name;
+    this.state  = 'room'; // room | ingame
+    this.isHost = false;
+    AllPlayers.push(this);
+  }
+ 
 }
-
 
 Player.prototype.Leave = function() {
   function matchid( player ) {

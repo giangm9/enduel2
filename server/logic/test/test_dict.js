@@ -1,13 +1,13 @@
 const LOG = console.log; 
 const ERR = console.error;
-const fs = require("fs");
+import { readFile } from "fs";
 
 
 var _dict = null;
 
 function DictTest(Dict){
   _dict = Dict;
-  fs.readFile("./test/test_words.txt", "utf-8", function(err, contents){
+  readFile("./test/test_words.txt", "utf-8", function(err, contents){
     if (err){
       throw err;
     }
@@ -31,4 +31,4 @@ function assert(value, pass, fail){
 }
 
 
-module.exports = DictTest;
+export default DictTest;

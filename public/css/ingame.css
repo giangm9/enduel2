@@ -40,7 +40,28 @@ p{
   overflow: scroll;
   overflow-x: hidden;
   height: 40vmin;
+  border-radius: 5px;
 }
+/* width */
+#chatbox::-webkit-scrollbar {
+    width: 2vmin;
+}
+
+/* Track */
+#chatbox::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+#chatbox::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+#chatbox::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 
 #quit{
   margin-bottom: 1vmin;
