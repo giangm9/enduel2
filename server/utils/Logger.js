@@ -16,7 +16,7 @@ Logger.Init = function() {
 }
 
 Logger.LOG = function( message ){
-    fs.appendFileSync( Logger.Path , message );
+    fs.appendFileSync( Logger.Path , message + "\n");
 }
 
 module.exports = Logger;

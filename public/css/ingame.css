@@ -54,12 +54,7 @@ p{
  
 /* Handle */
 #chatbox::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-/* Handle on hover */
-#chatbox::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #efa18c; 
 }
 
 
@@ -80,13 +75,13 @@ p{
 }
 
 #inp-put {
-  width:  42vmin;
+  width:  46vmin;
 }
 
 
 #player-name {
   display: inline-block;
-  width: 45vmin;
+  width: 51vmin;
   padding: 0px;
   font-size: 2vmin;
   color: #73aeab;

@@ -6,3 +6,4 @@ package-lock.json
 .vim
 tags
 **/*.map
+logs/

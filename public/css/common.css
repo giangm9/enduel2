@@ -49,13 +49,13 @@ input {
 }
 
 .shadow {
-  box-shadow: 6px 6px gray;
+  box-shadow: 3px 3px gray;
 
 }
 
 button.shadow:active {
   box-shadow: none;
-  transform: translate(6px, 6px)
+  transform: translate(3px, 3px)
 }
 
 .center {
