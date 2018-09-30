@@ -1,0 +1,3 @@
+daemon.sh : run server, autoreload on change
+start.sh : start server only ( for release )
+build-client.sh : build client's js files
