@@ -6,8 +6,13 @@ const LoginHandler  = require("./server/handler/login");
 const RoomHandler   = require("./server/handler/room");
 const IngameHandler = require("./server/handler/ingame");
 const Dict          = require("./server/logic/dict");
+const utils         = require("./server/utils");
 const config        = require("./configs");
 
+console.log("Loaded config : ");
+console.log(JSON.stringify(config, null, 2));
+
+utils.Logger.Init();
 
 app.use(express.static('public'));
 app.use(require('cookie-parser')());
@@ -29,8 +34,8 @@ RoomHandler.Init(app, io);
 IngameHandler.Init(app, io);
 
 Dict.Init("./data/full_word.txt", () => {
-  http.listen(8080, "0.0.0.0", null, function(){
-    console.log('PORT : 8080')
+  http.listen(config.port, "0.0.0.0", null, function(){
+    console.log('PORT : ' + config.port)
   });
 });
 
