@@ -1,5 +1,4 @@
 const express       = require('express');
-const socket        = require('socket.io');
 const app           = express();
 const http          = require('http').Server(app);
 const io            = require('socket.io')(http);
@@ -7,6 +6,7 @@ const LoginHandler  = require("./server/handler/login");
 const RoomHandler   = require("./server/handler/room");
 const IngameHandler = require("./server/handler/ingame");
 const Dict          = require("./server/logic/dict");
+const config        = require("./configs");
 
 
 app.use(express.static('public'));
@@ -41,4 +41,5 @@ function tryHandler(handler, req, res){
     return true;
   }
   return false;
-};
+}
+
