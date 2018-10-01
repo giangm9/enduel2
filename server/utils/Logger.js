@@ -1,6 +1,7 @@
 "use strict"
 const dateFormat = require('dateformat');
 const fs         = require("fs");
+const config     = require("../../configs");
 
 const Logger = function()  {
     console.error("LOG is a static class");
@@ -9,9 +10,13 @@ const Logger = function()  {
 Logger.Path = "/dev/null";
 
 Logger.Init = function() {
-  const date = dateFormat(new Date(), "H:MM_dd-mm-yy");
-  
-  Logger.Path = "./logs/log" + date + ".txt";
+
+  var date = dateFormat(new Date(), "H:MM_dd-mm-yy");
+  if (config.mode == "dev") {
+    date = "";
+  }
+
+  Logger.Path = "./logs/log_" + date + ".txt";
 
   console.log("Log location : " + Logger.Path);
 }

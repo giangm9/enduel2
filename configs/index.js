@@ -1,4 +1,4 @@
 module.exports = {
-    mode : "LOCAL", // "SERVER"
+    mode : "dev", // "prod"
     port : 8080
 }
