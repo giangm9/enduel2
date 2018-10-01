@@ -87,5 +87,4 @@ function keepCaret() {
   }
 }
 
-
 export default Put;

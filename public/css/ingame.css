@@ -78,6 +78,11 @@ p{
   width:  46vmin;
 }
 
+#inp-put:disabled {
+  background: #cccccc;
+  color: #ffffff;
+}
+
 
 #player-name {
   display: inline-block;
