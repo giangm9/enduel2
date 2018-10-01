@@ -9,3 +9,9 @@
   - Now the next player will have to chose a new English word
 
   and so on..
+
+## TODO
+- Fix random room join
+- AI
+- Score
+
