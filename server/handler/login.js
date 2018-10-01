@@ -69,7 +69,8 @@ function JoinRoomHandler(req, res) {
   res.cookie("state", "room");
   res.cookie("room", room.id);
   res.cookie("id", player.id);
-  LOG(player.NameID() + " join room " + room.id);
+  LOG(player.NameID() + " JOINED ROOM " + room.id);
+
   LOG_ROOM(room);
   res.sendStatus(200);
 }
@@ -90,16 +91,22 @@ function CreateRoomHandler(req, res) {
   res.cookie("id", player.id);
   res.cookie("state", "room");
   res.sendStatus(200);
-  LOG(player.NameID() + " created room " + room.id);
+  LOG("ROOM " + room.id + " CREATED BY " + player.NameID());
   LOG_ROOM(room);
 }
 
 function LOG_ROOM(room) {
-  LOG("Room " + room.id);
+  LOG("ROOM " + room.id);
   room.players.forEach(function (player) {
-    var str = " | " + player.NameID();
+    var str = player.NameID();
+    if (room.players.indexOf(player) == room.players.length - 1 ) {
+        str = " └── " + str;
+    } else {
+        str = " ├── " + str;
+    }
+
     if (player.isHost) {
-      str += '  <- host';
+      str += ' *' 
     }
     LOG(str);
   });

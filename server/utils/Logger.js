@@ -9,14 +9,16 @@ const Logger = function()  {
 Logger.Path = "/dev/null";
 
 Logger.Init = function() {
-    const date = dateFormat(new Date(), "H:MM_dd-mm-yy");
-    Logger.Path = "./logs/" + date + ".txt";
+  const date ="";// dateFormat(new Date(), "H:MM_dd-mm-yy");
+  
+  Logger.Path = "./logs/log" + date + ".txt";
 
-    console.log("Log location : " + Logger.Path);
+  console.log("Log location : " + Logger.Path);
 }
 
 Logger.LOG = function( message ){
-    fs.appendFileSync( Logger.Path , message + "\n");
+  var timeStamp = dateFormat(new Date(), "[H:MM dd/mm/yy]  ");
+  fs.appendFileSync( Logger.Path , timeStamp + message + "\n");
 }
 
 module.exports = Logger;

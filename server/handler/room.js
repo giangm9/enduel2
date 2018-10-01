@@ -43,7 +43,8 @@ function InitIO(io){
 function KickHandler(req, res){
   var player = Player.GetByID(req.query.id);
   var host   = player.room.host;
-  LOG(host.NameID() + " kicks " + player.NameID());
+  RLOG(req, host.NameID() + " kicks " + player.NameID());
+
   player.Leave();
   player.emit("kicked");
   res.sendStatus(200);
@@ -66,7 +67,7 @@ function LeaveHandler(req, res){
     return;
   }
 
-  LOG(player.NameID() + " leave room " 
+  RLOG(req, player.NameID() + " LEFT " 
     + req.cookies.room);
 
   player.Leave();
@@ -77,7 +78,7 @@ function LeaveHandler(req, res){
     // No more player in room
     if (!newHost) {
       room.Dismiss();
-      LOG("Room " + room.id + " dismissed");
+      RLOG(req, " DISSMISSED");
       return;
     }
     room.SetHost(newHost);
@@ -99,10 +100,10 @@ function StatusHandler(req, res){
 function StartHandler(req, res ){
   var player = Player.GetByID(req.cookies.id);
   var room = Room.GetByID(req.cookies.room);
-  LOG(room.id);
   room.state = "ingame";
   res.sendStatus(200);
-  LOG("Player " + player.NameID() + " started room " + room.id);
+  RLOG(req, "Player " + player.NameID() + " STARTED");
+
   room.emit("start", room.Status());
 }
 
@@ -112,7 +113,11 @@ function ToogleHanlder(req, res){
   room.Toggle();
   room.emit("update");
   res.send(room.lock);
-  LOG("Room " +  room.id + ( room.lock ? " locked" : " unlocked"));
+  RLOG(req, room.lock ? " LOCKED" : " UNLOCKED");
+}
+
+function RLOG(req, message) {
+  LOG("ROOM " + req.cookies.id + " " + message);  
 }
 
 module.exports = {

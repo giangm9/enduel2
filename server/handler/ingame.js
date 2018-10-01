@@ -7,8 +7,6 @@ const utils        = require("../utils");
 const SocketPlayer = common.GetPlayerFromSocket;
 const SocketRoom   = common.GetRoomFromSocket;
 
-const LOG = utils.LOG;
-
 var 
   IO;
 

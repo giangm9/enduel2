@@ -11,8 +11,8 @@ const LOG = utils.LOG;
 
 const MAX_HP               = 100;
 const DAMAGE_SKIP          = 30;
-const DAMAGE_INCORRECT     = 10;
-const DAMAGE_USED          = 5;
+const DAMAGE_INCORRECT     = 20;
+const DAMAGE_USED          = 10;
 
 const DEBUG                = false;
 const TICK_DAMAGE_INTERVAL = 20;
@@ -47,11 +47,11 @@ function Game(room) {
   }.bind(this));
 
   this._livingCount = this.players.length;
-  LOG("Created Game " + this.id);
+  this.LOG(" CREATED");
 }
 
 Game.prototype.LOG = function(message){
-  LOG("Room " + this.room.id + " : " + message);
+  LOG("GAME " + this.id + " "  + message);
 }
 
 Game.prototype.Tick = function(dt){
@@ -59,7 +59,7 @@ Game.prototype.Tick = function(dt){
     this.tick1sec();
     dt -= 1;
   }
-}
+} 
 
 Game.prototype.Status = function(){
   var players = [];
@@ -107,13 +107,13 @@ Game.prototype.Put = function( word ){
   if (Dict.Exist(word)){
     if (this.used.includes(word)){
       c.hp -= DAMAGE_USED;
-      this.LOG("  | used");
-      this.LOG("  | current player " + this.current.namehp());
+      this.LOG(this.current.namehp() + "PUTS USED");
+      this.LOG("CURRENT PLAYER  " + this.current.namehp());
       this.trigger("used", word);
       this.check0HP("used");
       return;
     }
-    this.LOG("  | correct");
+    this.LOG(this.current.namehp() + " PUTS CORRECT");
     this.letter = word[word.length  - 1];
     this.LOG("current letter : '" +  this.letter + "'");
     this.used.push(word);
@@ -122,7 +122,7 @@ Game.prototype.Put = function( word ){
   } else {
     this.trigger("incorrect", word);
     c.hp -= DAMAGE_INCORRECT;
-    this.LOG("  | incorrect, " + current.namehp() + " ( -" + DAMAGE_INCORRECT + "hp )");
+    this.LOG("INCORRECT , " + current.namehp() + " ( -" + DAMAGE_INCORRECT + "hp )");
     this.check0HP("incorrect");
   }
 }
@@ -132,7 +132,7 @@ Game.prototype.tick1sec = function(){
   c.hp -= 1;
   c.timeDamage += 1;
   if (c.timeDamage >= TICK_DAMAGE_INTERVAL){
-    this.LOG(c.namehp() + " takes " + TICK_DAMAGE_INTERVAL + " damages, source : time-out");
+    this.LOG(c.namehp() + " TAKES " + TICK_DAMAGE_INTERVAL + " DAMAGE(time-out)");
     c.timeDamage -= TICK_DAMAGE_INTERVAL;
   }
   this.check0HP("time-out");
@@ -142,15 +142,17 @@ Game.prototype.check0HP = function( source ){
   if (this.current.hp  <= 0){
     this.current.hp = 0;
     this.LOG(this.current.name + " DIE, source : " + source);
-    this.LOG("living players ");
-    var count = 0 ;
+    this.LOG("PLAYERS: ");
     this.players.forEach(function(player){
-      if (player.hp > 0) {
-        count++;
-        this.LOG("  | " + player.namehp());
+
+      if (this.players.indexOf(player) == this.players.length - 1 ) {
+          this.LOG(" └── " + player.namehp());
+      } else {
+          this.LOG(" ├── " + player.namehp());
       }
+
     }.bind(this));
-    this.LOG("  | count = " + count);
+
     this.trigger("die", this.current.name);
     this._livingCount--; 
     this.tryEnd();
@@ -174,7 +176,7 @@ Game.prototype.next = function(){
   this.current = this.getNext();
   this.current.timeDamage = 0;
   this.trigger("next", last, this.current);
-  this.LOG("current player " + this.current.namehp());
+  this.LOG("CURRENT PLAYER " + this.current.namehp());
 }
 
 Game.prototype.trigger = function(event, data){
@@ -189,10 +191,11 @@ Game.prototype.tryEnd = function(){
 
   Object.getOwnPropertyNames(this.__proto__).forEach(function(prop){
     if (typeof this[prop] == 'function'){
-      this[prop] = () => LOG("Game (id=" + this.id + ")  already end");
+      this[prop] = () => LOG("Game " + this.id + " END");
     }
   }.bind(this));
 }
+
 
 var old_status = Player.prototype.Status;
 
@@ -209,25 +212,24 @@ Player.prototype.LeaveGame = function() {
     game.next();
   }
 
-  game.LOG(this.namehp() + " has left");
+  game.LOG(this.namehp() + " LEFT");
   game.players.remove(function(player){
     return player.id == this.id;
   }.bind(this));
 
   this.game = undefined;
   this.room = undefined;
-//  this.hp   = 0;
 
   game._livingCount--;
   game.tryEnd();
   if (game.current){
-    game.LOG("  | current player " + game.current.namehp()); 
+    game.LOG("CURRENT PLAYER" + game.current.namehp()); 
   }
 
 }
 
 Player.prototype.namehp = function() {
-  return this.name + " { hp:" + this.hp + " }";
+  return this.name + ".hp=" + this.hp;
 }
 
 module.exports = Game;

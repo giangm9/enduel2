@@ -49,5 +49,5 @@ Array.prototype.remove = function( callback ) {
 
 module.exports = {
     Logger : Logger,
-    LOG : Logger.LOG
+    LOG : Logger.LOG,
 }

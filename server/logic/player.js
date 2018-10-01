@@ -31,13 +31,7 @@ Player.prototype.Leave = function() {
 }
 
 Player.prototype.NameID = function() {
-  var str = this.name;
-  for (var i = 0; i < 10 - this.name.length; i++){
-    str += ' ';
-  }
-  str += " (id=" + this.id + ")";
-
-  return str;
+  return this.name + "."+ this.id;
 }
 
 Player.prototype.Status = function(){
