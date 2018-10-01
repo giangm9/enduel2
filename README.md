@@ -10,8 +10,9 @@
 
   and so on..
 
-## TODO
-- Fix random room join
-- AI
-- Score
+## TODOs
 
+- [ ] Fix random room join
+- [ ] AI
+- [ ] Score
+- [ ] Game tutorial
