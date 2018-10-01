@@ -9,7 +9,7 @@ const Logger = function()  {
 Logger.Path = "/dev/null";
 
 Logger.Init = function() {
-  const date ="";// dateFormat(new Date(), "H:MM_dd-mm-yy");
+  const date =dateFormat(new Date(), "H:MM_dd-mm-yy");
   
   Logger.Path = "./logs/log" + date + ".txt";
 
