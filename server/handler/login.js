@@ -2,21 +2,17 @@ const Player  = require("../logic/player.js");
 const Room    = require("../logic/room.js");
 const common  = require("./common");
 const utils   = require("../utils");
-const GenName = require("../libs/GenName.js");
 const LOG     = utils.LOG;
 
 function Init(app, io) {
-  GenName.Init(common.Dir+ "/data/names.txt");
-
-  app.get("/login/create-room" , CreateRoomHandler);
-  app.get("/login/gen-name"    , (_, res) => {res.send(GenName.Gen());});
-  app.get("/login/join"        , JoinRoomHandler);
+  app.get("/login/create-room" , HandleRoomCreate);
+  app.get("/login/join"        , HandleJoinRoom);
 }
 
 function InitIO(io){
-  io.of("/login").on("connection", function(socket){
+//io.of("/login").on("connection", function(socket){
 
-  })
+//})
 }
 
 function IsOnIndex(req, res) {
@@ -32,25 +28,22 @@ function IsOnIndex(req, res) {
   }
 
   // Sometimes, cookies still on the browser, but the server restart
-  var id = req.cookies.id;
-  var room = req.cookies.room;
-
-  if (!Player.GetByID(id)) return true;
-  if (!Room.GetByID(room)) return true;
+  if (!Player.GetByID(req.cookies.id)) return true;
+  if (!Room.GetByID(req.cookies.room)) return true;
 
   return false;
 }
 
 function HandleIndex(req, res) {
-  res.sendFile(common.Dir+ '/public/login.html');
+  res.sendFile(common.Dir + '/public/login.html');
 }
 
-function JoinRoomHandler(req, res) {
+function HandleJoinRoom(req, res) {
   var roomid = req.query.room.trim();
   var name   = req.query.name;
   
   if (roomid == '' && Room.CountOpen() == 0) {
-    CreateRoomHandler(req, res);
+    HandleRoomCreate(req, res);
     return;
   }
 
@@ -75,7 +68,7 @@ function JoinRoomHandler(req, res) {
   res.sendStatus(200);
 }
 
-function CreateRoomHandler(req, res) {
+function HandleRoomCreate(req, res) {
   var name    = req.query.name;
       room    = new Room();
       player  = new Player(name);
