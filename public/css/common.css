@@ -58,6 +58,10 @@ button.shadow:active {
   transform: translate(3px, 3px)
 }
 
+button.shadow:disabled {
+  box-shadow: none;
+}
+
 .center {
   display: block;
   margin-left: auto;

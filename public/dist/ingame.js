@@ -18719,10 +18719,10 @@ const Get = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get;
 const GetCookies = js_cookie__WEBPACK_IMPORTED_MODULE_1___default.a.get;
 const SetCookies = js_cookie__WEBPACK_IMPORTED_MODULE_1___default.a.set;
 
-var 
-  data,
+var
+data,
   player,
-  quit; 
+  quit;
 
 var Ingame = {};
 
@@ -18750,16 +18750,23 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {
 
   _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"]
     .On("update"    , updateFromData)
-    .On("end"       , toMain)
+//    .On("end"       , toMain)
     .On("used"      , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
-    .On("die"       , (name) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(name      , " die"))
+    .On("die"       , die)
     .On("leave"     , leaveGame)
     .On("correct"   , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " puts correct : " +  data.word))
 
 
   _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"].Update();
 });
+
+function die(data) {
+  _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , "die");
+  _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add("score : ", data.score );
+  _ingame_put_js__WEBPACK_IMPORTED_MODULE_3__["default"].Disable();
+}
+
 
 function leaveGame(data) {
   _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name,  " left ");
@@ -18782,7 +18789,7 @@ function updateFromData(dat) {
 }
 
 function toMain() {
-  SetCookies("state", "main"); 
+  SetCookies("state", "main");
   location.reload();
 }
 
@@ -19058,7 +19065,6 @@ function keepCaret() {
     inp[0].setSelectionRange(1, 1);
   }
 }
-
 
 /* harmony default export */ __webpack_exports__["default"] = (Put);
 

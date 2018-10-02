@@ -39,7 +39,6 @@ function socketJoin() {
 
   this
     .on("put"   , socketPut)
-    .on("skip"  , socketSkip)
     .on("leave" , socketLeave)
     .on("update", socketUpdate);
 
@@ -52,7 +51,10 @@ function socketJoin() {
       .On("used"      , (word) => room.emit("used"      , {name : room.game.current.name , word: word}))
       .On("incorrect" , (word) => room.emit("incorrect" , {name : room.game.current.name , word: word}))
       .On("correct"   , (word) => room.emit("correct"   , {name : room.game.current.name , word: word}))
-      .On("die"       , (name) => room.emit("die"       , room.game.current.name));
+      .On("die"       , (name) => room.emit("die"       , {
+        name : room.game.current.name , 
+        score : room.game.current.score
+      }));
   }
     
   player.game = room.game;
@@ -83,11 +85,6 @@ function socketLeave() {
   });
 }
 
-function socketSkip(){
-  var player = SocketPlayer(this);
-  var room   = SocketRoom(this);
-  room.emit("leave", { name : player.name } );
-}
 
 function socketPut(message){
   var player = SocketPlayer(this);

@@ -43,6 +43,7 @@ function Game(room) {
   this.players.forEach(function(player){
     player.hp         = MAX_HP;
     player.timeDamage = 0;
+    player.score      = 0;
     player.game       = this;
   }.bind(this));
 
@@ -119,6 +120,7 @@ Game.prototype.Put = function( word ){
     this.used.push(word);
     this.trigger("correct", word);
     this.next();
+    this.current.score++;
   } else {
     this.trigger("incorrect", word);
     c.hp -= DAMAGE_INCORRECT;
@@ -202,6 +204,7 @@ var old_status = Player.prototype.Status;
 Player.prototype.Status = function( ) {
   var status = old_status.call(this);
   status.hp = this.hp;
+  status.score = this.score;
   return status;
 }
 

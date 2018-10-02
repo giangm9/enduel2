@@ -12,10 +12,10 @@ const Get = $.get;
 const GetCookies = Cookies.get;
 const SetCookies = Cookies.set;
 
-var 
-  data,
+var
+data,
   player,
-  quit; 
+  quit;
 
 var Ingame = {};
 
@@ -43,16 +43,23 @@ $(function() {
 
   Net
     .On("update"    , updateFromData)
-    .On("end"       , toMain)
+//    .On("end"       , toMain)
     .On("used"      , (data) => Chatbox.Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => Chatbox.Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
-    .On("die"       , (name) => Chatbox.Add(name      , " die"))
+    .On("die"       , die)
     .On("leave"     , leaveGame)
     .On("correct"   , (data) => Chatbox.Add(data.name , " puts correct : " +  data.word))
 
 
   Net.Update();
 });
+
+function die(data) {
+  Chatbox.Add(data.name , "die");
+  Chatbox.Add("score : ", data.score );
+  Put.Disable();
+}
+
 
 function leaveGame(data) {
   Chatbox.Add(data.name,  " left ");
@@ -75,7 +82,7 @@ function updateFromData(dat) {
 }
 
 function toMain() {
-  SetCookies("state", "main"); 
+  SetCookies("state", "main");
   location.reload();
 }
 

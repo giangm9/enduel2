@@ -6,6 +6,8 @@ p{
   display: inline-block;
   font-size: 3vmin;
   color: white;
+  margin: 0.5vmin;
+  padding : 0.5vmin;
 }
 
 .message-user {
@@ -72,6 +74,10 @@ p{
 
 #btn-put {
   font-weight: bold;
+}
+
+#btn-put:disabled {
+  background: #f1f1f1;
 }
 
 #inp-put {
