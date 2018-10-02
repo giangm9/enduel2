@@ -157,6 +157,8 @@ Game.prototype.check0HP = function( source ){
       this.trigger("end");
       this.end = true;
       this.current = null;
+    } else {
+      this.next();
     }
   }
 }
@@ -189,11 +191,12 @@ Game.prototype.trigger = function(event, data){
 Game.prototype._listPlayer = function() {
   this.LOG("PLAYERS: ");
   this.players.forEach(function(player){
-
+    var isCurrent = "";
+    if (this.current.id == player.id) isCurrent = " *";
     if (this.players.indexOf(player) == this.players.length - 1 ) {
-      this.LOG(" └── " + player.namehp());
+      this.LOG(" └── " + player.namehp() + isCurrent);
     } else {
-      this.LOG(" ├── " + player.namehp());
+      this.LOG(" ├── " + player.namehp() + isCurrent);
     }
 
   }.bind(this));
