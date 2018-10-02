@@ -22,12 +22,9 @@ class Player {
 }
 
 Player.prototype.Leave = function() {
-  function matchid( player ) {
-    return this.id == player.id;
-  }
 
-  this.room.players.remove(matchid.bind(this));
-  AllPlayers.remove(matchid.bind(this));
+  this.room.players.removeByID(this.id);
+  AllPlayers.removeByID(this.id);
 }
 
 Player.prototype.NameID = function() {

@@ -5,18 +5,16 @@
 
 const common = require("./common");
 
-var AllRooms  = [];
-var OpenRooms = [];
+var _all = [];
 
 function Room() {
-  this.id      = common.GenUID(AllRooms);
+  this.id      = common.GenUID(_all);
   this.strID   = this.id.toString();
   this.lock    = false;
   this.players = [];
   this.host    = null;
   this.state   = "wait"; //ingame
-  AllRooms.push(this);
-  OpenRooms.push(this);
+  _all.push(this);
 }
 
 /**
@@ -32,9 +30,7 @@ Room.prototype.Add = function(player) {
 }
 
 Room.prototype.Dismiss = function() {
-  AllRooms.remove(function(room){
-    return this.id == room.id
-  }.bind(this));
+  _all.removeByID(this.id);
 }
 
 Room.prototype.Status = function(){
@@ -56,13 +52,6 @@ Room.prototype.Status = function(){
 
 Room.prototype.Toggle = function(){
   this.lock = !this.lock;
-  if (!this.lock) {
-    OpenRooms.push(this);
-  } else {
-    OpenRooms.remove(function(room) {
-      return this.id = room.id;
-    }.bind(this));
-  }
 }
 
 Room.prototype.GetPlayer = function(id){
@@ -89,23 +78,24 @@ Room.prototype.Ingame = function() {
   this.state = 'ingame';
 }
 
+Room.GetRandomOpen = function() {
+  return _open().getRandom();
+}
+
 Room.count = function(){
-  return AllRooms.length;
-}
-
-Room.CountOpen = function(){
-  return OpenRooms.length;
-}
-
-Room.GetRandomOpen = function(){
-  var room = OpenRooms.getRandom();
-  console.log(room.id);
-  return room;
-//  return OpenRooms.getRandom();
+  return _all.length;
 }
 
 Room.GetByID = function(id) {
-  return AllRooms.getByID(id)
+  return _all.getByID(id)
+}
+
+Room.CountOpen = function() {
+  return _open().length;
+}
+
+_open = function() {
+  return _all.filter((room) => { return !room.lock } );
 }
 
 module.exports = Room;
