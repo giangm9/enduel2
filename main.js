@@ -9,7 +9,7 @@ const Dict          = require("./server/logic/dict");
 const utils         = require("./server/utils");
 const config        = require("./configs");
 
-console.log("Loaded config : ");
+console.log("CONFIG : ");
 console.log(JSON.stringify(config, null, 2));
 
 utils.Logger.Init();
