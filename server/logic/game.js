@@ -213,9 +213,7 @@ Player.prototype.LeaveGame = function() {
   }
 
   game.LOG(this.namehp() + " LEFT");
-  game.players.remove(function(player){
-    return player.id == this.id;
-  }.bind(this));
+  game.players.removeByID(this.id);
 
   this.game = undefined;
   this.room = undefined;
