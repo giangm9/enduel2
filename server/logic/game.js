@@ -169,7 +169,8 @@ Game.prototype.getNext = function() {
   var nextIndex = index;
   while (true && this._livingCount > 0) {
     nextIndex = (nextIndex + 1 == this.players.length) ? 0 : nextIndex + 1;
-    if (this.players[nextIndex].hp > 0) break;
+
+    if (this.players[nextIndex] && this.players[nextIndex].hp > 0) break;
   }
   return this.players[nextIndex];
 }
@@ -222,6 +223,7 @@ Player.prototype.LeaveGame = function() {
 
   game.LOG(this.namehp() + " LEFT");
   game.players.removeByID(this.id);
+  room.players.removeByID(this.id);
 
   this.game = undefined;
   this.room = undefined;

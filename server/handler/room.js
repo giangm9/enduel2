@@ -104,7 +104,6 @@ function StartHandler(req, res ){
   room.state = "ingame";
   res.sendStatus(200);
   RLOG(req, "Player " + player.NameID() + " STARTED");
-
   room.emit("start", room.Status());
 }
 

@@ -90,14 +90,14 @@ function socketLeave() {
   var game   = player.game;
 
   player.LeaveGame();
+
   room.emit("leave", {
     name : player.name
   });
 
   if (room.count() == 0){
-    room.emit("empty");   
+    room.emit("empty");
   }
-
 }
 
 

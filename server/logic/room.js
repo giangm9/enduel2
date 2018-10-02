@@ -79,6 +79,7 @@ Room.prototype.Ingame = function() {
 }
 
 Room.prototype.count = function() {
+  return this.players.length;
 }
 
 Room.GetRandomOpen = function() {
@@ -98,7 +99,7 @@ Room.CountOpen = function() {
 }
 
 _open = function() {
-  return _all.filter((room) => { return !room.lock } );
+  return _all.filter((room) => { return !room.lock && room.state != "ingame" } );
 }
 
 module.exports = Room;
