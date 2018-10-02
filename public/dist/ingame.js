@@ -18750,7 +18750,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function() {
 
   _ingame_net_js__WEBPACK_IMPORTED_MODULE_4__["default"]
     .On("update"    , updateFromData)
-//    .On("end"       , toMain)
+    .On("empty"     , toMain)
     .On("used"      , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " -10 ( used word '" + data.word + "')"))
     .On("incorrect" , (data) => _ingame_chatbox_js__WEBPACK_IMPORTED_MODULE_2__["default"].Add(data.name , " -20 ( incorrect word '" + data.word + "' )"))
     .On("die"       , die)

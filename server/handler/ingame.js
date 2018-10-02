@@ -7,8 +7,8 @@ const utils        = require("../utils");
 const SocketPlayer = common.GetPlayerFromSocket;
 const SocketRoom   = common.GetRoomFromSocket;
 
-var 
-  IO;
+var
+IO;
 
 function IsOnIndex(req, res) {
   return req.cookies && req.cookies.state == "ingame";
@@ -25,8 +25,19 @@ function Init(app, io) {
 }
 
 
+
+/**
+ * emit event from socket
+ * @fires {used}      : Current player put an used word
+ * @fires {incorrect} : Current player put an incorrect word
+ * @fires {correct}   : Current player put a correct word
+ * @fires {die}       : Current player dies
+ * @fires {leave}     : Current player leaves
+ * @fires {empty}     : Current room empty, reload the page to main
+ * @fires {update}    : Update game
+ */
 function socketJoin() {
-  var cookie = common.SocketCookie(this);     
+  var cookie = common.SocketCookie(this);
   var player = Player.GetByID(cookie.id);
   var room   = Room.GetByID(cookie.room);
 
@@ -52,25 +63,25 @@ function socketJoin() {
       .On("incorrect" , (word) => room.emit("incorrect" , {name : room.game.current.name , word: word}))
       .On("correct"   , (word) => room.emit("correct"   , {name : room.game.current.name , word: word}))
       .On("die"       , (name) => room.emit("die"       , {
-        name : room.game.current.name , 
+        name : name,
         score : room.game.current.score
       }));
   }
-    
+
   player.game = room.game;
 
 }
 
 function gameEnd(){
-  clearInterval(this.routine); 
-  this.emit('end');
-  this.Dismiss();
+  clearInterval(this.routine);
 }
 
 
 function socketUpdate(){
   var player = SocketPlayer(this);
-  player.emit("update", player.game.Status());
+  if (!player.game.end) {
+    player.emit("update", player.game.Status());
+  }
 }
 
 function socketLeave() {
@@ -79,10 +90,14 @@ function socketLeave() {
   var game   = player.game;
 
   player.LeaveGame();
-  room.emit("leave", { 
-    name : player.name,
-    data : game.Status()
+  room.emit("leave", {
+    name : player.name
   });
+
+  if (room.count() == 0){
+    room.emit("empty");   
+  }
+
 }
 
 
@@ -96,6 +111,7 @@ function socketPut(message){
 
 Room.prototype.tick = function() {
   this.game.tick1sec();
+  if (this.game.end) return;
   this.emit("update", this.game.Status());
 }
 

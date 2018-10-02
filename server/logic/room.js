@@ -78,6 +78,9 @@ Room.prototype.Ingame = function() {
   this.state = 'ingame';
 }
 
+Room.prototype.count = function() {
+}
+
 Room.GetRandomOpen = function() {
   return _open().getRandom();
 }

@@ -18,13 +18,13 @@ const DEBUG                = false;
 const TICK_DAMAGE_INTERVAL = 20;
 
 /**
- * Available events 
+ * Available events
  *
- * -- Events trigger on current player -- 
+ * -- Events trigger on current player --
  * @event correct   : put a correct word
  * @event incorrect : put an incorrect word
  * @event die       : hp <= 0
- * @event skip      : 
+ * @event skip      :
  * @event used      : put an used word
  * -- Event trigger on game
  * @event end       : all players left/die, game ends
@@ -39,12 +39,14 @@ function Game(room) {
   this.id       = room.id;
   this.events   = new EventEmiter();
   this.letter   = 'qwertyuiopasdfghjklzcvbnm'.getRandom();
+  this.end      = false;
 
   this.players.forEach(function(player){
     player.hp         = MAX_HP;
     player.timeDamage = 0;
     player.score      = 0;
     player.game       = this;
+    player.die        = false;
   }.bind(this));
 
   this._livingCount = this.players.length;
@@ -60,7 +62,7 @@ Game.prototype.Tick = function(dt){
     this.tick1sec();
     dt -= 1;
   }
-} 
+}
 
 Game.prototype.Status = function(){
   var players = [];
@@ -95,7 +97,7 @@ Game.prototype.Put = function( word ){
 
   this.LOG(current.namehp() + " puts '" + word + "'");
   var c = this.current;
-  
+
   if (word[0] != this.letter){
     if (DEBUG){
       throw "ERROR : first letter must match";
@@ -130,7 +132,9 @@ Game.prototype.Put = function( word ){
 }
 
 Game.prototype.tick1sec = function(){
-  var c = this.current;   
+  if (this.end) return;
+  var c = this.current;
+  if (c.die) return;
   c.hp -= 1;
   c.timeDamage += 1;
   if (c.timeDamage >= TICK_DAMAGE_INTERVAL){
@@ -141,24 +145,19 @@ Game.prototype.tick1sec = function(){
 }
 
 Game.prototype.check0HP = function( source ){
-  if (this.current.hp  <= 0){
+  if (this.current.die) return;
+  if (this.current.hp <= 0){
     this.current.hp = 0;
+    this.current.die = true;
     this.LOG(this.current.name + " DIE, source : " + source);
-    this.LOG("PLAYERS: ");
-    this.players.forEach(function(player){
-
-      if (this.players.indexOf(player) == this.players.length - 1 ) {
-          this.LOG(" └── " + player.namehp());
-      } else {
-          this.LOG(" ├── " + player.namehp());
-      }
-
-    }.bind(this));
-
     this.trigger("die", this.current.name);
-    this._livingCount--; 
-    this.tryEnd();
-    this.next();
+    this._livingCount--;
+    this._listPlayer();
+    if (this._livingCount == 0) {
+      this.trigger("end");
+      this.end = true;
+      this.current = null;
+    }
   }
 }
 
@@ -176,26 +175,29 @@ Game.prototype.getNext = function() {
 Game.prototype.next = function(){
   var last = this.current;
   this.current = this.getNext();
+  if (!this.current) return;
   this.current.timeDamage = 0;
   this.trigger("next", last, this.current);
   this.LOG("CURRENT PLAYER " + this.current.namehp());
 }
 
 Game.prototype.trigger = function(event, data){
-  this.events.emit(event, data); 
+  this.events.emit(event, data);
 }
 
-Game.prototype.tryEnd = function(){
-  if (this._livingCount != 0) return;
-  this.trigger("end");
 
-  this.current = undefined;
+Game.prototype._listPlayer = function() {
+  this.LOG("PLAYERS: ");
+  this.players.forEach(function(player){
 
-  Object.getOwnPropertyNames(this.__proto__).forEach(function(prop){
-    if (typeof this[prop] == 'function'){
-      this[prop] = () => LOG("Game " + this.id + " END");
+    if (this.players.indexOf(player) == this.players.length - 1 ) {
+      this.LOG(" └── " + player.namehp());
+    } else {
+      this.LOG(" ├── " + player.namehp());
     }
+
   }.bind(this));
+
 }
 
 
@@ -210,7 +212,7 @@ Player.prototype.Status = function( ) {
 
 Player.prototype.LeaveGame = function() {
   var game = this.game;
-  
+
   if (!game.current || (game.current.id == this.id)){
     game.next();
   }
@@ -221,10 +223,8 @@ Player.prototype.LeaveGame = function() {
   this.game = undefined;
   this.room = undefined;
 
-  game._livingCount--;
-  game.tryEnd();
   if (game.current){
-    game.LOG("CURRENT PLAYER" + game.current.namehp()); 
+    game.LOG("CURRENT PLAYER" + game.current.namehp());
   }
 
 }

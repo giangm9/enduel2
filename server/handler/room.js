@@ -75,6 +75,7 @@ function LeaveHandler(req, res){
   if (player.isHost){
     
     var newHost = room.GetNextHost();
+
     // No more player in room
     if (!newHost) {
       room.Dismiss();
